@@ -1,0 +1,37 @@
+{% extends 'base.html' %}{% load url from future %}{% load crispy_forms_tags %}
+
+{% block page_title %}Sign up — {{ block.super }}{% endblock %}
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-sm-8 col-sm-offset-2 col-xs-12">
+
+            <div class="signup-wrap">
+                <div class="logo-wrap">
+                    <h4>Get Started</h4>
+                </div>
+                {% block form %}
+                    {% crispy form %}
+                {% endblock %}
+            </div>
+            <div class="text-center links">
+                <a href="{% url 'public:signin' %}">Already have an account?</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+        $form = $('#signup-form');
+        $form.on('submit', function(e) {
+            $form.find('#id_mpid').val(mixpanel.get_distinct_id());
+        });
+    </script>
+{% endblock %}

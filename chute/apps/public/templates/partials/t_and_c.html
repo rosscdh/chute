@@ -1,0 +1,8 @@
+{% load crispy_forms_field %}
+
+<div class="form-group">
+    <label class="checkbox" for="{{ field.id_for_label }}">
+        {% crispy_field field 'data-toggle' 'checkbox' %}
+        {{ field.label|safe }}
+    </label>
+</div>

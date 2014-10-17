@@ -1,0 +1,9 @@
+{% extends 'email/base.email' %}
+
+{% block subject_line %}Please confirm your email address{% endblock %}
+
+{% block html_content %}
+<p>Thank you for signing up to LawPal</p>
+<p><strong><a href="{{ action_url }}">Click here to validate your email address</a></strong></p>
+<p>If you have received this email in error, or you believe there to be a problem, please contact us at <a href="mailto:hello@lawpal.com"> hello@lawpal.com</a></p>
+{% endblock %}

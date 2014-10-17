@@ -1,0 +1,76 @@
+{% load compressed %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% block page_description %}{% endblock %}">
+    <meta name="author" content="{% block page_author %}{% endblock %}">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>{% block page_title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    {% compressed_css 'base' %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      {% compressed_js 'base_ie_only' %}
+    <![endif]-->
+    {% block css %}{% endblock css %}
+  </head>
+
+  <body>
+
+    {% block navigation %}
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Chute</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Projects</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Account</a></li>
+        </ul>
+      </div>
+    </nav>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    {% endblock %}
+
+    {% block jumbo %}{% endblock %}
+    {% block body %}
+    {% block content %}{% endblock %}
+    {% endblock %}
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.1.7/fuse.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.0.4/parsley.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/holder/2.4.0/holder.js"></script>
+    
+    <script src="//releases.flowplayer.org/5.5.0/flowplayer.js"></script>
+
+    {% compressed_js 'base' %}
+    {% compressed_js 'react' %}
+    {% compressed_js 'resources' %}
+    {% if debug %}<script src="{{ STATIC_URL }}js/reactjs/0.11.1/JSXTransformer.js"></script>{% endif %}
+
+    {% block js %}{% endblock %}
+  </body>
+</html>

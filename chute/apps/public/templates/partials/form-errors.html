@@ -1,0 +1,25 @@
+<div class="dialog dialog-danger form-errors{% if not form.errors %} hide{% endif %}">
+    <div class="container">
+        {% if form.errors|length > 1 %}
+            <p>There were {{ form.errors|length }} errors with this:</p>
+        {% elif form.errors|length == 1 %}
+            <p>There was 1 error with this:</p>
+        {% else %}
+            <p></p>
+        {% endif %}
+        <div class="parsley-errors">
+            {% if form.errors %}
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li>{{ field.errors|striptags }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>

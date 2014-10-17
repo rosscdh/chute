@@ -1,0 +1,46 @@
+[
+  {
+    "fields": {
+      "date_created": "2014-09-04T12:40:47.827Z",
+      "client": null,
+      "data": {},
+      "slug": "my-cool-project",
+      "name": "My Cool Project"
+    },
+    "model": "project.project",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "owner": 1,
+      "data": {},
+      "name": "A Client Here",
+      "slug": "my-client"
+    },
+    "model": "client.client",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "project": 1,
+      "role": 1,
+      "is_project_owner": true,
+      "data": {},
+      "user": 1
+    },
+    "model": "project.projectcollaborator",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Version 1",
+      "video_url": "https://s3-eu-west-1.amazonaws.com/dev-revision/20856655.ogg",
+      "video_type": 3,
+      "project": 1,
+      "data": {},
+      "slug": "75d4d8ee0f654200998bd6a1e5696358"
+    },
+    "model": "project.video",
+    "pk": 1
+  }
+]

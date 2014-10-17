@@ -1,0 +1,187 @@
+{% extends 'project/base.html' %}{% load compressed chute_tags %}
+
+{% block page_title %}{{ project.name }}{% endblock %}
+
+{% block jumbo %}
+{% csrf_token %}
+<div id="project-detail-base"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class="row">
+    <!-- Feed -->
+      <div id="feed-list" class="col-md-3"></div>
+      <!-- PlayList -->
+      <div id="playlist-feed-list" class="col-md-3"></div>
+      <!-- Preview -->
+      <div class="col-md-6">
+          <h3>Preview</h3>
+          <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+
+              <div class="row">
+                <form class="form-inline" role="form">
+                
+                <div class="form-group">
+                  <div class="input-group col-xs-9">
+                    <div class="input-group-addon">show for</div>
+                    <input class="form-control input-sm" type="integer" placeholder="Number of" value="3" />
+                    <div class="input-group-addon">sec</div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+
+                   <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Using Template <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#" class="thumbnail">
+                              <img data-src="holder.js/100%x100" alt="...">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="thumbnail">
+                              <img data-src="holder.js/100%x100" alt="...">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="thumbnail">
+                              <img data-src="holder.js/100%x100" alt="...">
+                            </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+
+                </div>
+
+                </form>
+                <!-- <div class="col-xs-3 col-md-2">
+                  <a href="#" class="thumbnail">
+                    <img data-src="holder.js/100%x100" alt="...">
+                  </a>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <a href="#" class="thumbnail">
+                    <img data-src="holder.js/100%x100" alt="...">
+                  </a>
+                </div> -->
+              </div>
+
+            </div>
+          </nav>
+          <iframe src="/media/compiled/41061info/27092014-hand-in-hand-with-refugees-rede-von-efe-efehosa.html" border="0" style="border:0px;padding:0px;width:100%;height:640px;"></iframe>
+      </div>
+  </div>
+
+</div>
+
+<div id="project-detail-collaborators" class="col-md-4"></div>
+
+{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="//releases.flowplayer.org/5.5.0/skin/minimalist.css">
+<style>
+.badge > a {
+    color:#fff;
+}
+.control-type-selector {
+    width:120px;
+}
+.input-lg[name=comment] {
+    height:70px;
+}
+div.comment-list{
+  background-color:#fff;
+  overflow-y: scroll;
+  height:515px;
+}
+ul.versions{
+  display: inline-block;
+  padding:0px 5px;
+}
+.progress-bar{
+  width:0%;
+}
+/*Blue imp*/
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}
+</style>
+{% compressed_css 'uploader' %}
+{% endblock css %}
+
+{% block js %}
+
+{% compressed_js 'resources' %}
+{% compressed_js 'uploader' %}
+
+<script>
+'use strict';
+/**
+* Setup the base javascript objects for our react handler
+**/
+var Today = moment();
+
+var Project = {{ view.project_json|safe|default:'{}' }};
+
+var Playlist = {{ view.playlist_json|safe|default:'{}' }};
+
+var Video = {};
+
+var Links = {
+  'publish': "{% if view.current_video %}{% url 'publish:settings' slug=view.current_video.slug %}{% endif %}",
+};
+
+var UploaderConfig = {
+   signerUrl: "{#% url 's3signature' %#}",
+   aws_key: '{{ AWS_ACCESS_KEY_ID }}',
+   bucket: '{{ AWS_STORAGE_BUCKET_NAME }}',
+   aws_url: 'https://s3-eu-west-1.amazonaws.com',
+   aws_path: 'uploaded_video/'
+};
+
+var User = {
+  'username': '{{ request.user.username }}',
+  'initials': '{{ request.user.get_initials }}',
+  'email': '{{ request.user.email }}'
+}
+
+/**
+* Setup resource slugs
+**/
+ProjectVideoResource.params.slug = CollaboratorResource.params.slug = Project.slug;
+VideoResource.params.video_slug = '{{ view.current_video.slug }}';
+CommentResource.params.video_slug = '{{ view.current_video.slug }}';
+
+</script>
+
+{% compressed_js 'project' %}
+{% endblock js %}

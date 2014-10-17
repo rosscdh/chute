@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% load url from future %}{% load crispy_forms_tags %}
+
+{% block page_title %}Error trying to Sign in — {{ block.super }}{% endblock %}
+
+{% block messages %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-sm-8 col-sm-offset-2 col-xs-12">
+            <div class="signup-wrap">
+                <div class="logo-wrap">
+                    <h4>Notice<br/><small>Please note the following issues.</small></h4>
+                </div>
+
+            </div>
+            <div class="text-center links">
+                <ul class="list-group">
+                    {% for message in messages %}
+                        <li class="list-group-item {% if message.tags %}{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% empty %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

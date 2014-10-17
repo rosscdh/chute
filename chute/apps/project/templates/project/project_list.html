@@ -1,0 +1,58 @@
+{% extends 'project/base.html' %}{% load compressed crispy_forms_tags %}
+
+
+{% block content %}
+
+<div id="project-list" class="row"></div>
+
+
+<div id="modal-project-create" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="modal-keyboard-help" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">New Project</h4>
+        </div>
+        <div class="modal-body">
+            {% crispy form %}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+'use strict';
+/**
+* Setup the base javascript objects for our react handler
+**/
+var Today = moment();
+
+var Projects = {{ view.project_json|safe|default:'[]' }};
+
+var User = {
+  'username': '{{ request.user.username }}',
+  'initials': '{{ request.user.get_initials }}',
+  'email': '{{ request.user.email }}'
+}
+
+var Links = {
+    'create_url': "{% url 'project:create' %}",
+    'edit_url': null,
+};
+
+
+$('form#create-project-form').on('submit', function ( e ) {
+  e.preventDefault();
+  var form = $(this);
+
+  ProjectResource.create( form.serialize() ).defer().done(function ( data ) {
+    document.location = data.detail_url;
+  });
+});
+
+</script>
+{% compressed_js 'project_list' %}
+{% endblock js %}

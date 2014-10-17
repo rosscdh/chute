@@ -1,0 +1,148 @@
+{% extends 'user/base.html' %}
+
+{% load url from future %}{% load crispy_forms_tags %}
+
+{% block page_title %}Settings — {{ block.super }}{% endblock%}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#home" role="tab" data-toggle="tab">Account Settings</a></li>
+  <li><a href="#profile" role="tab" data-toggle="tab">Integrations</a></li>
+  <li><a href="#billing" role="tab" data-toggle="tab">Billing</a></li>
+  <li><a href="#cancellation" role="tab" data-toggle="tab">Cancellation</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+    <div class="tab-pane fade in active" id="home">
+
+          <div class="content-header notifications-header clearfix">
+              <div class="container">
+                  <div class="col-sm-6 col-sm-offset-3">
+                      <h3>Account Settings<br/><small>Manage your account settings</small></h3>
+                  </div>
+              </div>
+          </div>
+          <div class="container">
+              <div class="col-sm-6 col-sm-offset-3" role="main">
+                  {% crispy form %}
+              </div>
+          </div>
+
+    </div>
+
+
+    <div class="tab-pane fade" id="profile">
+
+        <div class="content-header notifications-header clearfix">
+            <div class="container">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h3>Integrations<br/><small>Connect your Revision.com account with 3rd Parties</small></h3>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-sm-6 col-sm-offset-3" role="main">
+              <ul class="list-group">
+                <li>No integrations possible</li>
+              </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="billing">
+
+        <div class="content-header notifications-header clearfix">
+            <div class="container">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h3>Billing<br/><small>Plans &amp; Payments</small></h3>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-sm-6 col-sm-offset-3" role="main">
+              <ul class="list-group">
+                <li><a href="{% url 'me:plan-list' %}">Plans</a></li>
+                <li><a href="{% url 'me:payment-list' %}">Payments</a></li>
+              </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="cancellation">
+
+        <div class="content-header notifications-header clearfix">
+            <div class="container">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h3>Cancellation<br/><small>So you've decided to leave us, please let us know why so that we can try to fix the problem.</small></h3>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-sm-6 col-sm-offset-3" role="main">
+                <a href="{% url 'me:cancel' %}" class="btn btn-warning" data-toggle="modal" data-target="#cancel-account">Cancel my account</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block modals %}
+    {{ block.super }}
+    <div class="modal" id="change-password"></div>
+    <div class="modal" id="cancel-account"></div>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    {{ form.media.css }}
+<style>
+.tab-content{
+  border:0px;
+  margin:0px;
+  padding:0px;
+}
+</style>
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    {{ form.media.js }}
+    <script>
+    'use strict';
+    $('a.social-disconnect').on("click", function() {
+        var self = $(this);
+        var data = $(this).data();
+
+        $.ajax({
+          "type": 'POST',
+          "url": self.attr('href'),
+          "data": {},
+          "dataType": 'json',
+          "contentType": 'application/json',
+          "beforeSend": function (jqXHR, settings) {
+              // Pull the token out of the DOM.
+              jqXHR.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]:first').val());
+          },
+          "complete": function ( data ) {
+              document.location.reload();
+          }
+        });
+
+        return false; //this is critical to stop the click event which will trigger a normal file download!
+    });
+    </script>
+{% endblock %}

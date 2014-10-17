@@ -1,0 +1,76 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+HOTELENERGIEBALLMOTERSCHADE.mp4
+debug_toolbar_user_panel
+
+local_settings.py
+
+.DS_Store
+
+# C extensions
+*.so
+
+# sqlite
+*.db
+*.sqlite3
+
+# Distribution / packaging
+.Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# Environment
+.env
+.vagrant/
+
+# Static files
+media/*
+static/*
+
+# Allow empty files as placeholders for directories
+!EMPTY
+sandbox/

@@ -1,0 +1,48 @@
+{% extends 'project/base.html' %}{% load compressed %}
+
+{% block page_title %}My Test Project{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<br/><br/>
+<h2>{{ project.name }}:Chronicle</h2>
+<div id="project-detail-chronicle"></div>
+{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="//releases.flowplayer.org/5.5.0/skin/minimalist.css">
+<style>
+.badge > a {
+    color:#fff;
+}
+.control-type-selector {
+    width:120px;
+}
+.input-lg[name=q] {
+    height:70px;
+    width:440px;
+}
+</style>
+{% endblock css %}
+
+{% block js %}
+<script>
+'use strict';
+/**
+* Setup the base javascript objects for our react handler
+**/
+var Today = moment();
+
+var Project = {{ view.project_json|safe|default:'{}' }};
+
+var Video = {{ view.video_json|safe|default:'{}' }};
+
+var Comments = {{ view.project_comments_json|safe|default:'[]' }};
+</script>
+
+{% compressed_js 'project_chronicle' %}
+
+{% endblock js %}
+
+{% block footer %}{% endblock %}

@@ -14,6 +14,35 @@ logger = logging.getLogger('django.request')
 
 get_facebook_details = Signal(providing_args=['instance', 'created'])
 get_facebook_feed = Signal(providing_args=['instance', 'user', 'created'])
+populate_playlist_with_feed = Signal(providing_args=['playlist', 'project'])
+
+
+@receiver(get_facebook_details)
+def _get_facebook_details(sender, instance, created, **kwargs):
+    """
+    signal to handle getting the projects facebook details
+    """
+    service = FacebookProjectDetailService(project=instance)
+    service.process()
+
+
+@receiver(get_facebook_feed)
+def _get_facebook_feed(sender, instance, user, created, **kwargs):
+    """
+    signal to handle getting the projects feeds from facebook
+    """
+    service = FacebookFeedGeneratorService(user=user,
+                                           project=instance)
+    service.process()
+
+
+@receiver(populate_playlist_with_feed)
+def _populate_playlist_with_feed(sender, playlist, project, **kwargs):
+    """
+    signal to handle populating a playlist from the current feed items
+    """
+    for f in project.feeditem_set.all():
+        playlist.feed.add(f)
 
 
 def ensure_project_slug(sender, instance, **kwargs):
@@ -31,27 +60,6 @@ def ensure_project_slug(sender, instance, **kwargs):
             final_slug = slugify(slug)
 
         instance.slug = final_slug
-
-
-@receiver(get_facebook_details)
-def _get_facebook_details(sender, instance, created, **kwargs):
-    """
-    signal to handle getting the projects facebook details
-    """
-    #if created is True and kwargs.get('update_fields', None) is None:
-    if kwargs.get('update_fields', None) is None:
-        service = FacebookProjectDetailService(project=instance)
-        service.process()
-
-@receiver(get_facebook_feed)
-def _get_facebook_feed(sender, instance, user, created, **kwargs):
-    """
-    signal to handle getting the projects feeds from facebook
-    """
-    if kwargs.get('update_fields', None) is None:
-        service = FacebookFeedGeneratorService(user=user,
-                                         project=instance)
-        service.process()
 
 
 def ensure_project_has_atleast_one_playlist(sender, instance, **kwargs):

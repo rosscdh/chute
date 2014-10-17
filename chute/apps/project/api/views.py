@@ -7,7 +7,8 @@ from ..models import (Project,
                       FeedItem,
                       ProjectCollaborator)
 from ..signals import (get_facebook_details,
-                       get_facebook_feed)
+                       get_facebook_feed,
+                       populate_playlist_with_feed,)
 from .serializers import (ProjectSerializer,
                           FeedItemSerializer,)
 
@@ -32,6 +33,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         get_facebook_details.send(sender=self, instance=obj, created=True)
         get_facebook_feed.send(sender=self, instance=obj, user=self.request.user, created=True)
+        populate_playlist_with_feed.send(sender=self, playlist=obj.playlist_set.all().first(), project=obj)
 
         return super(ProjectViewSet, self).post_save(obj, created=created)
 

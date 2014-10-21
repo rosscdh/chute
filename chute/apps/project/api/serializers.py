@@ -13,8 +13,8 @@ def _get_date_now():
 
 
 class CustomDateTimeField(serializers.DateTimeField):
-    def from_native(self, value):
-        return datetime.datetime(value).isoformat('T')
+    # def from_native(self, value):
+    #     return datetime.datetime(value).isoformat('T')
 
     def to_native(self, value):
         if value is None:
@@ -23,14 +23,18 @@ class CustomDateTimeField(serializers.DateTimeField):
 
 
 class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
-    name = serializers.Field(source='name')
+    pk = serializers.Field(source='pk')
+    name = serializers.CharField(required=False)
+    message = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
     picture = serializers.Field(source='data.picture')
     updated_at = CustomDateTimeField(source='data.updated_time')
+    absolute_url = serializers.Field(source='get_absolute_url')
 
     class Meta:
         model = FeedItem
         lookup_field = 'pk'
-        exclude = ('data',)
+        exclude = ('data', 'project',)
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):

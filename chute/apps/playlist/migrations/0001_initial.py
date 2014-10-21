@@ -8,7 +8,6 @@ import jsonfield.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('project', '0003_feeditem_facebook_crc'),
     ]
 
     operations = [
@@ -19,8 +18,6 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(blank=True)),
                 ('name', models.CharField(max_length=255)),
                 ('data', jsonfield.fields.JSONField(default={})),
-                ('feed', models.ManyToManyField(to='project.FeedItem')),
-                ('project', models.ForeignKey(to='project.Project')),
             ],
             options={
             },

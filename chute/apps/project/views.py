@@ -7,10 +7,14 @@ from django.views.generic.edit import FormMixin
 
 from rest_framework.renderers import JSONRenderer
 
-from .api.serializers import (ProjectSerializer,)
 from chute.apps.playlist.api.serializers import (PlaylistSerializer,)
+
+from .api.serializers import (ProjectSerializer,)
+
 from .forms import ProjectForm
-from .models import Project
+
+from .models import (Project,
+                     FeedItem)
 
 
 class ProjectListView(ListView,
@@ -53,3 +57,21 @@ class ProjectDetailView(DetailView):
         return JSONRenderer().render(PlaylistSerializer(self.object.playlist_set.all(),
                                                         many=True,
                                                         context={'request': self.request}).data)
+
+
+class FeedItemDetail(DetailView):
+    template_name = 'clean-blog/post.html'
+    model = FeedItem
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(FeedItemDetail, self).get_context_data(**kwargs)
+
+        kwargs.update(self.object.data)
+
+        kwargs.update({
+            'name': self.object.name,
+            'message': self.object.message,
+            'description': self.object.description,
+            'project': self.object.project.data
+        })
+        return kwargs

@@ -1,4 +1,4 @@
-{% load humanize staticfiles %}<!DOCTYPE html>
+{% load humanize staticfiles compressed %}<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,13 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - Sample Post</title>
+    <title>{{ object.name|default:name }} - {{ project.name }}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://localhost:8000{% static "clean_blog/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "clean_blog/css/bootstrap.min.css" %}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="http://localhost:8000{% static "clean_blog/css/clean-blog.min.css" %}" rel="stylesheet">
+    <link href="{% static "clean_blog/css/clean-blog.css" %}" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@
 </head>
 
 <body>
-
+    {% csrf_token %}
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div class="container-fluid">
@@ -62,21 +62,21 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>{{ name }}</h1>
-                        <h2 class="subheading">{{ message }}</h2>
+                        <h1 data-name="name" contenteditable="true">{{ object.name|default:name|default:''|safe }}</h1>
+                        <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message|default:message|default:''|safe }}</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <small class="meta">Posted on {{ updated_time|default:created_time|naturalday }}</small>
+        <small class="meta">Posted on {{ object.updated_time|default:updated_time|default:created_time|naturalday }}</small>
     </header>
 
     <!-- Post Content -->
     <article>
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    {{ description }}
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 editable" data-name="description" contenteditable="true">
+                    {{ object.description|default:description|default:''|safe }}
                 </div>
             </div>
         </div>
@@ -90,30 +90,6 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
                     </ul>
                     <p class="copyright text-muted">Copyright &copy; {{ project.name }} 2014</p>
                 </div>
@@ -122,13 +98,66 @@
     </footer>
 
     <!-- jQuery -->
-    <script src="http://localhost:8000{% static "clean_blog/js/jquery.min.js" %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="http://localhost:8000{% static "clean_blog/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "clean_blog/js/bootstrap.min.js" %}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="http://localhost:8000{% static "clean_blog/js/clean-blog.min.js" %}"></script>
+    <script src="{% static "clean_blog/js/clean-blog.min.js" %}"></script>
+
+    {% compressed_js 'ckeditor' %}
+    <script>
+    'use strict';
+    $(document).ready(function( ) {
+        window.timer_event = null;
+
+        CKEDITOR.on( 'instanceCreated', function( event ) {
+            var editor = event.editor,
+                element = editor.element;
+
+                // stop bad encoding
+                editor.config.htmlEncodeOutput = false;
+                editor.config.entities =  false;
+                editor.config.basicEntities = false;
+
+            // handle change event
+            editor.on('change', function (e) {
+                editor.config.htmlEncodeOutput = false;
+                window.send_html = editor.getData();
+                console.log(window.send_html)
+                window.send_data = $(e.sender.element.$).data();
+
+                if ( window.timer_event !== null ) {
+                    window.clearTimeout(window.timer_event);
+                }
+                window.timer_event = window.setTimeout(function() {
+                    var data = {};
+                    // set the manual assigned values
+                    data[window.send_data.name] = window.send_html;
+
+                    $.ajax({
+                      "type": 'PATCH',
+                      "url": "{% url 'feeditem-detail' pk=object.pk %}",
+                      "data": JSON.stringify(data),
+                      "dataType": 'json',
+                      "contentType": 'application/json',
+                      "beforeSend": function (jqXHR, settings) {
+                          // Pull the token out of the DOM.
+                          jqXHR.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]:first').val());
+                      },
+                      "success": function ( data ) {
+                            console.log(data)
+                      }
+                    });
+
+                }, 300)
+
+            });
+        });
+
+    });
+    </script>
 
 </body>
 

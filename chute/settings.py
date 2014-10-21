@@ -158,6 +158,7 @@ PIPELINE_CSS = {
     'base': {
         'source_filenames': (
             'bootstrap/css/bootstrap.min.css',
+            'css/sidebar.css',
         ),
         'output_filename': 'js/dist/base.css',
         'extra_context': {
@@ -179,6 +180,14 @@ PIPELINE_JS = {
             'js/showdown-0.3.1.min.js',
         ),
         'output_filename': 'js/dist/base.js'
+    },
+    'ckeditor': {
+        'source_filenames': (
+            # helpers
+            'ckeditor/ckeditor.js',
+            'ckeditor/adapters/jquery.js',
+        ),
+        'output_filename': 'js/dist/ck.js'
     },
     'react': {
         'source_filenames': (
@@ -210,6 +219,7 @@ PIPELINE_JS = {
     },
     'project': {
         'source_filenames': (
+            # helpers
             # react components
             'js/project_collaborators.jsx',
             'js/project_comments.jsx',
@@ -218,28 +228,6 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/dist/project.js',
     },
-    'project_chronicle': {
-        'source_filenames': (
-            'js/project_collaborators.jsx',
-            'js/project_comments.jsx',
-            'js/project_chronicle.jsx',
-        ),
-        'output_filename': 'js/dist/chronicle.js',
-    },
-    'uploader': {
-        'source_filenames': (
-            'uploader/js/evaporate-0.0.2.js',
-            'js/videouploader.jsx',
-        ),
-        'output_filename': 'js/dist/uploader.js',
-    },
-    'published': {
-        'source_filenames': (
-            'js/publish_detail.jsx',
-        ),
-        'output_filename': 'js/dist/published.js',
-    },
-    
 }
 
 PIPELINE_COMPILERS = [
@@ -260,6 +248,29 @@ PAYMENTS_PLANS = {
         "currency": "usd",
         "interval": "month"
     }
+}
+
+# Rest framework
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default.
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.UnicodeJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication', # Here Temporarily for dev
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # only use this in dev
+        # 'toolkit.apps.api.permissions.ApiObjectPermission',
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+    ),
+    'PAGINATE_BY': 25,
 }
 
 try:

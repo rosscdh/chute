@@ -4,10 +4,13 @@ from django.contrib.auth.decorators import login_required
 
 from .views import (ProjectListView,
                     ProjectCreateView,
-                    ProjectDetailView,)
+                    ProjectDetailView,
+                    FeedItemDetail,)
 
 
 urlpatterns = patterns('',
+    url(r'^(?P<slug>[\w\d-]+)/feed/(?P<pk>[\d]+)/$', login_required(FeedItemDetail.as_view()), name='feeditem_detail'),
+
     url(r'^create/$', login_required(ProjectCreateView.as_view()), name='create'),
     url(r'^(?P<slug>[\w-]+)/$', login_required(ProjectDetailView.as_view()), name='detail'),
     url(r'^$', login_required(ProjectListView.as_view()), name='list'),

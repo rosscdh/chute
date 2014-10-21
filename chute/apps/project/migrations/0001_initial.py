@@ -2,10 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import chute.apps.project.mixins
 import jsonfield.fields
 from django.conf import settings
-import uuidfield.fields
 
 
 class Migration(migrations.Migration):
@@ -16,6 +14,21 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.CreateModel(
+            name='FeedItem',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('facebook_crc', models.CharField(max_length=255)),
+                ('name', models.CharField(max_length=255, null=True, blank=True)),
+                ('message', models.TextField(null=True, blank=True)),
+                ('description', models.TextField(null=True, blank=True)),
+                ('updated_time', models.DateTimeField(auto_now=True, auto_now_add=True)),
+                ('data', jsonfield.fields.JSONField(default={})),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
         migrations.CreateModel(
             name='Project',
             fields=[
@@ -48,6 +61,12 @@ class Migration(migrations.Migration):
             model_name='project',
             name='collaborators',
             field=models.ManyToManyField(to=settings.AUTH_USER_MODEL, through='project.ProjectCollaborator'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='feeditem',
+            name='project',
+            field=models.ForeignKey(to='project.Project'),
             preserve_default=True,
         ),
     ]

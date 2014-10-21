@@ -51,8 +51,8 @@ class CollaboratorEndpoint(generics.ListCreateAPIView,
         status = http_status.HTTP_201_CREATED if collaborator_is_new is True else http_status.HTTP_202_ACCEPTED
         return Response(collaborator_serializer.data, status=status, headers=headers)
 
-    def retrieve(self, request, **kwargs):
-        import pdb;pdb.set_trace()
+    # def retrieve(self, request, **kwargs):
+    #     import pdb;pdb.set_trace()
 
     def destroy(self, request, **kwargs):
         project = self.get_object()

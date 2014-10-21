@@ -1,5 +1,6 @@
 Django
 djangorestframework==2.4.3
+django-filter
 
 django-parsley==0.5
 django-crispy-forms==1.4.0

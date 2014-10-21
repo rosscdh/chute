@@ -5,7 +5,9 @@ from rest_framework import routers
 
 from chute.apps.project.api.views import (ProjectViewSet,
                                           FeedItemViewSet,)
-from chute.apps.playlist.api.views import (PlaylistViewSet,)
+from chute.apps.playlist.api.views import (PlaylistViewSet,
+                                           ProjectPlaylistEndpoint,
+                                           ProjectPlaylistDestroyEndpoint,)
 # from chute.apps.project.api.views import (S3SignatureEndpoint,
 #                                              ProjectUploadVideoEndpoint,
 #                                              VideoCommentsEndpoint,
@@ -25,5 +27,8 @@ router.register(r'playlist', PlaylistViewSet)
 
 
 urlpatterns = patterns('',
+    url(r'^projects/(?P<project_slug>[\d\w-]+)/playlist/(?P<pk>[\d\w-]+)/$', ProjectPlaylistEndpoint.as_view(), name='project_playlist_feeditem'),
+    url(r'^projects/(?P<project_slug>[\d\w-]+)/playlist/(?P<playlist_pk>[\d\w-]+)/(?P<pk>[\d\w-]+)/$', ProjectPlaylistDestroyEndpoint.as_view(), name='project_playlist_feeditem'),
+
     url(r'^projects/(?P<slug>[\d\w-]+)/collaborators/((?P<email>.*)/)?$', CollaboratorEndpoint.as_view(), name='project_collaborators'),
 ) + router.urls

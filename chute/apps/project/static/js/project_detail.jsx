@@ -4,18 +4,108 @@
 * Project detail controls
 *
 */
+var AddFeedItemBtn = React.createClass({
+    handleClick: function ( e ) {
+        var node = this.props.node;
+        var playlist = this.props.current_playlist;
+        var form_data = {
+                'feeditem': node.pk
+            },
+            route_params = {
+                'pk': playlist.pk,
+            };
+
+        ProjectPlaylistFeedResource.create( form_data, route_params ).defer().done(function ( data ) {
+
+            console.log(data);
+
+        });
+    },
+    render: function () {
+        return (<button onClick={this.handleClick} className="btn btn-success btn-xs">
+            <span className="glyphicon glyphicon-plus"></span>
+        </button>);
+    }
+});
+
+var RemoveFeedItemBtn = React.createClass({
+    handleClick: function ( e ) {
+        var node = this.props.node;
+        var playlist = this.props.current_playlist;
+        var route_params = {
+                'pk': playlist.pk,
+            };
+
+        ProjectPlaylistFeedResource.destroy( node.pk, route_params ).defer().done(function ( data ) {
+
+            console.log(data);
+
+        });
+    },
+    render: function () {
+        return (<button onClick={this.handleClick} className="btn btn-xs">
+            <span className="glyphicon glyphicon-remove"></span>
+        </button>);
+    }
+});
+
+
 // title view
 var FeedNodeView = React.createClass({
+    handleClick: function ( node, event ) {
+        //event.preventDefault();
+        var iframe = $('iframe#feed-item-detail');
+        iframe.attr('src', node.absolute_url)
+        iframe.height(iframe.contents().height());
+    },
+    handleDragStart: function ( e ) {
+        console.log(e);
+    },
+    handleDragOver: function ( e ) {
+        console.log(e);
+    },
+    handleDrop: function ( e ) {
+        console.log(e);
+    },
     render: function () {
         var node = this.props.node;
         var updated_at = moment(node.updated_at).fromNow();
+        var is_in_playlist = this.props.is_in_playlist || false;
+        var show_button = this.props.show_add_btn || false;
+        var add_btn = null;
+        var remove_btn = null;
 
-        console.log(node)
-        return (<a href="#" className=" list-group-item">
-                <img src={node.picture} alt={node.name} className="img-rounded col-xs-5 pull-right" />
+        if ( is_in_playlist === false && show_button === true ) {
+            add_btn = <AddFeedItemBtn current_playlist={this.props.current_playlist}
+                                      node={node} />
+        }
 
-                <h4 className="list-group-item-heading">{node.name}</h4>
-                <p className="list-group-item-text">{updated_at}</p>
+        if ( is_in_playlist === true ) {
+            remove_btn = <RemoveFeedItemBtn current_playlist={this.props.current_playlist}
+                                            node={node} />
+
+        }
+
+        var pictureStyle = {
+            'background-image': 'url('+ node.picture +')',
+        };
+
+        return (<a href="javascript:;"
+                   onClick={this.handleClick.bind( this, node )}
+                   onDragStart={this.handleDragStart}
+                   onDragOver={this.handleDragOver}
+                   onDrop={this.handleDrop}
+                   style={pictureStyle}
+                   className="feeditem_list_picture list-group-item">
+
+                <div className="col-xs-8">
+                    <h4 className="list-group-item-heading">{node.name}</h4>
+                    <p className="list-group-item-text">{updated_at}</p>
+                </div>
+                <div className="col-xs-1">
+                    {add_btn}
+                    {remove_btn}
+                </div>
             </a>);
     }
 });
@@ -24,9 +114,21 @@ var FeedNodeView = React.createClass({
 // base view
 var FeedView = React.createClass({
     getInitialState: function () {
+        var current_playlist = Playlist[0] || {'feed': []};
         return {
+            'playlists': Playlist,
+            'current_playlist': current_playlist,
+            'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
             'feed': Project.feed
         }
+    },
+    playlistFeedItemPks: function ( playlist ) {
+        return playlist.feed.map( function( node ) {
+            return node.pk
+        });
+    },
+    feedIsInPlaylist: function ( feed_item ) {
+        return this.state.current_playlist_pks.indexOf( feed_item.pk ) >= 0;
     },
     onMessage: function ( messages ) {
         var self = this;
@@ -39,8 +141,15 @@ var FeedView = React.createClass({
         // });
     },
     render: function () {
+        var self = this;
+
         var feedNodes = this.state.feed.map( function( node ) {
-            return <FeedNodeView node={node} />;
+            var show_add_btn = true;
+            var is_in_playlist = self.feedIsInPlaylist( node );
+            return <FeedNodeView current_playlist={self.state.current_playlist}
+                                 show_add_btn={show_add_btn}
+                                 is_in_playlist={is_in_playlist}
+                                 node={node} />;
         });
 
         return (<span>
@@ -86,8 +195,13 @@ var PlaylistView = React.createClass({
     render: function () {
         var self = this;
 
-        var feedNodes = this.state.feed.map( function( node ) {
-            return <FeedNodeView node={node} />;
+        var feedNodes = this.state.feed.map( function ( node ) {
+            var show_add_btn = false;
+            var is_in_playlist = true;
+            return <FeedNodeView current_playlist={self.state.current_playlist}
+                                 show_add_btn={show_add_btn}
+                                 is_in_playlist={is_in_playlist}
+                                 node={node} />;
         });
 
         var playlistNodes = this.state.playlists.map( function ( playlist ) {
@@ -114,7 +228,7 @@ var PlaylistView = React.createClass({
 
             </div>
           </nav>
-          <div className="list-group">
+          <div className="draggable list-group">
                 {feedNodes}
           </div>
         </span>);

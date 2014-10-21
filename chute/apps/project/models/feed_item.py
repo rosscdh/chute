@@ -4,17 +4,28 @@ from django.core.urlresolvers import reverse
 
 from jsonfield import JSONField
 
+from chute.utils import get_namedtuple_choices
+
 import hashlib
+
+CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
+    ('basic', 'basic', 'Basic Template'),
+))
 
 
 class FeedItem(models.Model):
+    TEMPLATES = CORE_TEMPLATES
+
     project = models.ForeignKey('project.Project')
     facebook_crc = models.CharField(max_length=255)
 
     name = models.CharField(null=True, blank=True, max_length=255)
     message = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    updated_time = models.DateTimeField(auto_now=True, auto_now_add=True)
+    wait_for = models.IntegerField(default=20)
+    template = models.CharField(choices=TEMPLATES.get_choices(), default=TEMPLATES.basic, max_length=64)
+
+    updated_time = models.DateTimeField(null=True, auto_now=True, auto_now_add=True)
 
     data = JSONField(default={})
 

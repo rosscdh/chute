@@ -9,7 +9,7 @@ from rest_framework.renderers import JSONRenderer
 
 from chute.apps.playlist.api.serializers import (PlaylistSerializer,)
 
-from .api.serializers import (ProjectSerializer,)
+from .api.serializers import (ProjectSerializer, ProjectMiniSerializer, FeedItemSerializer,)
 
 from .forms import ProjectForm
 
@@ -59,6 +59,23 @@ class ProjectDetailView(DetailView):
                                                         context={'request': self.request}).data)
 
 
+class ProjectFeedView(DetailView):
+    template_name = 'clean-blog/post.html'
+    model = Project
+
+    @property
+    def project_json(self):
+        return JSONRenderer().render(ProjectMiniSerializer(self.object,
+                                     context={'request': self.request}).data)
+
+    @property
+    def feed_json(self):
+        return JSONRenderer().render(FeedItemSerializer(self.object.feed(),
+                                                        many=True,
+                                                        context={'request': self.request}).data)
+
+
+
 class FeedItemDetail(DetailView):
     template_name = 'clean-blog/post.html'
     model = FeedItem
@@ -75,3 +92,15 @@ class FeedItemDetail(DetailView):
             'project': self.object.project.data
         })
         return kwargs
+
+    @property
+    def project_json(self):
+        return JSONRenderer().render(ProjectMiniSerializer(self.object.project,
+                                     context={'request': self.request}).data)
+
+    @property
+    def feed_json(self):
+        return JSONRenderer().render(FeedItemSerializer((self.object,),
+                                                        many=True,
+                                                        context={'request': self.request}).data)
+

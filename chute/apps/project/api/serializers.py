@@ -65,3 +65,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_collaborators(self, obj):
         return CollaboratorSerializer(obj.projectcollaborator_set.all(), many=True).data
+
+class ProjectMiniSerializer(ProjectSerializer):
+    class Meta(ProjectSerializer.Meta):
+        exclude = ('data', 'feed',)

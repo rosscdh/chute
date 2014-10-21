@@ -1,4 +1,4 @@
-{% load humanize staticfiles compressed %}<!DOCTYPE html>
+{% load humanize staticfiles templatetag_handlebars compressed %}<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ object.name|default:name }} - {{ project.name }}</title>
+    <title>{{ project.name }}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static "clean_blog/css/bootstrap.min.css" %}" rel="stylesheet">
@@ -55,20 +55,24 @@
         <!-- /.container -->
     </nav>
 
-    <!-- Page Header -->
+    <!-- Main Content Page -->
+    <div id="content"></div>
+
+    <!-- Page Templates -->
+    {% tplhandlebars "tpl-layout-basic" %}
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('{{ picture|default:project.cover.source }}');">
+    <header class="intro-header" style="background-image: url('{{ object.picture }}');">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1 data-name="name" contenteditable="true">{{ object.name|default:name|default:''|safe }}</h1>
-                        <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message|default:message|default:''|safe }}</h2>
+                        <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
+                        <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <small class="meta">Posted on {{ object.updated_time|default:updated_time|default:created_time|naturalday }}</small>
+        <!-- <small class="meta">Posted on {{ object.updated_time }}</small> -->
     </header>
 
     <!-- Post Content -->
@@ -76,11 +80,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 editable" data-name="description" contenteditable="true">
-                    {{ object.description|default:description|default:''|safe }}
+                    {{ object.description }}
                 </div>
             </div>
         </div>
     </article>
+    {% endtplhandlebars %}
 
     <hr>
 
@@ -99,6 +104,8 @@
 
     <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "clean_blog/js/bootstrap.min.js" %}"></script>
@@ -107,10 +114,25 @@
     <script src="{% static "clean_blog/js/clean-blog.min.js" %}"></script>
 
     {% compressed_js 'ckeditor' %}
+    {% compressed_js 'chute' %}
+
     <script>
     'use strict';
     $(document).ready(function( ) {
-        window.timer_event = null;
+
+        var generic_objects = {
+            'project': {{ view.project_json|safe }},
+            'feed': {{ view.feed_json|safe }},
+        };
+
+
+        $( "body" ).chute_controller({
+            'feed': generic_objects.feed,
+            'project': generic_objects.project,
+            'templates': {
+                'basic': $("script#tpl-layout-basic").html()
+            },
+        });
 
         CKEDITOR.on( 'instanceCreated', function( event ) {
             var editor = event.editor,
@@ -125,7 +147,7 @@
             editor.on('change', function (e) {
                 editor.config.htmlEncodeOutput = false;
                 window.send_html = editor.getData();
-                console.log(window.send_html)
+                //console.log(window.send_html)
                 window.send_data = $(e.sender.element.$).data();
 
                 if ( window.timer_event !== null ) {
@@ -147,7 +169,7 @@
                           jqXHR.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]:first').val());
                       },
                       "success": function ( data ) {
-                            console.log(data)
+                            //console.log(data)
                       }
                     });
 
@@ -158,7 +180,6 @@
 
     });
     </script>
-
 </body>
 
 </html>

@@ -69,6 +69,7 @@ HELPER_APPS = (
 
     'parsley',
     'crispy_forms',
+    'templatetag_handlebars',
 
     # Asset pipeline
     'pipeline',
@@ -194,7 +195,7 @@ PIPELINE_JS = {
             'js/reactjs/0.11.1/react-with-addons.js',
             'js/common.jsx',
             'js/messages.jsx',
-            'js/videoplayer.jsx',
+            #'js/videoplayer.jsx',
         ),
         'output_filename': 'js/dist/react.js'
     },
@@ -205,8 +206,8 @@ PIPELINE_JS = {
             'js/resources/user_resource.js',
             'js/resources/project_resource.js',
             'js/resources/collaborator_resource.js',
-            'js/resources/video_resource.js',
-            'js/resources/comment_resource.js',
+            # 'js/resources/video_resource.js',
+            # 'js/resources/comment_resource.js',
         ),
         'output_filename': 'js/dist/resources.js'
     },
@@ -222,12 +223,19 @@ PIPELINE_JS = {
             # helpers
             # react components
             'js/project_collaborators.jsx',
-            'js/project_comments.jsx',
-            'js/project_video.jsx',
+            # 'js/project_comments.jsx',
+            # 'js/project_video.jsx',
             'js/project_detail.jsx',
         ),
         'output_filename': 'js/dist/project.js',
     },
+    'chute': {
+        'source_filenames': (
+            'js/chute.jquery.js',
+        ),
+        'output_filename': 'js/dist/chute.js',
+    },
+    
 }
 
 PIPELINE_COMPILERS = [

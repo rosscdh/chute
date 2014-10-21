@@ -29,6 +29,9 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('project:detail', kwargs={'slug': self.slug})
 
+    def feed(self):
+        return self.feeditem_set.all()
+
 #
 # Signals
 #

@@ -6,11 +6,13 @@ from .views import (ProjectListView,
                     ProjectCreateView,
                     ProjectDetailView,
                     ProjectFeedView,
+                    ProjectPlaylistFeedView,
                     FeedItemDetail,)
 
 
 urlpatterns = patterns('',
     url(r'^(?P<slug>[\w\d-]+)/feed/$', login_required(ProjectFeedView.as_view()), name='project_feed'),
+    url(r'^(?P<slug>[\w\d-]+)/playlist/(?P<playlist_pk>[\d]+)/feed/$', login_required(ProjectPlaylistFeedView.as_view()), name='project_playlist_feed'),
     url(r'^(?P<slug>[\w\d-]+)/feed/(?P<pk>[\d]+)/$', login_required(FeedItemDetail.as_view()), name='feeditem_detail'),
 
     url(r'^create/$', login_required(ProjectCreateView.as_view()), name='create'),

@@ -107,6 +107,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/js-signals/1.0.0/js-signals.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.min.js"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "clean_blog/js/bootstrap.min.js" %}"></script>
 
@@ -133,6 +136,26 @@
                 'basic': $("script#tpl-layout-basic").html()
             },
         });
+        window.chute = $( "body" ).data( 'chute-chute_controller' );
+
+
+  
+  //handle hash changes
+  function handleChanges(newHash, oldHash){
+    if ( newHash !== NaN && newHash !== '' ) {
+        console.log(newHash)
+        var pk = parseInt( newHash );
+        window.chute.goto( pk );
+    }
+  }
+
+  hasher.changed.add(handleChanges); //add hash change listener
+  hasher.initialized.add(handleChanges); //add initialized listener (to grab initial value in case it is already set)
+  hasher.init(); //initialize hasher (start listening for history changes)
+
+  //hasher.setHash('foo'); //change hash value (generates new history record)
+  
+
 
         CKEDITOR.on( 'instanceCreated', function( event ) {
             var editor = event.editor,

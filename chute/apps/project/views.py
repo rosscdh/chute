@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.shortcuts import get_object_or_404
 from django.views.generic import (CreateView,
                                   DetailView,
                                   ListView,)
@@ -60,6 +61,9 @@ class ProjectDetailView(DetailView):
 
 
 class ProjectFeedView(DetailView):
+    """
+    Generic page view of the projects feed
+    """
     template_name = 'clean-blog/post.html'
     model = Project
 
@@ -70,28 +74,35 @@ class ProjectFeedView(DetailView):
 
     @property
     def feed_json(self):
+        """
+        Note the project.feed() call which generates an appropriate set of
+        """
         return JSONRenderer().render(FeedItemSerializer(self.object.feed(),
                                                         many=True,
                                                         context={'request': self.request}).data)
 
 
+class ProjectPlaylistFeedView(ProjectFeedView):
+    @property
+    def feed_json(self):
+        """
+        Note the project.feed() call which generates an appropriate set of
+        """
+        playlist = get_object_or_404(self.object.playlist_set, pk=self.kwargs.get('playlist_pk'))
+        # return JSONRenderer().render(FeedItemSerializer(self.object.feed(playlists=(playlist,)),
+        #                                                 many=True,
+        #                                                 context={'request': self.request}).data)
+        return JSONRenderer().render(FeedItemSerializer(playlist.feed.all(),
+                                                        many=True,
+                                                        context={'request': self.request}).data)
+
 
 class FeedItemDetail(DetailView):
+    """
+    individual feed item used for the primary interface selection display
+    """
     template_name = 'clean-blog/post.html'
     model = FeedItem
-
-    def get_context_data(self, **kwargs):
-        kwargs = super(FeedItemDetail, self).get_context_data(**kwargs)
-
-        kwargs.update(self.object.data)
-
-        kwargs.update({
-            'name': self.object.name,
-            'message': self.object.message,
-            'description': self.object.description,
-            'project': self.object.project.data
-        })
-        return kwargs
 
     @property
     def project_json(self):

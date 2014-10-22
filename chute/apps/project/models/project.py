@@ -8,6 +8,8 @@ from ..signals import (ensure_project_slug,
 
 from jsonfield import JSONField
 
+import itertools
+
 
 class Project(models.Model):
     slug = models.SlugField(blank=True)  # blank to allow slug to be auto-generated
@@ -29,8 +31,12 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('project:detail', kwargs={'slug': self.slug})
 
-    def feed(self):
-        return self.feeditem_set.all()
+    def feed(self, playlists=()):
+        if not playlists:
+            yield self.feeditem_set.all()
+        else:
+            for playlist in self.playlist_set.filter(pk__in=[p.pk for p in playlists]):
+                yield playlist.feed.all()
 
 #
 # Signals

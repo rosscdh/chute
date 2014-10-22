@@ -93,47 +93,67 @@ $(function() {
         };
             target.html( compiled( context ) );
         },
-        next: function () {
+        goto: function ( pk ) {
             var self = this;
-            var next_item = null;
 
-            this.log('Loading next') ;
+            this.log('Loading goto: ' + pk) ;
 
-            $.each(this.options.feed, function ( i, feed_item ) {
+            $.each(this.options.feed, function ( index, feed_item ) {
+                if ( feed_item.pk === pk ) {
 
-                self.log('Check for current and get next: ' + i +'');
-                self.log('Current iteration PKs: feed_item:'+ feed_item.pk +' current_feeditem: '+ self.current_feeditem.pk);
-
-                if ( feed_item.pk === self.current_feeditem.pk ) {
-                    var next = parseInt(i + 1);
-
-                    try {
-                       next_item = self.options.feed[ next ];
-                       console.log('i+1: '+ next)
-                       self.log('next_item set to: ' + next_item.pk);
-                    }
-                    catch (e) {
-                       // error occurred assume index error for now and set to 0
-                       // for loop
-                       next_item = self.options.feed[0];
-                       self.log('Error: next_item set to index 0: ' + next_item + ' error: ' + e.message);
-                    }
-
-                    self.current_feeditem = next_item;
-
-                    self.template = next_item.template;
-                    self.log('Template set to: ' + next_item.template);
-
-                    self.wait_for = next_item.wait_for;
-                    self.log('Wait_for set to: ' + next_item.wait_for);
-
-                    self.render( self.options.templates[self.template] );
-                    self._timer();
+                    self.next_item_by_index( index );
 
                     return false;
                 }
             });
 
+        },
+        next: function () {
+            var self = this;
+
+            this.log('Loading next') ;
+
+            $.each(this.options.feed, function ( index, feed_item ) {
+
+                self.log('Check for current and get next: ' + index +'');
+                self.log('Current iteration PKs: feed_item:'+ feed_item.pk +' current_feeditem: '+ self.current_feeditem.pk);
+
+                if ( feed_item.pk === self.current_feeditem.pk ) {
+                    var next_pk = parseInt( index + 1 );
+
+                    self.next_item_by_index( next_pk );
+
+                    return false;
+                }
+            });
+        },
+        next_item_by_index: function ( index ) {
+            var self = this;
+            var next_item = null;
+
+            try {
+               next_item = self.options.feed[ index ];
+               self.log('i+1: '+ index)
+               self.log('next_item set to: ' + next_item.pk);
+            }
+            catch (e) {
+               // error occurred assume index error for now and set to 0
+               // for loop
+               next_item = self.options.feed[0];
+               self.log('Error: next_item set to index 0: ' + next_item + ' error: ' + e.message);
+            }
+
+            var self = this;
+            self.current_feeditem = next_item;
+
+            self.template = next_item.template;
+            self.log('Template set to: ' + next_item.template);
+
+            self.wait_for = next_item.wait_for;
+            self.log('Wait_for set to: ' + next_item.wait_for);
+
+            self.render( self.options.templates[self.template] );
+            self._timer();
         }
     });
 });

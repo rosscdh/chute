@@ -17,6 +17,8 @@ CORE_POST_TYPES = get_namedtuple_choices('TEMPLATES', (
 
 CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
     (1, 'basic', 'Basic Template'),
+    (2, 'image_left', 'Image Left'),
+    
 ))
 
 

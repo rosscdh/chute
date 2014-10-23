@@ -103,7 +103,7 @@ class FacebookFeedGeneratorService(object):
         base = (150 / sum(total))
         return  (150 / base)
 
-    def process(self, **kwargs):
+    def process(self, page_limit=3, **kwargs):
         self.graph = facebook.GraphAPI(self.token)
 
         for project in self.projects:
@@ -113,7 +113,7 @@ class FacebookFeedGeneratorService(object):
             except ValueError:
                 feed = {}
 
-            for item in _get_pages(feed, limit=3):
+            for item in _get_pages(feed, limit=page_limit):
     
                 if item.get('type') not in ACCEPTED_POST_TYPES:
                     logger.info('FeedItem.post_type was not an accepted type: %s (%s) should be in: %s' % (feed_item.post_type, item.get('type'), ACCEPTED_POST_TYPES))

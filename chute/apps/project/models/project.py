@@ -33,10 +33,11 @@ class Project(models.Model):
 
     def feed(self, playlists=()):
         if not playlists:
-            yield self.feeditem_set.all()
+            return self.feeditem_set.all()
+
         else:
             for playlist in self.playlist_set.filter(pk__in=[p.pk for p in playlists]):
-                yield playlist.feed.all()
+                return playlist.feed.all()
 
 #
 # Signals

@@ -232,6 +232,7 @@ PIPELINE_JS = {
     'chute': {
         'source_filenames': (
             'js/chute.jquery.js',
+            'js/foggy-1.1.1.js',
         ),
         'output_filename': 'js/dist/chute.js',
     },

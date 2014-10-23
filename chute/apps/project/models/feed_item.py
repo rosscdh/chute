@@ -16,7 +16,7 @@ CORE_POST_TYPES = get_namedtuple_choices('TEMPLATES', (
 ))
 
 CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
-    ('basic', 'basic', 'Basic Template'),
+    (1, 'basic', 'Basic Template'),
 ))
 
 
@@ -30,10 +30,11 @@ class FeedItem(models.Model):
     name = models.CharField(null=True, blank=True, max_length=255)
     message = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    post_type = models.IntegerField(choices=POST_TYPES.get_choices())
+    post_type = models.IntegerField(choices=POST_TYPES.get_choices(), null=True)
 
     wait_for = models.IntegerField(default=20)
-    template = models.CharField(choices=TEMPLATES.get_choices(), default=TEMPLATES.basic, max_length=64)
+    template = models.IntegerField(choices=TEMPLATES.get_choices(),
+                                default=TEMPLATES.basic)
 
     updated_time = models.DateTimeField(null=True, auto_now=True, auto_now_add=True)
 
@@ -50,6 +51,11 @@ class FeedItem(models.Model):
     @property
     def project_name(self):
         return self.data.get('from', {}).get('name')
+
+    @property
+    def template_name(self):
+        return self.TEMPLATES.get_name_by_value(self.template)
+
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name,

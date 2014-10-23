@@ -30,6 +30,7 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
     picture = serializers.Field(source='data.picture')
     updated_at = CustomDateTimeField(source='data.updated_time')
     absolute_url = serializers.Field(source='get_absolute_url')
+    template_name = serializers.Field(source='template_name')
 
     class Meta:
         model = FeedItem

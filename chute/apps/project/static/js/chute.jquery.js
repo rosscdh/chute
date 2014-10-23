@@ -43,7 +43,7 @@ $(function() {
 
             self.current_feeditem = this.options.feed[0];
             self.wait_for = self.current_feeditem.wait_for;
-            self.template = self.current_feeditem.template;
+            self.template_name = self.current_feeditem.template_name;
 
             this._listen();
             this._begin();
@@ -78,7 +78,7 @@ $(function() {
             var self = this;
 
             // setup window setTime and window.clearTimer handler
-            var source = this.options.templates[self.template];
+            var source = this.options.templates[self.template_name];
             
             self.render( source );
             self._timer();
@@ -146,13 +146,13 @@ $(function() {
             var self = this;
             self.current_feeditem = next_item;
 
-            self.template = next_item.template;
-            self.log('Template set to: ' + next_item.template);
+            self.template_name = next_item.template_name;
+            self.log('Template set to: ' + next_item.template_name);
 
             self.wait_for = next_item.wait_for;
             self.log('Wait_for set to: ' + next_item.wait_for);
 
-            self.render( self.options.templates[self.template] );
+            self.render( self.options.templates[self.template_name] );
             self._timer();
         }
     });

@@ -6,6 +6,8 @@ import facebook
 import requests
 logger = logging.getLogger('django.request')
 
+ACCEPTED_POST_TYPES = ['link', 'status', 'photo', 'video']
+
 
 def _get_pages(data, limit=None):
     counter = 0
@@ -61,9 +63,33 @@ class FacebookFeedGeneratorService(object):
         return token
 
     def __init__(self, user, **kwargs):
+        from .models import FeedItem
+        self.feed_item_class = FeedItem
         self.user = user
         self.project = kwargs.get('project', None)
         self.graph = None
+
+    def template_from_post_type(self, item):
+        """
+        Derive template from the post type
+        """
+        TEMPLATES = self.feed_item_class.TEMPLATES
+        default_template = TEMPLATES.basic
+        template_types = {
+            'link': default_template,
+            'status': default_template,
+            'photo': default_template,
+            'video': default_template,
+        }
+        return template_types.get(item.get('type', 'basic'), default_template)
+
+
+    def post_type_from_item(self, item):
+        """
+        Default to status post_type
+        """
+        post_type = self.feed_item_class.POST_TYPES.get_value_by_name( item.get('type', 'basic') )
+        return post_type if post_type is not False else item.POST_TYPES.status
 
     def calculate_wait_for(self, item):
         """
@@ -77,8 +103,8 @@ class FacebookFeedGeneratorService(object):
         return  (150 / base)
 
     def process(self, **kwargs):
-        from .models import FeedItem
         self.graph = facebook.GraphAPI(self.token)
+
         for project in self.projects:
 
             try:
@@ -87,16 +113,24 @@ class FacebookFeedGeneratorService(object):
                 feed = {}
 
             for item in _get_pages(feed, limit=3):
-                # get crc from specific values
-                crc = FeedItem.crc(item.get('id'),
-                                   item.get('updated_time'))
-                # create
-                feed, is_new = FeedItem.objects.get_or_create(project=project,
-                                                              facebook_crc=crc)
-                feed.name = item.get('name', None)
-                feed.description = item.get('description', None)
-                feed.message = item.get('message', None)
-                feed.wait_for = self.calculate_wait_for(item=item)
-                feed.data = item
-                feed.save()
-                print feed, is_new
+    
+                if item.get('type') not in ACCEPTED_POST_TYPES:
+                    logger.info('FeedItem.post_type was not an accepted type: %s (%s) should be in: %s' % (feed_item.post_type, item.get('type'), ACCEPTED_POST_TYPES))
+
+                else:
+    
+                    # get crc from specific values
+                    crc = self.feed_item_class.crc(item.get('name'),
+                                                   item.get('type'))
+                    # create
+                    feed_item, is_new = self.feed_item_class.objects.get_or_create(project=project,
+                                                                                   facebook_crc=crc)
+                    feed_item.name = item.get('name', None)
+                    feed_item.description = item.get('description', None)
+                    feed_item.message = item.get('message', None)
+                    feed_item.post_type = self.post_type_from_item(item=item)
+                    feed_item.template = self.template_from_post_type(item=item)
+                    feed_item.wait_for = self.calculate_wait_for(item=item)
+                    feed_item.data = item                    
+                    feed_item.save()
+                    logger.info('FeedItem accepted: %s (%s)' % (feed_item.pk, feed_item.name,))

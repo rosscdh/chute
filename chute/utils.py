@@ -111,6 +111,10 @@ def get_namedtuple_choices(name, choices_tuple):
                     values.append(val)
             return values
 
+        def get_names(self):
+            for val, name, desc in choices_tuple:
+                yield name
+
         def get_value_by_name(self, input_name):
             for val, name, desc in choices_tuple:
                 if name == input_name:

@@ -124,15 +124,9 @@
     'use strict';
     $(document).ready(function( ) {
 
-        var generic_objects = {
-            'project': {{ view.project_json|safe }},
-            'feed': {{ view.feed_json|safe }},
-        };
-
-
         $( "body" ).chute_controller({
-            'feed': generic_objects.feed,
-            'project': generic_objects.project,
+            'feed': {{ view.feed_json|safe }},
+            'project': {{ view.project_json|safe }},
             'templates': {
                 'basic': $("script#tpl-layout-basic").html()
             },
@@ -154,7 +148,6 @@
   hasher.initialized.add(handleChanges); //add initialized listener (to grab initial value in case it is already set)
   hasher.init(); //initialize hasher (start listening for history changes)
 
-  //hasher.setHash('foo'); //change hash value (generates new history record)
   
 
 

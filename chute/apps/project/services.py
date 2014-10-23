@@ -99,7 +99,8 @@ class FacebookFeedGeneratorService(object):
         corpus = '%s %s %s' % (item.get('name'), item.get('description'), item.get('message'))
         words = re.findall(r'\w+', corpus.lower())
         count = Counter(words)
-        base = (150 / sum(count.values()))
+        total = count.values()
+        base = (150 / sum(total))
         return  (150 / base)
 
     def process(self, **kwargs):

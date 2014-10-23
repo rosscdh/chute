@@ -119,12 +119,12 @@ var CollaboratorFormModal = React.createClass({displayName: 'CollaboratorFormMod
                     React.DOM.div({className: "row"}, 
                         messagesView, 
                         React.DOM.form({onSubmit: this.onSubmitForm, 'data-parsley-validate': true}, 
-                        React.DOM.label({htmlFor: "id_email"}, "Email Address:"), React.DOM.input({ref: "email", onChange: this.onCheckCollaboratorExists, 'data-parsley-maxlength': "200", 'data-parsley-group': "basic", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", 'data-parsley-type': "email", 'data-parsley-type-url-message': "Enter a valid Email Address.", id: "id_email", maxlength: "200", name: "email", type: "email"}), 
+                        React.DOM.label({htmlFor: "id_email"}, "Email Address:"), React.DOM.input({ref: "email", onChange: this.onCheckCollaboratorExists, 'data-parsley-maxlength': "200", 'data-parsley-group': "basic", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", 'data-parsley-type': "email", 'data-parsley-type-url-message': "Enter a valid Email Address.", id: "id_email", maxLength: "200", name: "email", type: "email"}), 
                             React.DOM.div({className: showFieldsClass}, 
                                 React.DOM.label({htmlFor: "id_first_name"}, "First name:"), 
-                                    React.DOM.input({ref: "first_name", 'data-parsley-maxlength': "255", 'data-parsley-group': "details", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", id: "id_first_name", maxlength: "255", name: "first_name", type: "text", value: this.state.collaborator.first_name}), 
+                                    React.DOM.input({ref: "first_name", 'data-parsley-maxlength': "255", 'data-parsley-group': "details", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", id: "id_first_name", maxLength: "255", name: "first_name", type: "text", value: this.state.collaborator.first_name}), 
                                 React.DOM.label({htmlFor: "id_last_name"}, "Last name:"), 
-                                    React.DOM.input({ref: "last_name", 'data-parsley-maxlength': "255", 'data-parsley-group': "details", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", id: "id_last_name", maxlength: "255", name: "last_name", type: "text", value: this.state.collaborator.last_name})
+                                    React.DOM.input({ref: "last_name", 'data-parsley-maxlength': "255", 'data-parsley-group': "details", 'data-parsley-required': "true", 'data-parsley-required-message': "This field is required.", id: "id_last_name", maxLength: "255", name: "last_name", type: "text", value: this.state.collaborator.last_name})
                             ), 
                             React.DOM.input({type: "submit", value: "Add", disabled: disabled})
                         )

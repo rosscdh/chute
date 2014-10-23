@@ -205,6 +205,7 @@ PIPELINE_JS = {
             # resources api
             'js/resources/user_resource.js',
             'js/resources/project_resource.js',
+            'js/resources/feed_resource.js',
             'js/resources/collaborator_resource.js',
             # 'js/resources/video_resource.js',
             # 'js/resources/comment_resource.js',
@@ -213,6 +214,8 @@ PIPELINE_JS = {
     },
     'project_list': {
         'source_filenames': (
+            # helpers
+            # resources
             'js/resources/project_resource.js',
             'js/project_list.jsx',
         ),

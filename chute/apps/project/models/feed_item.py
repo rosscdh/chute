@@ -45,7 +45,7 @@ class FeedItem(models.Model):
         hasher = hashlib.md5()
         for item in args:
             if item is not None:
-                hasher.update(item)
+                hasher.update(item.encode('utf-8'))
         return hasher.hexdigest()
 
     @property

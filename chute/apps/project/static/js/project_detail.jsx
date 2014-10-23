@@ -49,14 +49,132 @@ var RemoveFeedItemBtn = React.createClass({
     }
 });
 
+var FeedPreviewView = React.createClass({
+    getInitialState: function () {
+        return {
+            'feed_item': Project.feed[0],
+        }
+    },
+    handleFeedItemUpdate: function () {
+        var self = this;
+        var feed_item = self.state.feed_item;
+
+        var params = {
+            'wait_for': this.refs.wait_for.getDOMNode().value.trim(),
+        };
+
+        if ( window.feed_item_timer_event !== null ) {
+            window.clearTimeout(window.feed_item_timer_event);
+        }
+        window.feed_item_timer_event = window.setTimeout(function() {
+
+            FeedItemResource.update( feed_item.pk, params ).defer().done(function ( updated_feed_item ) {
+
+                self.setState({
+                    'feed_item': updated_feed_item
+                });
+
+                // send update signal
+                $( 'body' ).trigger( 'update_feed_item', updated_feed_item );
+
+            });
+
+        }, 200);
+
+    },
+    handleFeedChange: function ( feed_item ) {
+        this.setState({
+            'feed_item': feed_item
+        });
+
+    },
+    componentWillMount: function () {
+        var self = this;
+        $( 'body' ).on( 'select_feed', function ( event, feed_item ) {
+            self.handleFeedChange( feed_item );
+        });
+    },
+    componentDidMount: function () {
+        var self = this;
+        var iframe = $(this.refs.feed_item_detail.getDOMNode());
+
+        iframe.on( 'load', function ( event ) {
+            iframe.height(iframe.contents().height());
+        });
+    },
+    render: function () {
+        var feed_item = this.state.feed_item;
+
+        var iframe_style = {
+            'border': '0px;',
+            'padding': '0px;',
+            'width': '100%;',
+            'height': '640px;',
+        };
+
+        return (<span>
+          <h3>Preview</h3>
+          <nav className="navbar navbar-default" role="navigation">
+            <div className="container-fluid">
+              <div className="row">
+                <form className="form-inline" role="form">
+                
+                    <div className="form-group">
+                      <div className="input-group col-xs-9">
+                        <div className="input-group-addon">show for</div>
+                        <input className="form-control input-sm" ref="wait_for" type="integer" onChange={this.handleFeedItemUpdate} placeholder="Number of" value={feed_item.wait_for} />
+                        <div className="input-group-addon">sec</div>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                        <ul className="nav navbar-nav">
+                          <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown">Using Template <span className="caret"></span></a>
+                            <ul className="dropdown-menu" role="menu">
+                              <li>
+                                <a href="#" className="thumbnail"><img data-src="holder.js/100%x100" alt="..." /></a>
+                              </li>
+                              <li>
+                                <a href="#" className="thumbnail"><img data-src="holder.js/100%x100" alt="..." /></a>
+                              </li>
+                              <li>
+                                <a href="#" className="thumbnail"><img data-src="holder.js/100%x100" alt="..." /></a>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </nav>
+          <iframe ref="feed_item_detail" src={feed_item.absolute_url} border="0" style={iframe_style}></iframe>
+        </span>);
+
+    },
+});
 
 // title view
 var FeedNodeView = React.createClass({
+    getInitialState: function () {
+        return {
+            'node': this.props.node
+        }
+    },
+    componentWillMount: function () {
+        var self = this;
+        $( 'body' ).on( 'update_feed_item', function ( e, updated_feed_item ) {
+            if ( updated_feed_item.pk == self.props.node.pk ) {
+                self.setState({
+                    'node': updated_feed_item,
+                });
+            }
+        });
+    },
     handleClick: function ( node, event ) {
-        //event.preventDefault();
-        var iframe = $('iframe#feed-item-detail');
-        iframe.attr('src', node.absolute_url)
-        iframe.height(iframe.contents().height());
+        event.preventDefault();
+        $( 'body' ).trigger( 'select_feed', node );
     },
     handleDragStart: function ( e ) {
         console.log(e);
@@ -68,7 +186,7 @@ var FeedNodeView = React.createClass({
         console.log(e);
     },
     render: function () {
-        var node = this.props.node;
+        var node = this.state.node;
         var updated_at = moment(node.updated_at).fromNow();
         var is_in_playlist = this.props.is_in_playlist || false;
         var show_button = this.props.show_add_btn || false;
@@ -115,11 +233,14 @@ var FeedNodeView = React.createClass({
 var FeedView = React.createClass({
     getInitialState: function () {
         var current_playlist = Playlist[0] || {'feed': []};
+
         return {
             'playlists': Playlist,
             'current_playlist': current_playlist,
             'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
-            'feed': Project.feed
+            'feed': Project.feed,
+            'total_num_projects': Project.feed.length,
+            'searched': false,
         }
     },
     playlistFeedItemPks: function ( playlist ) {
@@ -146,7 +267,9 @@ var FeedView = React.createClass({
         var feedNodes = this.state.feed.map( function( node ) {
             var show_add_btn = true;
             var is_in_playlist = self.feedIsInPlaylist( node );
-            return <FeedNodeView current_playlist={self.state.current_playlist}
+            var key = 'feedlist-n-{pk}'.assign({'pk': node.pk});
+            return <FeedNodeView key={key}
+                                 current_playlist={self.state.current_playlist}
                                  show_add_btn={show_add_btn}
                                  is_in_playlist={is_in_playlist}
                                  node={node} />;
@@ -183,8 +306,24 @@ var PlaylistView = React.createClass({
         return {
             'playlists': Playlist,
             'current_playlist': current_playlist,
-            'feed': current_playlist.feed
+            'feed': current_playlist.feed,
+            'total_num_items': current_playlist.feed.length,
         }
+    },
+    componentDidMount: function () {
+        this.fuse = new Fuse(this.state.feed, {
+            'keys': ['name'],
+            'threshold': 0.35,
+        });
+    },
+    handleSearch: function( event ) {
+        var searchFor = event.target.value.trim();
+        var search_results = (searchFor != '') ? this.fuse.search( searchFor ) : this.fuse.list;
+
+        this.setState({
+            'feed': search_results,
+            'total_num_items': search_results.length,
+        });
     },
     onMessage: function ( messages ) {
         var self = this;
@@ -198,7 +337,9 @@ var PlaylistView = React.createClass({
         var feedNodes = this.state.feed.map( function ( node ) {
             var show_add_btn = false;
             var is_in_playlist = true;
-            return <FeedNodeView current_playlist={self.state.current_playlist}
+            var key = 'playlist-node-{pk}'.assign({'pk': node.pk});
+            return <FeedNodeView key={key}
+                                 current_playlist={self.state.current_playlist}
                                  show_add_btn={show_add_btn}
                                  is_in_playlist={is_in_playlist}
                                  node={node} />;
@@ -206,7 +347,8 @@ var PlaylistView = React.createClass({
 
         var playlistNodes = this.state.playlists.map( function ( playlist ) {
             var css_class = (playlist.name === self.state.current_playlist.name) ? 'active' : '' ;
-            return (<li className={css_class}><a href="#">{playlist.name}</a></li>);
+            var key = 'playlist-{pk}'.assign({'pk': playlist.pk});
+            return (<li key={key} className={css_class}><a href="#">{playlist.name}</a></li>);
         });
 
         return (<span>
@@ -217,6 +359,13 @@ var PlaylistView = React.createClass({
                 <ul className="nav navbar-nav">
                     <li className="dropdown">
                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Playlists <span className="caret"></span></a>
+
+                <form className="form-inline pull-right" role="form">
+                    <div className="form-group">
+                      <input onChange={this.handleSearch} type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
+                    </div>
+                </form>
+
                         <ul className="dropdown-menu" role="menu">
                             <li className="btn btn-success"><a href="#">Add Playlist</a></li>
                             <li className="divider"></li>
@@ -229,7 +378,8 @@ var PlaylistView = React.createClass({
             </div>
           </nav>
           <div className="draggable list-group">
-                {feedNodes}
+            <p>({this.state.total_num_items}) results</p>
+            {feedNodes}
           </div>
         </span>);
 
@@ -245,6 +395,11 @@ React.renderComponent(
 React.renderComponent(
   <PlaylistView />,
   document.getElementById('playlist-feed-list')
+);
+
+React.renderComponent(
+  <FeedPreviewView />,
+  document.getElementById('feed-preview')
 );
 
 // render the collaborators

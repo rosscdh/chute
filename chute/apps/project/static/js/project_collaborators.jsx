@@ -119,12 +119,12 @@ var CollaboratorFormModal = React.createClass({
                     <div className="row">
                         {messagesView}
                         <form onSubmit={this.onSubmitForm} data-parsley-validate>
-                        <label htmlFor="id_email">Email Address:</label><input ref="email" onChange={this.onCheckCollaboratorExists} data-parsley-maxlength="200" data-parsley-group="basic" data-parsley-required="true" data-parsley-required-message="This field is required." data-parsley-type="email" data-parsley-type-url-message="Enter a valid Email Address." id="id_email" maxlength="200" name="email" type="email" />
+                        <label htmlFor="id_email">Email Address:</label><input ref="email" onChange={this.onCheckCollaboratorExists} data-parsley-maxlength="200" data-parsley-group="basic" data-parsley-required="true" data-parsley-required-message="This field is required." data-parsley-type="email" data-parsley-type-url-message="Enter a valid Email Address." id="id_email" maxLength="200" name="email" type="email" />
                             <div className={showFieldsClass}>
                                 <label htmlFor="id_first_name">First name:</label>
-                                    <input ref="first_name" data-parsley-maxlength="255" data-parsley-group="details" data-parsley-required="true" data-parsley-required-message="This field is required." id="id_first_name" maxlength="255" name="first_name" type="text" value={this.state.collaborator.first_name} />
+                                    <input ref="first_name" data-parsley-maxlength="255" data-parsley-group="details" data-parsley-required="true" data-parsley-required-message="This field is required." id="id_first_name" maxLength="255" name="first_name" type="text" value={this.state.collaborator.first_name} />
                                 <label htmlFor="id_last_name">Last name:</label>
-                                    <input ref="last_name" data-parsley-maxlength="255" data-parsley-group="details" data-parsley-required="true" data-parsley-required-message="This field is required." id="id_last_name" maxlength="255" name="last_name" type="text" value={this.state.collaborator.last_name} />
+                                    <input ref="last_name" data-parsley-maxlength="255" data-parsley-group="details" data-parsley-required="true" data-parsley-required-message="This field is required." id="id_last_name" maxLength="255" name="last_name" type="text" value={this.state.collaborator.last_name} />
                             </div>
                             <input type="submit" value="Add" disabled={disabled} />
                         </form>

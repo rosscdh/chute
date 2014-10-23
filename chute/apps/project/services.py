@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from collections import Counter
+import re
 import logging
 import facebook
 import requests
@@ -8,15 +10,16 @@ logger = logging.getLogger('django.request')
 def _get_pages(data, limit=None):
     counter = 0
     next_uri = data.get('paging', {}).get('next', None)
+    pages = data.get('data', [])
 
     while next_uri not in [None, ''] and (limit is not None and counter < limit):
+        pages += data.get('data', [])
         data = requests.get(next_uri).json()
+        next_uri = data.get('paging', {}).get('next', None)
         counter += 1
 
-        next_uri = data.get('paging', {}).get('next', None)
-
-        for item in data.get('data', []):
-            yield item
+    for item in pages:
+        yield item
 
 
 class FacebookProjectDetailService(object):
@@ -62,13 +65,24 @@ class FacebookFeedGeneratorService(object):
         self.project = kwargs.get('project', None)
         self.graph = None
 
+    def calculate_wait_for(self, item):
+        """
+        Method to calculate the amount of time to display this item, based on
+        150 wpm (floor avg reading speed) * 1.5
+        """
+        corpus = '%s %s %s' % (item.get('name'), item.get('description'), item.get('message'))
+        words = re.findall(r'\w+', corpus.lower())
+        count = Counter(words)
+        base = (150 / sum(count.values()))
+        return  (150 / base)
+
     def process(self, **kwargs):
         from .models import FeedItem
         self.graph = facebook.GraphAPI(self.token)
         for project in self.projects:
 
             try:
-                feed = self.graph.get_connections(project.name, 'feed')
+                feed = self.graph.get_connections(project.name, 'posts')
             except ValueError:
                 feed = {}
 
@@ -79,6 +93,10 @@ class FacebookFeedGeneratorService(object):
                 # create
                 feed, is_new = FeedItem.objects.get_or_create(project=project,
                                                               facebook_crc=crc)
+                feed.name = item.get('name', None)
+                feed.description = item.get('description', None)
+                feed.message = item.get('message', None)
+                feed.wait_for = self.calculate_wait_for(item=item)
                 feed.data = item
-                feed.save(update_fields=['data'])
+                feed.save()
                 print feed, is_new

@@ -8,12 +8,20 @@ from chute.utils import get_namedtuple_choices
 
 import hashlib
 
+CORE_POST_TYPES = get_namedtuple_choices('TEMPLATES', (
+    (0, 'link', 'Link'),
+    (1, 'status', 'Status'),
+    (2, 'photo', 'Photo'),
+    (3, 'video', 'Video'),
+))
+
 CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
     ('basic', 'basic', 'Basic Template'),
 ))
 
 
 class FeedItem(models.Model):
+    POST_TYPES = CORE_POST_TYPES
     TEMPLATES = CORE_TEMPLATES
 
     project = models.ForeignKey('project.Project')
@@ -22,6 +30,8 @@ class FeedItem(models.Model):
     name = models.CharField(null=True, blank=True, max_length=255)
     message = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    post_type = models.IntegerField(choices=POST_TYPES.get_choices())
+
     wait_for = models.IntegerField(default=20)
     template = models.CharField(choices=TEMPLATES.get_choices(), default=TEMPLATES.basic, max_length=64)
 

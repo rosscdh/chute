@@ -6,7 +6,8 @@ import facebook
 import requests
 logger = logging.getLogger('django.request')
 
-ACCEPTED_POST_TYPES = ['link', 'status', 'photo', 'video']
+#ACCEPTED_POST_TYPES = ['link', 'status', 'photo', 'video']
+ACCEPTED_POST_TYPES = ['link', 'photo', 'video']
 
 
 def _get_pages(data, limit=None):
@@ -78,8 +79,8 @@ class FacebookFeedGeneratorService(object):
         template_types = {
             'link': default_template,
             'status': default_template,
-            'photo': default_template,
-            'video': default_template,
+            'photo': TEMPLATES.image,
+            'video': TEMPLATES.image_left,
         }
         return template_types.get(item.get('type', 'basic'), default_template)
 
@@ -101,7 +102,7 @@ class FacebookFeedGeneratorService(object):
         count = Counter(words)
         total = count.values()
         base = (150 / sum(total))
-        return  (150 / base)
+        return  (150 / base) if base > 0 else 30
 
     def process(self, page_limit=3, **kwargs):
         self.graph = facebook.GraphAPI(self.token)
@@ -116,7 +117,7 @@ class FacebookFeedGeneratorService(object):
             for item in _get_pages(feed, limit=page_limit):
     
                 if item.get('type') not in ACCEPTED_POST_TYPES:
-                    logger.info('FeedItem.post_type was not an accepted type: %s (%s) should be in: %s' % (feed_item.post_type, item.get('type'), ACCEPTED_POST_TYPES))
+                    logger.info('FeedItem.post_type was not an accepted type: %s should be in: %s' % (item.get('type'), ACCEPTED_POST_TYPES))
 
                 else:
     

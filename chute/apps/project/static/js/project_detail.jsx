@@ -118,7 +118,7 @@ var FeedPreviewView = React.createClass({
             <div className="container-fluid">
               <div className="row">
                 <form className="form-inline" role="form">
-                
+                    #{feed_item.pk}
                     <div className="form-group">
                       <div className="input-group col-xs-9">
                         <div className="input-group-addon">show for</div>
@@ -218,7 +218,8 @@ var FeedNodeView = React.createClass({
 
                 <div className="col-xs-8">
                     <h4 className="list-group-item-heading">{node.name}</h4>
-                    <p className="list-group-item-text">{updated_at}</p>
+                    <p className="small list-group-item-text">{node.template_name} ({node.post_type})</p>
+                    <p className="small list-group-item-text">{updated_at}</p>
                 </div>
                 <div className="col-xs-1">
                     {add_btn}
@@ -312,7 +313,7 @@ var PlaylistView = React.createClass({
     },
     componentDidMount: function () {
         this.fuse = new Fuse(this.state.feed, {
-            'keys': ['name'],
+            'keys': ['name', 'post_type'],
             'threshold': 0.35,
         });
     },

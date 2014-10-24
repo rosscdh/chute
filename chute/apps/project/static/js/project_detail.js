@@ -118,7 +118,7 @@ var FeedPreviewView = React.createClass({displayName: 'FeedPreviewView',
             React.DOM.div({className: "container-fluid"}, 
               React.DOM.div({className: "row"}, 
                 React.DOM.form({className: "form-inline", role: "form"}, 
-                
+                    "#", feed_item.pk, 
                     React.DOM.div({className: "form-group"}, 
                       React.DOM.div({className: "input-group col-xs-9"}, 
                         React.DOM.div({className: "input-group-addon"}, "show for"), 
@@ -130,7 +130,6 @@ var FeedPreviewView = React.createClass({displayName: 'FeedPreviewView',
                     React.DOM.div({className: "form-group"}, 
                         React.DOM.ul({className: "nav navbar-nav"}, 
                           React.DOM.li({className: "dropdown"}, 
-                          feed_item.template_name, 
                             React.DOM.a({href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Using Template ", React.DOM.span({className: "caret"})), 
                             React.DOM.ul({className: "dropdown-menu", role: "menu"}, 
                               React.DOM.li(null, 
@@ -219,7 +218,8 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
 
                 React.DOM.div({className: "col-xs-8"}, 
                     React.DOM.h4({className: "list-group-item-heading"}, node.name), 
-                    React.DOM.p({className: "list-group-item-text"}, updated_at)
+                    React.DOM.p({className: "small list-group-item-text"}, node.template_name, " (", node.post_type, ")"), 
+                    React.DOM.p({className: "small list-group-item-text"}, updated_at)
                 ), 
                 React.DOM.div({className: "col-xs-1"}, 
                     add_btn, 
@@ -313,7 +313,7 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
     },
     componentDidMount: function () {
         this.fuse = new Fuse(this.state.feed, {
-            'keys': ['name'],
+            'keys': ['name', 'post_type'],
             'threshold': 0.35,
         });
     },

@@ -30,7 +30,8 @@
     <![endif]-->
     <style>
     div.post-heading{
-        text-shadow: 0px 4px 4px rgba(35, 35, 35, 0.4);
+        
+        text-shadow: 0 0 10px #000;
     }
     </style>
 </head>
@@ -64,15 +65,16 @@
     <header class="intro-header" style="background-image: url('{{ object.picture }}');">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="post-heading">
-                        <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
-                        <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
-                    </div>
-                </div>
+                &nbsp;
             </div>
         </div>
         <!-- <small class="meta">Posted on {{ object.updated_time }}</small> -->
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+                <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
+                <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
+            </div>
+        </div>
     </header>
 
     <!-- Post Content -->
@@ -110,7 +112,20 @@
     </article>
     {% endtplhandlebars %}
 
-    {% tplhandlebars "tpl-layout-image-right" %}{% endtplhandlebars %}
+    {% tplhandlebars "tpl-layout-image" %}
+    <div class="container">
+        <div class="row featurette">
+            <div class="col-md-5">
+                <img src="{{ object.picture }}" border="0" class="featurette-image img-responsive img-rounded" />
+            </div>
+            <div class="col-md-7">
+                <h2 class="featurette-heading" data-name="name" contenteditable="true">{{ object.name }}</h2>
+                <p class="lead" data-name="message" contenteditable="true">{{ object.message }}</p>
+            </div>
+        </div>
+    
+    </div>
+    {% endtplhandlebars %}
 
     <hr>
 
@@ -154,8 +169,8 @@
             'project': {{ view.project_json|safe }},
             'templates': {
                 'basic': $("script#tpl-layout-basic").html(),
+                'image': $("script#tpl-layout-image").html(),
                 'image_left': $("script#tpl-layout-image_left").html(),
-                'image_right': $("script#tpl-layout-image_right").html(),
             },
         });
         window.chute = $( "body" ).data( 'chute-chute_controller' );

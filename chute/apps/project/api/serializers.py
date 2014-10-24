@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
+import urlparse
+
 from chute.apps.me.api.serializers import CollaboratorSerializer
 from ..models import Project, FeedItem
 
+import urllib2
 import datetime
 import dateutil.parser
 
@@ -27,15 +30,29 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(required=False)
     message = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
-    picture = serializers.Field(source='data.picture')
+    #picture = serializers.Field(source='data.picture')
+    picture = serializers.SerializerMethodField('get_picture')
     updated_at = CustomDateTimeField(source='data.updated_time')
     absolute_url = serializers.Field(source='get_absolute_url')
     template_name = serializers.Field(source='template_name')
+    post_type = serializers.Field(source='post_type_name')
 
     class Meta:
         model = FeedItem
         lookup_field = 'pk'
         exclude = ('data', 'project',)
+
+    def get_picture(self, obj):
+        picture = obj.data.get('picture')
+        if picture:
+            if 'safe_image.php' in picture:
+                picture = urllib2.unquote(picture)
+                url = dict(urlparse.parse_qsl(urlparse.urlsplit(picture).query))
+                return url.get('url', None)
+            else:
+                return picture.replace('/v/t1.0-9/s130x130','')
+        else:
+            return picture
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):

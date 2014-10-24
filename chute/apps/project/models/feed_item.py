@@ -18,7 +18,7 @@ CORE_POST_TYPES = get_namedtuple_choices('TEMPLATES', (
 CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
     (1, 'basic', 'Basic Template'),
     (2, 'image_left', 'Image Left'),
-    
+    (3, 'image', 'Image Simple'),
 ))
 
 
@@ -57,6 +57,10 @@ class FeedItem(models.Model):
     @property
     def template_name(self):
         return self.TEMPLATES.get_name_by_value(self.template)
+
+    @property
+    def post_type_name(self):
+        return self.POST_TYPES.get_name_by_value(self.post_type)
 
 
     def __unicode__(self):

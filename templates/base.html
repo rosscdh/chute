@@ -1,63 +1,68 @@
-{% load compressed %}<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% block page_description %}{% endblock %}">
-    <meta name="author" content="{% block page_author %}{% endblock %}">
-    <link rel="icon" href="/favicon.ico">
+{% load compressed staticfiles %}<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="en" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="en" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="en" class="no-js ie8"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
 
+<head>
+    <meta charset="UTF-8">
     <title>{% block page_title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="shortcut icon" href="favicon.png">
 
-    <!-- Bootstrap core CSS -->
     {% compressed_css 'base' %}
+    {% compressed_js 'base_head' %}
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      {% compressed_js 'base_ie_only' %}
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     {% block css %}{% endblock css %}
-  </head>
 
-  <body>
+</head>
 
-    {% block navigation %}
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Chute</a>
+<body>
+
+    <div class="pre-loader">
+        <div class="load-con">
+            <img src="{% static 'img/freeze/logo.png' %}" class="animated fadeInDown" alt="">
+            <div class="spinner">
+              <div class="bounce1"></div>
+              <div class="bounce2"></div>
+              <div class="bounce3"></div>
+            </div>
         </div>
-
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Projects</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Account</a></li>
-        </ul>
-      </div>
-    </nav>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    {% endblock %}
-
-    {% block jumbo %}{% endblock %}
-    {% block body %}
-    {% block content %}{% endblock %}
-    {% endblock %}
+    </div>
+   
+    <header>
+        {% include 'nav.html' %}
+        {% block header %}
+        <div class="tp-banner-container">
+            <div class="" style="height:75px;"></div>
+        </div>
+        {% endblock %}
+    </header>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <div class="wrapper">
+        {% block jumbo %}{% endblock %}
+
+        {% block body %}
+        <section id="public">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </section>
+        {% endblock %}
+
+        {% include 'footer.html' %}
+    </div>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.1.7/fuse.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
@@ -73,5 +78,13 @@
     {% if debug %}<script src="{{ STATIC_URL }}js/reactjs/0.11.1/JSXTransformer.js"></script>{% endif %}
 
     {% block js %}{% endblock %}
-  </body>
+
+    <script>
+        $(document).ready(function() {
+            appMaster.preLoader();
+        });
+    </script>
+
+</body>
+
 </html>

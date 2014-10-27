@@ -60,6 +60,33 @@ class ProjectDetailView(DetailView):
                                                         context={'request': self.request}).data)
 
 
+class ProjectSettingsView(DetailView):
+    """
+    Manage a projects settings
+    """
+    model = Project
+    template_name = 'project/project_settings.html'
+
+
+
+class FacebookWebhookView(DetailView):
+    model = Project
+    template_name = 'facebook/webhook.html'
+
+    def get_object(self, **kwargs):
+        token = self.request.GET.get('hub.verify_token')
+        obj = get_object_or_404(self.model.objects, slug=self.kwargs.get('project_slug'))
+        return obj
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(FacebookWebhookView, self).get_context_data(**kwargs)
+        kwargs.update({
+            'hub_challenge': self.request.GET.get('hub.challenge')
+        })
+        return kwargs
+
+
+
 class ProjectFeedView(DetailView):
     """
     Generic page view of the projects feed

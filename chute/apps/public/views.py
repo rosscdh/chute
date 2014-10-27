@@ -103,6 +103,8 @@ class LogoutView(LogOutMixin, RedirectView):
 
 
 class HomePageView(StartView):
+    template_name = 'public/home.html'
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return HttpResponseRedirect(reverse('project:list'))

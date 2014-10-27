@@ -1,0 +1,23 @@
+{% extends 'project/base.html' %}{% load compressed chute_tags %}
+
+{% block page_title %}Settings - {{ project.name }}{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class="row">
+
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-success">
+          <input type="radio" name="fb-callbacks" id="btn-fb-callbacks" data-toggle="button"> Enable
+        </label>
+      </div>
+
+  </div>
+
+</div>
+
+<div id="project-detail-collaborators" class="col-md-4"></div>
+
+{% endblock %}

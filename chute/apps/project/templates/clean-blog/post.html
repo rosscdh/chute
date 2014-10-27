@@ -65,16 +65,15 @@
     <header class="intro-header" style="background-image: url('{{ object.picture }}');">
         <div class="container">
             <div class="row">
-                &nbsp;
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
+                        <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- <small class="meta">Posted on {{ object.updated_time }}</small> -->
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-heading">
-                <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
-                <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
-            </div>
-        </div>
     </header>
 
     <!-- Post Content -->

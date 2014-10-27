@@ -151,16 +151,22 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = '343632075713954'
-SOCIAL_AUTH_FACEBOOK_SECRET = '4f9854b8fe8f5ccf27ac1ffcf5051b79'
+SOCIAL_AUTH_FACEBOOK_KEY = '317444045109900'
+SOCIAL_AUTH_FACEBOOK_SECRET = '453cb652cff25fca613c2cfe1adebf21'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['manage_pages']
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 PIPELINE_CSS = {
     'base': {
         'source_filenames': (
-            'bootstrap/css/bootstrap.min.css',
-            'css/sidebar.css',
+            'css/bootstrap.css',
+            'css/animate.css',
+            'css/font-awesome.min.css',
+            'css/slick.css',
+            'js/rs-plugin/css/settings.css',
+            'css/freeze.css',
         ),
         'output_filename': 'js/dist/base.css',
         'extra_context': {
@@ -179,9 +185,20 @@ PIPELINE_JS = {
     },
     'base': {
         'source_filenames': (
-            'js/showdown-0.3.1.min.js',
+            'js/slick.min.js',
+            'js/placeholdem.min.js',
+            'js/rs-plugin/js/jquery.themepunch.plugins.min.js',
+            'js/rs-plugin/js/jquery.themepunch.revolution.min.js',
+            'js/waypoints.min.js',
+            'js/scripts.js',
         ),
         'output_filename': 'js/dist/base.js'
+    },
+    'base_head': {
+        'source_filenames': {
+            'js/modernizr.custom.32033.js',
+        },
+        'output_filename': 'js/dist/base_head.js'
     },
     'ckeditor': {
         'source_filenames': (

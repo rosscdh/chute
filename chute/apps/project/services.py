@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+
 from collections import Counter
 import re
 import logging
@@ -25,15 +27,17 @@ def _get_pages(data, limit=None):
         yield item
 
 
-class FacebookProjectDetailService(object):
-    """
-    """
+class BaseTokenMixin(object):
     @property
     def token(self):
         social_auth = self.user.social_auth.all().first()
         token = social_auth.tokens
         return token
 
+
+class FacebookProjectDetailService(BaseTokenMixin):
+    """
+    """
     def __init__(self, project, **kwargs):
         self.project = project
         self.user = self.project.collaborators.all().last()
@@ -47,7 +51,69 @@ class FacebookProjectDetailService(object):
         return data
 
 
-class FacebookFeedGeneratorService(object):
+class FacebookPageSubscriptionService(BaseTokenMixin):
+    """
+    """
+    PAGE_FIELDS = ['feed',
+                   'name',
+                   'picture',
+                   'description',
+                   'founded',
+                   'company_overview',
+                   'general_info',
+                   'hours',
+                   'email',
+                   'website']
+
+    def __init__(self, project, **kwargs):
+        self.project = project
+        self.user = self.project.collaborators.all().last()
+        self.graph = None
+        self.page_id = None
+        self.subscriptions = None
+
+    def subscription(self, page_id, data={}, method='list'):
+        """
+        method = list|destroy|create
+        """
+        app_graph = facebook.GraphAPI()
+        app_graph.access_token = app_graph.get_app_access_token(app_id=settings.SOCIAL_AUTH_FACEBOOK_KEY,
+                                                                app_secret=settings.SOCIAL_AUTH_FACEBOOK_SECRET)
+        #url = '/v2.1/%s/subscriptions/' % settings.SOCIAL_AUTH_FACEBOOK_KEY
+        import pdb;pdb.set_trace()
+        url = '/v2.1/%s/subscriptions/' % page_id
+        
+        if method in ['list', 'GET']:
+            return app_graph.request(url, args=data, method='GET')
+
+        if method in ['create', 'POST']:
+            return app_graph.request(url, post_args=data, method='POST')
+
+        if method in ['destroy', 'DELETE']:
+            return app_graph.request(url, method='DELETE')
+        
+
+    def process(self, **kwargs):
+        self.graph = facebook.GraphAPI(self.token)
+        data = self.graph.get_object(self.project.name)
+        self.page_id = data.get('id')
+
+        new_subscription = {
+            'object': 'page',
+            'fields': ','.join(self.PAGE_FIELDS),
+            'callback_url': 'https://2b2dea03.ngrok.com/webhook/facebook/%s/' % self.project.slug,
+            'verify_token': 'abc123talkingaboutyouandme',
+        }
+
+        #resp = self.subscription(page_id=self.page_id)
+        resp = self.subscription(page_id=self.page_id, data=new_subscription, method='create')
+
+        #self.project.data = data
+        #self.project.save(update_fields=['data'])
+        return resp
+
+
+class FacebookFeedGeneratorService(BaseTokenMixin):
     """
     """
     @property
@@ -56,12 +122,6 @@ class FacebookFeedGeneratorService(object):
         return iterable of projects to parse
         """
         return [pc.project for pc in self.user.projectcollaborator_set.all()] if self.project is None else [self.project,]
-
-    @property
-    def token(self):
-        social_auth = self.user.social_auth.all().first()
-        token = social_auth.tokens
-        return token
 
     def __init__(self, user, **kwargs):
         from .models import FeedItem

@@ -5,12 +5,14 @@ from django.contrib.auth.decorators import login_required
 from .views import (ProjectListView,
                     ProjectCreateView,
                     ProjectDetailView,
+                    ProjectSettingsView,
                     ProjectFeedView,
                     ProjectPlaylistFeedView,
                     FeedItemDetail,)
 
 
 urlpatterns = patterns('',
+    url(r'^(?P<slug>[\w\d-]+)/settings/$', login_required(ProjectSettingsView.as_view()), name='project_settings'),
     url(r'^(?P<slug>[\w\d-]+)/feed/$', login_required(ProjectFeedView.as_view()), name='project_feed'),
     url(r'^(?P<slug>[\w\d-]+)/playlist/(?P<playlist_pk>[\d]+)/feed/$', login_required(ProjectPlaylistFeedView.as_view()), name='project_playlist_feed'),
     url(r'^(?P<slug>[\w\d-]+)/feed/(?P<pk>[\d]+)/$', login_required(FeedItemDetail.as_view()), name='feeditem_detail'),

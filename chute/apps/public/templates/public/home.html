@@ -532,4 +532,29 @@
         </div>
     </div>
 </section>
+
+{% include 'footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function() {
+
+    appMaster.smoothScroll();
+
+    appMaster.reviewsCarousel();
+
+    appMaster.screensCarousel();
+
+    appMaster.animateScript();
+
+    appMaster.revSlider();
+
+    appMaster.scrollMenu();
+
+    appMaster.placeHold();
+
+});
+</script>
 {% endblock %}

@@ -1,6 +1,8 @@
 var appMaster = {
 
     preLoader: function(){
+        // @TODO rc refactor this so that it loads after the scripts are ready
+        // and not the images
         imageSources = []
         $('img').each(function() {
             var sources = $(this).attr('src');
@@ -147,21 +149,3 @@ var appMaster = {
 
 }; // AppMaster
 
-
-$(document).ready(function() {
-
-    appMaster.smoothScroll();
-
-    appMaster.reviewsCarousel();
-
-    appMaster.screensCarousel();
-
-    appMaster.animateScript();
-
-    appMaster.revSlider();
-
-    appMaster.scrollMenu();
-
-    appMaster.placeHold();
-
-});

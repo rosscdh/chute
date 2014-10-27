@@ -11,18 +11,37 @@
 {% block content %}
 <div class="container-fluid">
 
-  <div class="row">
-    <!-- Feed -->
-      <div id="feed-list" class="col-md-3"></div>
-      <!-- PlayList -->
-      <div id="playlist-feed-list" class="col-md-3"></div>
-      <!-- Preview -->
-      <div id="feed-preview" class="col-md-6"></div>
-  </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+      <li><a href="#collaborators" role="tab" data-toggle="tab">Collaborators</a></li>
+      <li><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="row tab-content">
+
+      <div class="tab-pane active" id="overview">
+        <!-- Feed -->
+        <div id="feed-list" class="col-md-3"></div>
+        <!-- PlayList -->
+        <div id="playlist-feed-list" class="col-md-3"></div>
+        <!-- Preview -->
+        <div id="feed-preview" class="col-md-6"></div>
+      </div>
+
+      <div class="tab-pane" id="collaborators">
+          <div id="project-detail-collaborators" class="col-md-4"></div>
+      </div>
+
+      <div class="tab-pane" id="settings">
+        ...
+      </div>
+
+    </div>
 
 </div>
 
-<div id="project-detail-collaborators" class="col-md-4"></div>
 
 {% endblock %}
 
@@ -83,12 +102,16 @@ ProjectPlaylistFeedResource.params.project_slug = Project.slug;
 $(document).ready(function( ) {
 
   $("a#menu-toggle").on('click', function ( e ) {
-      console.log('fds')
       e.preventDefault();
       $(".sidebar_wrapper").toggleClass("toggled");
   });
 
   //$('div.draggable > list-group-item').draggable();
+
+  $('ul[role=tablist] a').on( 'click', function ( e ) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
 
 });
 </script>

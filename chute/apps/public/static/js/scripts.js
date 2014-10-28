@@ -1,151 +1,196 @@
-var appMaster = {
+'use strict';
+/*
+2014. Ross Crawford-d'Heureuse to be a jquery.plugin
+*/
+$(function() {
+    $.widget( "oleose.appMaster", {
+        options: {
+            'nav_is_fixed': true,
+            'preload_images': true,
+            'scrollnav_pixels_num': 10,
+            'DEBUG': true,                              // -- show debug messages
+        },
 
-    preLoader: function(){
-        // @TODO rc refactor this so that it loads after the scripts are ready
-        // and not the images
-        imageSources = []
-        $('img').each(function() {
-            var sources = $(this).attr('src');
-            imageSources.push(sources);
-        });
-        if($(imageSources).load()){
-            $('.pre-loader').fadeOut('slow');
-        }
-    },
-
-    smoothScroll: function() {
-        // Smooth Scrolling
-        $('a[href*=#]:not([href=#carousel-example-generic])').click(function() {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
-                }
+        log: function (msg) {
+            var self = this;
+            if (self.options.DEBUG === true) {
+                console.log(msg)
             }
-        });
-    },
+        },
 
-    reviewsCarousel: function() {
-        // Reviews Carousel
-        $('.review-filtering').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            dots: true,
-            arrows: false,
-            autoplay: true,
-            autoplaySpeed: 5000
-        });
-    },
+        // the constructor
+        _create: function() {
+            var self = this;
 
-    screensCarousel: function() {
-        // Screens Carousel
-        $('.filtering').slick({
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            dots: false,
-            responsive: [{
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    infinite: true,
-                    dots: true
-                }
-            }, {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            }, {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }]
-        });
+            this._listen();
 
-        $('.js-filter-all').on('click', function() {
-            $('.filtering').slickUnfilter();
-            $('.filter a').removeClass('active');
-            $(this).addClass('active');
-        });
+            if ( this.options.preload_images === true ) {
+                this.preLoader();
+            }
+        },
 
-        $('.js-filter-one').on('click', function() {
-            $('.filtering').slickFilter('.one');
-            $('.filter a').removeClass('active');
-            $(this).addClass('active');
-        });
+        _listen: function () {
+            // setup event listeners
+        },
 
-        $('.js-filter-two').on('click', function() {
-            $('.filtering').slickFilter('.two');
-            $('.filter a').removeClass('active');
-            $(this).addClass('active');
-        });
+        init: function ( options ) {
+            options = options || {}; // if nothing is passed in
+            (options.smoothscroll || true) ? this.smoothScroll() : null ;
+            (options.reviewsCarousel || true) ? this.reviewsCarousel() : null ;
+            (options.screensCarousel || true) ? this.screensCarousel() : null ;
+            (options.animateScript || true) ? this.animateScript() : null ;
+            (options.revSlider || true) ? this.revSlider() : null ;
+            (options.scrollMenu || true) ? this.scrollMenu() : null ;
+            (options.placeHold || true) ? this.placeHold() : null ;
+        },
+        preLoader: function(){
+            // @TODO rc refactor this so that it loads after the scripts are ready
+            // and not the images
+            var imageSources = []
+            $('img').each(function() {
+                var sources = $(this).attr('src');
+                imageSources.push(sources);
+            });
+            if($(imageSources).load()){
+                $('.pre-loader').fadeOut('slow');
+            }
+        },
 
-        $('.js-filter-three').on('click', function() {
-            $('.filtering').slickFilter('.three');
-            $('.filter a').removeClass('active');
-            $(this).addClass('active');
-        });
+        smoothScroll: function() {
+            // Smooth Scrolling
+            $('a[href*=#]:not([href=#carousel-example-generic])').click(function() {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
-    },
-
-    animateScript: function() {
-        $('.scrollpoint.sp-effect1').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInLeft');},{offset:'100%'});
-        $('.scrollpoint.sp-effect2').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInRight');},{offset:'100%'});
-        $('.scrollpoint.sp-effect3').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInDown');},{offset:'100%'});
-        $('.scrollpoint.sp-effect4').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeIn');},{offset:'100%'});
-        $('.scrollpoint.sp-effect5').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInUp');},{offset:'100%'});
-    },
-
-    revSlider: function() {
-
-        var docHeight = $(window).height();
-
-
-        var mainSlider = $('.tp-banner').revolution({
-            delay: 9000,
-            startwidth: 1170,
-            startheight: docHeight,
-            hideThumbs: 10,
-            touchenabled: false,
-            fullWidth: "on",
-            hideTimerBar: "on",
-            fullScreen: "on",
-            onHoverStop: "off",
-            fullScreenOffsetContainer: ""
-        });
-        
-    },
-
-    scrollMenu: function( is_active, num ){
-        var is_active = is_active || false; // use the scrolling or not
-        var num = num || 10; //number of pixels before modifying styles
-        if ( is_active === true ) {
-            $(window).bind('scroll', function () {
-                if ($(window).scrollTop() > num) {
-                    $('nav').addClass('scrolled');
-
-                } else {
-                    $('nav').removeClass('scrolled');
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        $('html,body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                        return false;
+                    }
                 }
             });
-        } else {
-            $('nav').addClass('scrolled');
-            $('nav').addClass('solid');
+        },
+
+        reviewsCarousel: function() {
+            // Reviews Carousel
+            $('.review-filtering').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                dots: true,
+                arrows: false,
+                autoplay: true,
+                autoplaySpeed: 5000
+            });
+        },
+
+        screensCarousel: function() {
+            // Screens Carousel
+            $('.filtering').slick({
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                dots: false,
+                responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        infinite: true,
+                        dots: true
+                    }
+                }, {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }, {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }]
+            });
+
+            $('.js-filter-all').on('click', function() {
+                $('.filtering').slickUnfilter();
+                $('.filter a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('.js-filter-one').on('click', function() {
+                $('.filtering').slickFilter('.one');
+                $('.filter a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('.js-filter-two').on('click', function() {
+                $('.filtering').slickFilter('.two');
+                $('.filter a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('.js-filter-three').on('click', function() {
+                $('.filtering').slickFilter('.three');
+                $('.filter a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+        },
+
+        animateScript: function() {
+            $('.scrollpoint.sp-effect1').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInLeft');},{offset:'100%'});
+            $('.scrollpoint.sp-effect2').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInRight');},{offset:'100%'});
+            $('.scrollpoint.sp-effect3').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInDown');},{offset:'100%'});
+            $('.scrollpoint.sp-effect4').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeIn');},{offset:'100%'});
+            $('.scrollpoint.sp-effect5').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInUp');},{offset:'100%'});
+        },
+
+        revSlider: function() {
+
+            var docHeight = $(window).height();
+
+
+            var mainSlider = $('.tp-banner').revolution({
+                delay: 9000,
+                startwidth: 1170,
+                startheight: docHeight,
+                hideThumbs: 10,
+                touchenabled: false,
+                fullWidth: "on",
+                hideTimerBar: "on",
+                fullScreen: "on",
+                onHoverStop: "off",
+                fullScreenOffsetContainer: ""
+            });
+            
+        },
+
+        scrollMenu: function(){
+            var nav_is_fixed = this.options.nav_is_fixed; // use the scrolling or not
+            this.log('nav_is_fixed: ' + nav_is_fixed);
+            var num = this.options.scrollnav_pixels_num ; //number of pixels before modifying styles
+            this.log('num: ' + num);
+            if ( nav_is_fixed === false ) {
+                $(window).bind('scroll', function () {
+                    if ($(window).scrollTop() > num) {
+                        $('nav').addClass('scrolled');
+                        $('nav').addClass('solid');
+                    } else {
+                        $('nav').removeClass('scrolled');
+                        $('nav').removeClass('solid');
+                    }
+                });
+            } else {
+                $('nav').addClass('scrolled');
+                $('nav').addClass('solid');
+            }
+        },
+        placeHold: function(){
+            // run Placeholdem on all elements with placeholders
+            Placeholdem(document.querySelectorAll('[placeholder]'));
         }
-    },
-    placeHold: function(){
-        // run Placeholdem on all elements with placeholders
-        Placeholdem(document.querySelectorAll('[placeholder]'));
-    }
-
-}; // AppMaster
-
+    }); // end appMaster.appMaster
+}); // end fuction

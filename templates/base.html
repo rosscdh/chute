@@ -60,31 +60,30 @@
 
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.1.7/fuse.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.0.4/parsley.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/holder/2.4.0/holder.js"></script>
-    
-    <script src="//releases.flowplayer.org/5.5.0/flowplayer.js"></script>
-
     {% compressed_js 'base' %}
+    
+    <!--<script src="//releases.flowplayer.org/5.5.0/flowplayer.js"></script>-->
+
     {% compressed_js 'react' %}
+    {% if debug %}<script src="{% static 'js/reactjs/0.11.1/JSXTransformer.js' %}"></script>{% endif %}
     {% compressed_js 'resources' %}
-    {% if debug %}<script src="{{ STATIC_URL }}js/reactjs/0.11.1/JSXTransformer.js"></script>{% endif %}
 
     {% block js %}{% endblock %}
 
+    {% block oleose_js %}
     <script>
-        $(document).ready(function() {
-        appMaster.preLoader();
-        appMaster.scrollMenu();
+    'use strict';
+    $(document).ready(function() {
+
+        $( "body" ).appMaster({
+            'nav_is_fixed': true, // we want the smooth flash bits happening
+        });
+        window.appMaster = $( "body" ).data( 'oleose-appMaster' );
+        window.appMaster.init();
+
     });
     </script>
+    {% endblock %}
 
 </body>
 

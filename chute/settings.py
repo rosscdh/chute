@@ -185,6 +185,16 @@ PIPELINE_JS = {
     },
     'base': {
         'source_filenames': (
+            'js/jquery-1.11.1.min.js',
+            'js/jquery-ui.min.js',
+            'js/bootstrap.min.js',
+            'js/sugar-1.4.1.min.js',
+            'js/fuse-1.1.7.min.js',
+            'js/moment-2.8.2.min.js',
+            'js/parsely-2.0.4.min.js',
+            'js/holder-2.4.0.min.js',
+            'js/handlebars-2.0.0.min.js',
+
             'js/slick.min.js',
             'js/placeholdem.min.js',
             'js/rs-plugin/js/jquery.themepunch.plugins.min.js',
@@ -253,7 +263,10 @@ PIPELINE_JS = {
     'chute': {
         'source_filenames': (
             'js/chute.jquery.js',
-            'js/foggy-1.1.1.js',
+            #'js/foggy-1.1.1.js',
+            'js/js-signals-1.0.0.min.js',  # order here is important
+            'js/hasher-1.2.0.min.js',  # order here is important
+            'js/crossroads-0.12.0.min.js',
         ),
         'output_filename': 'js/dist/chute.js',
     },

@@ -11,6 +11,9 @@ decorator
 django-pipeline==1.3.25
 PyReact
 
+python-social-auth
+facebook
+
 # Email
 -e git+https://github.com/rosscdh/django-templated-email.git@attachments#egg=django-templated-email
 

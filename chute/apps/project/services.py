@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from collections import Counter
+
+from chute.apps.feed.models import FeedItem
+
 import re
 import logging
 import facebook
@@ -64,7 +67,6 @@ class FacebookFeedGeneratorService(object):
         return token
 
     def __init__(self, user, **kwargs):
-        from .models import FeedItem
         self.feed_item_class = FeedItem
         self.user = user
         self.project = kwargs.get('project', None)

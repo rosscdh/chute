@@ -26,7 +26,7 @@ class FeedItem(models.Model):
     POST_TYPES = CORE_POST_TYPES
     TEMPLATES = CORE_TEMPLATES
 
-    project = models.ForeignKey('project.Project', related_name='tmp_project')
+    project = models.ForeignKey('project.Project')
     facebook_crc = models.CharField(max_length=255)
 
     name = models.CharField(null=True, blank=True, max_length=255)

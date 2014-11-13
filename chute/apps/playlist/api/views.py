@@ -6,8 +6,9 @@ from rest_framework import generics
 from rest_framework import status as http_status
 from rest_framework.response import Response
 
-from chute.apps.project.api.serializers import (FeedItemSerializer,)
-from chute.apps.project.models import (Project, FeedItem,)
+from chute.apps.feed.api.serializers import (FeedItemSerializer,)
+from chute.apps.feed.models import (FeedItem,)
+from chute.apps.project.models import (Project,)
 
 from ..models import (Playlist,)
 from .serializers import (PlaylistSerializer,)

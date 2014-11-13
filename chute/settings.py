@@ -49,8 +49,9 @@ PROJECT_APPS = (
     'chute.apps.me',  # base user extended objects
     'chute.apps.client',  # base user client objects
     'chute.apps.project',  # container for playlists
-    'chute.apps.public',  # public views
+    'chute.apps.feed',  # container for playlists
     'chute.apps.playlist',  # composed of various feed sequences
+    'chute.apps.public',  # public views
     #'chute.apps.box',  # the individual box endpoints (clients)
 )
 
@@ -151,8 +152,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = '343632075713954'
-SOCIAL_AUTH_FACEBOOK_SECRET = '4f9854b8fe8f5ccf27ac1ffcf5051b79'
+SOCIAL_AUTH_FACEBOOK_KEY = '317444045109900'
+SOCIAL_AUTH_FACEBOOK_SECRET = '453cb652cff25fca613c2cfe1adebf21'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -262,6 +263,10 @@ PAYMENTS_PLANS = {
         "interval": "month"
     }
 }
+
+
+VIMEO_SECRET_KEY = os.environ.get("VIMEO_SECRET_KEY", "5f612417220380d3098cf5416895f75a17a6495a")
+VIMEO_PUBLIC_KEY = os.environ.get("VIMEO_PUBLIC_KEY", "0fca2de89814122b029493f21900a4e0d637ced1")
 
 # Rest framework
 REST_FRAMEWORK = {

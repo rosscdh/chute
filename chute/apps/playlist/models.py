@@ -13,7 +13,7 @@ class Playlist(models.Model):
     name = models.CharField(max_length=255)
 
     project = models.ForeignKey('project.Project')
-    feed = models.ManyToManyField('project.FeedItem')
+    feed = models.ManyToManyField('feed.FeedItem')
 
     data = JSONField(default={})
 

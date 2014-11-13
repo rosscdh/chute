@@ -2,12 +2,12 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
+from chute.apps.feed.views import (FeedItemDetail,)
 from .views import (ProjectListView,
                     ProjectCreateView,
                     ProjectDetailView,
                     ProjectFeedView,
-                    ProjectPlaylistFeedView,
-                    FeedItemDetail,)
+                    ProjectPlaylistFeedView,)
 
 
 urlpatterns = patterns('',

@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Project, ProjectCollaborator, FeedItem
+from .models import Project, ProjectCollaborator
 
-admin.site.register([Project, ProjectCollaborator, FeedItem])
+admin.site.register([Project, ProjectCollaborator])

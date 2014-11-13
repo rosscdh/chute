@@ -3,8 +3,8 @@ from django.conf.urls import patterns, url
 
 from rest_framework import routers
 
-from chute.apps.project.api.views import (ProjectViewSet,
-                                          FeedItemViewSet,)
+from chute.apps.feed.api.views import (FeedItemViewSet,)
+from chute.apps.project.api.views import (ProjectViewSet,)
 from chute.apps.playlist.api.views import (PlaylistViewSet,
                                            ProjectPlaylistEndpoint,
                                            ProjectPlaylistDestroyEndpoint,)

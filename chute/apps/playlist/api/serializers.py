@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from chute.apps.project.api.serializers import FeedItemSerializer
+from chute.apps.feed.api.serializers import FeedItemSerializer
 from ..models import Playlist
 
 

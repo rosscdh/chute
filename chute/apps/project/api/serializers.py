@@ -4,55 +4,15 @@ from rest_framework import serializers
 import urlparse
 
 from chute.apps.me.api.serializers import CollaboratorSerializer
-from ..models import Project, FeedItem
+from chute.apps.feed.api.serializers import FeedItemSerializer
+
+from chute.apps.feed.models import FeedItem
+from ..models import Project
 
 import urllib2
 import datetime
 import dateutil.parser
 
-
-def _get_date_now():
-    return datetime.datetime.utcnow().isoformat('T')
-
-
-class CustomDateTimeField(serializers.DateTimeField):
-    # def from_native(self, value):
-    #     return datetime.datetime(value).isoformat('T')
-
-    def to_native(self, value):
-        if value is None:
-            value = _get_date_now()
-        return dateutil.parser.parse(value)
-
-
-class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
-    pk = serializers.Field(source='pk')
-    name = serializers.CharField(required=False)
-    message = serializers.CharField(required=False)
-    description = serializers.CharField(required=False)
-    #picture = serializers.Field(source='data.picture')
-    picture = serializers.SerializerMethodField('get_picture')
-    updated_at = CustomDateTimeField(source='data.updated_time')
-    absolute_url = serializers.Field(source='get_absolute_url')
-    template_name = serializers.Field(source='template_name')
-    post_type = serializers.Field(source='post_type_name')
-
-    class Meta:
-        model = FeedItem
-        lookup_field = 'pk'
-        exclude = ('data', 'project',)
-
-    def get_picture(self, obj):
-        picture = obj.data.get('picture')
-        if picture:
-            if 'safe_image.php' in picture:
-                picture = urllib2.unquote(picture)
-                url = dict(urlparse.parse_qsl(urlparse.urlsplit(picture).query))
-                return url.get('url', None)
-            else:
-                return picture.replace('/v/t1.0-9/s130x130','')
-        else:
-            return picture
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -83,6 +43,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_collaborators(self, obj):
         return CollaboratorSerializer(obj.projectcollaborator_set.all(), many=True).data
+
 
 class ProjectMiniSerializer(ProjectSerializer):
     class Meta(ProjectSerializer.Meta):

@@ -1,0 +1,41 @@
+{% extends "password_reset/base.html" %}
+
+{% load url from future %}{% load crispy_forms_tags i18n %}
+
+{% block page_title %}{% trans "Recover my password" %} — {{ block.super }}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block body_class %}entry-pages{% endblock %}
+
+{% block prebody %}
+	<div class="row">
+		<div class="col-lg-4 col-lg-offset-4 col-sm-8 col-sm-offset-2 col-xs-12">
+
+			<div class="signup-wrap">
+				<div class="logo-wrap">
+					<h4>{% trans "Recover my password" %}</h4>
+				</div>
+				<form id="recover-password" method="post" action="{{ url }}" parsley-validate>
+					{% csrf_token %}
+					{% block form %}
+						{% crispy form %}
+					{% endblock %}
+					<p><input id="btn-recover-password" type="submit" value="{% trans "Recover my password" %}" class="btn btn-primary"></p>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function () {
+	'use strict';
+	$('#btn-recover-password').on('click', function(event) {
+		$('#recover-password').submit();
+	})
+});
+</script>
+{% endblock %}

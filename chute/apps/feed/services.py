@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 # from vimeo import vimeo
 import heywatch
 
-HEYWATCH = settings.get('HEYWATCH', {})
+HEYWATCH = getattr(settings, 'HEYWATCH', {})
 
 
 # class VimeoChannelVideos(object):
@@ -33,12 +33,11 @@ class VideoTranscodeService(object):
   def create(self):
 
     download_resp = self.hw.create('download',
-                                   url='http://site.com/yourvideo.mp4',
-                                   title='yourtitle')
-
+                                   url='https://s3-eu-west-1.amazonaws.com/dev-revision/uploaded_video/20856451.mov',
+                                   title='Test 1')
+    import pdb;pdb.set_trace()
     job_resp = self.hw.create('job',
-                              video_id=download_resp.get('video_id'),
+                              video_id=download_resp.get('id'),
                               format_id='mp4_720p',
-                              keep_video_size=True,
-                              ping_url_after_encode=self.webhook_url,
-                              s3_directive='s3://accesskey:secretkey@myvideobucket/flv/123434.flv')
+                              ping_url_after_encode=self.webhook_url)
+    import pdb;pdb.set_trace()

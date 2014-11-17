@@ -18,7 +18,7 @@ except (OperationalError, ProgrammingError):
     """
     Allow for no tables created yet when running syncdb
     """
-    pass
+    CURRENT_SITE = None
 
 
 def _DOMAIN_WITH_END_SLASH():

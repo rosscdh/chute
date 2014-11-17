@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -154,6 +155,11 @@ SOCIAL_AUTH_FACEBOOK_KEY = '317444045109900'
 SOCIAL_AUTH_FACEBOOK_SECRET = '453cb652cff25fca613c2cfe1adebf21'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+HEYWATCH = {
+    'USERNAME': 'HW-API-Key',
+    'PASSWORD': 'k-b823eaa01d6107424d34f694402024b6',
+}
 
 PIPELINE_CSS = {
     'base': {

@@ -21,6 +21,9 @@ facebook-sdk
 Pillow
 sorl-thumbnail==11.12
 
+# Video transcoding
+heywatch
+
 # Payments
 stripe==1.18.0
 # django-stripe-payments==2.0b34

@@ -74,8 +74,6 @@ HELPER_APPS = (
 
     # Asset pipeline
     'pipeline',
-
-    'django_extensions',
 )
 
 

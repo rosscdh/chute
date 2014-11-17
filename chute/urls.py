@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^me/', include('chute.apps.me.urls', namespace='me')),
 
     url(r'^project/', include('chute.apps.project.urls', namespace='project')),
+    url(r'^feed/', include('chute.apps.feed.urls', namespace='feed')),
 
     url(r'^', include('social.apps.django_app.urls', namespace='social')),
     #url(r'^', TemplateView.as_view(template_name='base.html'), name='base'),

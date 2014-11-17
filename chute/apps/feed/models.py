@@ -19,6 +19,7 @@ CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
     (1, 'basic', 'Basic Template'),
     (2, 'image_left', 'Image Left'),
     (3, 'image', 'Image Simple'),
+    (4, 'video_full', 'Fullscreen Video'),
 ))
 
 
@@ -62,10 +63,12 @@ class FeedItem(models.Model):
     def post_type_name(self):
         return self.POST_TYPES.get_name_by_value(self.post_type)
 
-
     def __unicode__(self):
         return u'%s (%s)' % (self.name,
                              self.project_name)
 
     def get_absolute_url(self):
         return reverse('project:feeditem_detail', kwargs={'slug': self.project.slug, 'pk': self.pk})
+
+    def get_webhook_url(self):
+        return reverse('feed:webhook_heywatch', kwargs={'pk': self.pk})

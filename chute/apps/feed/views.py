@@ -26,3 +26,7 @@ class FeedItemDetail(DetailView):
                                                         many=True,
                                                         context={'request': self.request}).data)
 
+
+class VideoTranscodeWebhookView(DetailView):
+    template_name = 'feed/webhook.html'
+    model = FeedItem

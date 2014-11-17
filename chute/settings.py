@@ -65,6 +65,7 @@ HELPER_APPS = (
 
     'sorl',
     'payments',
+    'storages',
     'braces',
 
     'social.apps.django_app.default',

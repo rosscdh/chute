@@ -165,23 +165,35 @@ HEYWATCH = {
     'PASSWORD': 'k-b823eaa01d6107424d34f694402024b6',
 }
 
+# AWS
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", 'dev-chute')
+
+AWS_HEADERS = {
+    'Cache-Control': 'max-age=86400',
+    'x-amz-acl': 'public-read',
+}
+
 RQ_QUEUES = {
     'default': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
         #'PASSWORD': 'some-password',
-        #'DEFAULT_TIMEOUT': 360,
+        'DEFAULT_TIMEOUT': 3600,
     },
     'high': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
+        'DEFAULT_TIMEOUT': 3600,
     },
     'low': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
+        'DEFAULT_TIMEOUT': 3600,
     }
 }
 

@@ -44,6 +44,7 @@ django-password-reset
 # Storage
 django-storages
 boto
+s3
 
 dj-database-url
 pytz

@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import FeedItem
+from .models import FeedItem, Video
 
-admin.site.register([FeedItem])
+admin.site.register([FeedItem, Video])

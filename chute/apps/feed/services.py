@@ -30,6 +30,9 @@ HEYWATCH = getattr(settings, 'HEYWATCH', {})
 
 
 class VideoTranscodeService(object):
+  PREFERRED_FORMAT = 'HLS_416x234_110K' # http://www.heywatchencoding.com/h265
+  # http://www.heywatchencoding.com/http-live-streaming-tutorial
+
   def __init__(self, video):
     self.video = video
     self.hw = heywatch.API(HEYWATCH.get('USERNAME'),
@@ -88,7 +91,7 @@ class VideoTranscodeService(object):
       if video_id is not None:
         job_resp = self.hw.create('job',
                                   video_id=video_id,
-                                  format_id='ios_720p',
+                                  format_id=self.PREFERRED_FORMAT,
                                   ping_url_after_encode=ABSOLUTE_BASE_URL(str(self.video.get_webhook_url())))
         # save the job response object
         self.video.job_info = job_resp
@@ -125,7 +128,7 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
                 # error out
                 logger.error('Could not download the video: %s (video_id: %s) due to: %s' % (video_url, self.video.video_id, request))
 
-            lf = tempfile.NamedTemporaryFile()
+            lf = tempfile.NamedTemporaryFile(suffix='.mov')
 
             # Read the streamed image in sections
             logger.debug('Writing downloaded file to local temp file')
@@ -138,4 +141,7 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
                 lf.write(block)
 
             logger.debug('Saving file to video.video object (s3)')
-            self.video.video.save(files.File(lf))
+            video_name = getattr(self.video, 'name', 'Untitled Video')
+            #self.video.video.save(video_name, files.File(lf))
+            self.video.video = files.File(lf)
+            self.video.save(update_fields=['video'])

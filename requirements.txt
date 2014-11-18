@@ -24,6 +24,9 @@ sorl-thumbnail==11.12
 # Video transcoding
 heywatch
 
+# Queue processign
+django-rq
+
 # Payments
 stripe==1.18.0
 # django-stripe-payments==2.0b34

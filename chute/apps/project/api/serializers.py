@@ -6,7 +6,6 @@ import urlparse
 from chute.apps.me.api.serializers import CollaboratorSerializer
 from chute.apps.feed.api.serializers import FeedItemSerializer
 
-from chute.apps.feed.models import FeedItem
 from ..models import Project
 
 import urllib2

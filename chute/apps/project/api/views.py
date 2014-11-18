@@ -4,13 +4,11 @@ from rest_framework import viewsets
 from chute.apps.client.models import Client
 
 from ..models import (Project,
-                      FeedItem,
                       ProjectCollaborator)
 from ..signals import (get_facebook_details,
                        get_facebook_feed,
                        populate_playlist_with_feed,)
-from .serializers import (ProjectSerializer,
-                          FeedItemSerializer,)
+from .serializers import (ProjectSerializer,)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -36,11 +34,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
         populate_playlist_with_feed.send(sender=self, playlist=obj.playlist_set.all().first(), project=obj)
 
         return super(ProjectViewSet, self).post_save(obj, created=created)
-
-
-class FeedItemViewSet(viewsets.ModelViewSet):
-    """
-    """
-    queryset = FeedItem.objects.all()
-    serializer_class = FeedItemSerializer
-    lookup_field = 'pk'

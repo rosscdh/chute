@@ -13,6 +13,8 @@ import os
 import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+PROJECT_ENVIRONMENT = 'dev'
+
 IS_TESTING = False
 for test_app in ['testserver','test', 'jenkins']:
     if test_app in sys.argv[1:2]:
@@ -73,7 +75,8 @@ HELPER_APPS = (
     'parsley',
     'crispy_forms',
     'templatetag_handlebars',
-
+    # Queue
+    'django_rq',
     # Asset pipeline
     'pipeline',
 )
@@ -160,6 +163,26 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 HEYWATCH = {
     'USERNAME': 'HW-API-Key',
     'PASSWORD': 'k-b823eaa01d6107424d34f694402024b6',
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        #'PASSWORD': 'some-password',
+        #'DEFAULT_TIMEOUT': 360,
+    },
+    'high': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    'low': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    }
 }
 
 PIPELINE_CSS = {

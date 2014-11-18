@@ -70,6 +70,3 @@ class FeedItem(models.Model):
     def get_absolute_url(self):
         return reverse('project:feeditem_detail', kwargs={'slug': self.project.slug, 'pk': self.pk})
 
-    def get_webhook_url(self):
-        from chute.apps.public.templatetags.chute_tags import ABSOLUTE_BASE_URL
-        return ABSOLUTE_BASE_URL(reverse('feed:webhook_heywatch', kwargs={'pk': self.pk}))

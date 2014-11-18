@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 
 from chute.utils import (get_namedtuple_choices, _managed_S3BotoStorage)
 
-from ..signals import transcode_original_video
+#from ..signals import transcode_original_video
 
 from jsonfield import JSONField
 from uuidfield import UUIDField
@@ -48,6 +48,7 @@ class Video(models.Model):
     feed_item = models.ForeignKey('feed.FeedItem')
     name = models.CharField(max_length=255)
     video = models.FileField(upload_to=_upload_video,
+                             storage=_managed_S3BotoStorage(),
                              max_length=255,
                              null=True,
                              blank=True)
@@ -55,6 +56,10 @@ class Video(models.Model):
     video_type = models.IntegerField(choices=VIDEO_TYPES.get_choices(),
                                      default=VIDEO_TYPES.video_mp4,
                                      db_index=True)
+    # store the retrieved video id for lookups
+    # 0 is a HeyWAtch convention means not-processed
+    video_id = models.IntegerField(default=0, blank=True, null=True, db_index=True)
+
     data = JSONField(default={})
 
     class Meta:
@@ -75,17 +80,50 @@ class Video(models.Model):
     def display_type(self):
         return self.VIDEO_TYPES.get_desc_by_value(self.video_type)
 
+    @property
+    def pre_transcode_storage_url(self):
+        return self.data.get('pre_transcode_storage_url', None)
+
+    @pre_transcode_storage_url.setter
+    def pre_transcode_storage_url(self, value):
+        self.data['pre_transcode_storage_url'] = value
+
+    @property
+    def download_info(self):
+        return self.data.get('download_info', {})
+
+    @download_info.setter
+    def download_info(self, value):
+        self.data['download_info'] = value
+
+    @property
+    def download_id(self):
+        return self.data.get('download_info', {}).get('id', 0)  # 0 is heywatches convention
+
+    @download_id.setter
+    def download_id(self, value):
+        info = self.download_info
+        info['id'] = value
+
+    @property
+    def job_info(self):
+        return self.data.get('job_info', {})
+
+    @job_info.setter
+    def job_info(self, value):
+        self.data['job_info'] = value
+
     def __unicode__(self):
         return u'%s' % self.name
 
-    def subtitles_url(self):
-        return reverse_lazy('project:video_subtitles_url', kwargs={'slug': self.project.slug, 'version_slug': self.slug})
+    def get_webhook_url(self):
+        return reverse_lazy('feed:webhook_heywatch', kwargs={'pk': self.pk})
 
-    def get_absolute_url(self):
-        return reverse_lazy('project:with_video_detail', kwargs={'slug': self.project.slug, 'version_slug': str(self.slug)})
+    # def get_absolute_url(self):
+    #     return reverse_lazy('project:with_video_detail', kwargs={'slug': self.project.slug, 'version_slug': str(self.slug)})
 
 
 #
 # Signals
 #
-post_save.connect(transcode_original_video, sender=Video, dispatch_uid='video.post_save.transcode_original_video')
+#post_save.connect(transcode_original_video, sender=Video, dispatch_uid='video.post_save.transcode_original_video')

@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 
 from rest_framework import routers
 
-from chute.apps.feed.api.views import (FeedItemViewSet,)
+from chute.apps.feed.api.views import (FeedItemViewSet, VideoViewSet)
 from chute.apps.project.api.views import (ProjectViewSet,)
 from chute.apps.playlist.api.views import (PlaylistViewSet,
                                            ProjectPlaylistEndpoint,
@@ -23,6 +23,7 @@ ViewSets
 router.register(r'users', UserProfileViewSet)
 router.register(r'projects', ProjectViewSet)
 router.register(r'feed', FeedItemViewSet)
+router.register(r'video', VideoViewSet)
 router.register(r'playlist', PlaylistViewSet)
 
 

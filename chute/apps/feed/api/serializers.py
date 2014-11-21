@@ -4,7 +4,8 @@ from rest_framework import serializers
 import urlparse
 
 from chute.apps.me.api.serializers import CollaboratorSerializer
-from ..models import FeedItem
+
+from ..models import (FeedItem, Video,)
 
 import urllib2
 import datetime
@@ -50,3 +51,9 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
                 return picture.replace('/v/t1.0-9/s130x130','')
         else:
             return picture
+
+
+class VideoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Video
+        lookup_field = 'slug'

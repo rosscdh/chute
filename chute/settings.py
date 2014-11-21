@@ -220,6 +220,7 @@ PIPELINE_JS = {
     },
     'base': {
         'source_filenames': (
+            'js/pusher.min.js',
             'js/showdown-0.3.1.min.js',
         ),
         'output_filename': 'js/dist/base.js'
@@ -266,6 +267,8 @@ PIPELINE_JS = {
     'project': {
         'source_filenames': (
             # helpers
+            'js/evaporate-0.0.2.js',
+            'js/videouploader.jsx',
             # react components
             'js/project_collaborators.jsx',
             # 'js/project_comments.jsx',

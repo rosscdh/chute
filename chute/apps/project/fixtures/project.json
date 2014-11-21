@@ -34,13 +34,22 @@
   {
     "fields": {
       "name": "Version 1",
+      "project": 1,
+      "data": {}
+    },
+    "model": "feed.feeditem",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "Version 1",
       "video_url": "https://s3-eu-west-1.amazonaws.com/dev-revision/20856655.ogg",
       "video_type": 3,
-      "project": 1,
+      "feed_item": 1,
       "data": {},
-      "slug": "75d4d8ee0f654200998bd6a1e5696358"
+      "slug": "75d4d8ee0f654200998bd6a1e5696357"
     },
-    "model": "project.video",
+    "model": "feed.video",
     "pk": 1
   }
 ]

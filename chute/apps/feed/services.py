@@ -81,6 +81,17 @@ class VideoTranscodeService(object):
       # Now create the video transcode job
       self.create_job()
 
+  def re_create(self):
+      """
+      If the video.pre_transcode_storage_url is changed to a enw one
+      we should then delete the old one
+      """
+      self.video.video.delete()  # remove the current transcoded file from s3
+      # should probably also delete the current video.pre_transcode_storage_url
+      # as there is a bit of a churn here
+      # no issue a normal create event
+      self.create()
+
   def create_job(self):
       """
       Should be made async

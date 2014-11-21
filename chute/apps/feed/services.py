@@ -62,7 +62,10 @@ class VideoTranscodeService(object):
         # update the download resp info
         self.video.video_id = video_id
         self.video.download_info = download_resp
-        self.video.save(update_fields=['video_id', 'data'])
+  
+        if self.video.pk is not None:
+            # only if we are updating an existing video
+            self.video.save(update_fields=['video_id', 'data'])
 
     return video_id
 
@@ -71,15 +74,23 @@ class VideoTranscodeService(object):
       return self.hw.info('video', self.video.video_id)
 
   def create(self):
-      download_resp = self.hw.create('download',
-                                     url=self.video.pre_transcode_storage_url,
-                                     title=self.video.name)
+      if not self.video.pre_transcode_storage_url:
+        logger.error('no video.pre_transcode_storage_url defined for %s value is: %s' % (self.video, self.video.pre_transcode_storage_url))
 
-      self.video.download_info = download_resp
-      self.video.save(update_fields=['data'])
+      else:
+          logger.info('Creating heywatch download object')
+          download_resp = self.hw.create('download',
+                                         url=self.video.pre_transcode_storage_url,
+                                         title=self.video.name)
 
-      # Now create the video transcode job
-      self.create_job()
+          self.video.download_info = download_resp
+
+          if self.video.pk is not None:
+              # only if we are updating an existing video
+              self.video.save(update_fields=['data'])
+
+          # Now create the video transcode job
+          self.create_job()
 
   def re_create(self):
       """
@@ -100,13 +111,16 @@ class VideoTranscodeService(object):
       video_id = self.retrieve_video_id(download_id=self.video.download_id)
 
       if video_id is not None:
-        job_resp = self.hw.create('job',
-                                  video_id=video_id,
-                                  format_id=self.PREFERRED_FORMAT,
-                                  ping_url_after_encode=ABSOLUTE_BASE_URL(str(self.video.get_webhook_url())))
-        # save the job response object
-        self.video.job_info = job_resp
-        self.video.save(update_fields=['data'])
+          job_resp = self.hw.create('job',
+                                    video_id=video_id,
+                                    format_id=self.PREFERRED_FORMAT,
+                                    ping_url_after_encode=ABSOLUTE_BASE_URL(str(self.video.get_webhook_url())))
+          # save the job response object
+          self.video.job_info = job_resp
+
+          if self.video.pk is not None:
+              # only if we are updating an existing video
+              self.video.save(update_fields=['data'])
 
       return job_resp, self.video
 
@@ -155,4 +169,7 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
             video_name = getattr(self.video, 'name', 'Untitled Video')
             #self.video.video.save(video_name, files.File(lf))
             self.video.video = files.File(lf)
-            self.video.save(update_fields=['video'])
+
+            if self.video.pk is not None:
+                # only if we are updating an existing video
+              self.video.save(update_fields=['video'])

@@ -2,6 +2,8 @@ Django
 djangorestframework==2.4.3
 django-filter
 
+psycopg2
+
 django-templatetag-handlebars
 django-parsley==0.5
 django-crispy-forms==1.4.0
@@ -23,6 +25,7 @@ sorl-thumbnail==11.12
 
 # Video transcoding
 heywatch
+httplib2 # required for heywatch
 
 # Queue processign
 django-rq

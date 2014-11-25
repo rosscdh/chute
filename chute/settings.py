@@ -237,7 +237,8 @@ PIPELINE_JS = {
     },
     'react': {
         'source_filenames': (
-            'js/reactjs/0.11.1/react-with-addons.js',
+            #'js/reactjs/0.11.1/react-with-addons.js',
+            'js/reactjs/0.12.1/react-with-addons.js',
             'js/common.jsx',
             'js/messages.jsx',
             #'js/videoplayer.jsx',

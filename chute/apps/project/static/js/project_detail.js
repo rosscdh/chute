@@ -22,8 +22,8 @@ var AddFeedItemBtn = React.createClass({displayName: 'AddFeedItemBtn',
         });
     },
     render: function () {
-        return (React.DOM.button({onClick: this.handleClick, className: "btn btn-success btn-xs"}, 
-            React.DOM.span({className: "glyphicon glyphicon-plus"})
+        return (React.createElement("button", {onClick: this.handleClick, className: "btn btn-success btn-xs"}, 
+            React.createElement("span", {className: "glyphicon glyphicon-plus"})
         ));
     }
 });
@@ -43,8 +43,8 @@ var RemoveFeedItemBtn = React.createClass({displayName: 'RemoveFeedItemBtn',
         });
     },
     render: function () {
-        return (React.DOM.button({onClick: this.handleClick, className: "btn btn-xs"}, 
-            React.DOM.span({className: "glyphicon glyphicon-remove"})
+        return (React.createElement("button", {onClick: this.handleClick, className: "btn btn-xs"}, 
+            React.createElement("span", {className: "glyphicon glyphicon-remove"})
         ));
     }
 });
@@ -112,34 +112,34 @@ var FeedPreviewView = React.createClass({displayName: 'FeedPreviewView',
             'height': '640px;',
         };
 
-        return (React.DOM.span(null, 
-          React.DOM.h3(null, "Preview"), 
-          React.DOM.nav({className: "navbar navbar-default", role: "navigation"}, 
-            React.DOM.div({className: "container-fluid"}, 
-              React.DOM.div({className: "row"}, 
-                React.DOM.form({className: "form-inline", role: "form"}, 
+        return (React.createElement("span", null, 
+          React.createElement("h3", null, "Preview"), 
+          React.createElement("nav", {className: "navbar navbar-default", role: "navigation"}, 
+            React.createElement("div", {className: "container-fluid"}, 
+              React.createElement("div", {className: "row"}, 
+                React.createElement("form", {className: "form-inline", role: "form"}, 
                     "#", feed_item.pk, 
-                    React.DOM.div({className: "form-group"}, 
-                      React.DOM.div({className: "input-group col-xs-9"}, 
-                        React.DOM.div({className: "input-group-addon"}, "show for"), 
-                        React.DOM.input({className: "form-control input-sm", ref: "wait_for", type: "integer", onChange: this.handleFeedItemUpdate, placeholder: "Number of", value: feed_item.wait_for}), 
-                        React.DOM.div({className: "input-group-addon"}, "sec")
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("div", {className: "input-group col-xs-9"}, 
+                        React.createElement("div", {className: "input-group-addon"}, "show for"), 
+                        React.createElement("input", {className: "form-control input-sm", ref: "wait_for", type: "integer", onChange: this.handleFeedItemUpdate, placeholder: "Number of", value: feed_item.wait_for}), 
+                        React.createElement("div", {className: "input-group-addon"}, "sec")
                       )
                     ), 
 
-                    React.DOM.div({className: "form-group"}, 
-                        React.DOM.ul({className: "nav navbar-nav"}, 
-                          React.DOM.li({className: "dropdown"}, 
-                            React.DOM.a({href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Using Template ", React.DOM.span({className: "caret"})), 
-                            React.DOM.ul({className: "dropdown-menu", role: "menu"}, 
-                              React.DOM.li(null, 
-                                React.DOM.a({href: "#", className: "thumbnail"}, React.DOM.img({'data-src': "holder.js/100%x100", alt: "..."}))
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("ul", {className: "nav navbar-nav"}, 
+                          React.createElement("li", {className: "dropdown"}, 
+                            React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Using Template ", React.createElement("span", {className: "caret"})), 
+                            React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
+                              React.createElement("li", null, 
+                                React.createElement("a", {href: "#", className: "thumbnail"}, React.createElement("img", {'data-src': "holder.js/100%x100", alt: "..."}))
                               ), 
-                              React.DOM.li(null, 
-                                React.DOM.a({href: "#", className: "thumbnail"}, React.DOM.img({'data-src': "holder.js/100%x100", alt: "..."}))
+                              React.createElement("li", null, 
+                                React.createElement("a", {href: "#", className: "thumbnail"}, React.createElement("img", {'data-src': "holder.js/100%x100", alt: "..."}))
                               ), 
-                              React.DOM.li(null, 
-                                React.DOM.a({href: "#", className: "thumbnail"}, React.DOM.img({'data-src': "holder.js/100%x100", alt: "..."}))
+                              React.createElement("li", null, 
+                                React.createElement("a", {href: "#", className: "thumbnail"}, React.createElement("img", {'data-src': "holder.js/100%x100", alt: "..."}))
                               )
                             )
                           )
@@ -149,7 +149,7 @@ var FeedPreviewView = React.createClass({displayName: 'FeedPreviewView',
               )
             )
           ), 
-          React.DOM.iframe({ref: "feed_item_detail", src: feed_item.absolute_url, border: "0", style: iframe_style})
+          React.createElement("iframe", {ref: "feed_item_detail", src: feed_item.absolute_url, border: "0", style: iframe_style})
         ));
 
     },
@@ -194,12 +194,12 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
         var remove_btn = null;
 
         if ( is_in_playlist === false && show_button === true ) {
-            add_btn = AddFeedItemBtn({current_playlist: this.props.current_playlist, 
+            add_btn = React.createElement(AddFeedItemBtn, {current_playlist: this.props.current_playlist, 
                                       node: node})
         }
 
         if ( is_in_playlist === true ) {
-            remove_btn = RemoveFeedItemBtn({current_playlist: this.props.current_playlist, 
+            remove_btn = React.createElement(RemoveFeedItemBtn, {current_playlist: this.props.current_playlist, 
                                             node: node})
 
         }
@@ -208,7 +208,7 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
             'background-image': 'url('+ node.picture +')',
         };
 
-        return (React.DOM.a({href: "javascript:;", 
+        return (React.createElement("a", {href: "javascript:;", 
                    onClick: this.handleClick.bind( this, node), 
                    onDragStart: this.handleDragStart, 
                    onDragOver: this.handleDragOver, 
@@ -216,12 +216,12 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
                    style: pictureStyle, 
                    className: "feeditem_list_picture list-group-item"}, 
 
-                React.DOM.div({className: "col-xs-8"}, 
-                    React.DOM.h4({className: "list-group-item-heading"}, node.name), 
-                    React.DOM.p({className: "small list-group-item-text"}, node.template_name, " (", node.post_type, ")"), 
-                    React.DOM.p({className: "small list-group-item-text"}, updated_at)
+                React.createElement("div", {className: "col-xs-8"}, 
+                    React.createElement("h4", {className: "list-group-item-heading"}, node.name), 
+                    React.createElement("p", {className: "small list-group-item-text"}, node.template_name, " (", node.post_type, ")"), 
+                    React.createElement("p", {className: "small list-group-item-text"}, updated_at)
                 ), 
-                React.DOM.div({className: "col-xs-1"}, 
+                React.createElement("div", {className: "col-xs-1"}, 
                     add_btn, 
                     remove_btn
                 )
@@ -231,75 +231,75 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
 
 
 // base view
-var FeedView = React.createClass({displayName: 'FeedView',
-    getInitialState: function () {
-        var current_playlist = Playlist[0] || {'feed': []};
+// var FeedView = React.createClass({
+//     getInitialState: function () {
+//         var current_playlist = Playlist[0] || {'feed': []};
 
-        return {
-            'playlists': Playlist,
-            'current_playlist': current_playlist,
-            'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
-            'feed': Project.feed,
-            'total_num_projects': Project.feed.length,
-            'searched': false,
-        }
-    },
-    playlistFeedItemPks: function ( playlist ) {
-        return playlist.feed.map( function( node ) {
-            return node.pk
-        });
-    },
-    feedIsInPlaylist: function ( feed_item ) {
-        return this.state.current_playlist_pks.indexOf( feed_item.pk ) >= 0;
-    },
-    onMessage: function ( messages ) {
-        var self = this;
-        this.setState({
-            'messages': messages,
-        });
-        // reset messages after a time period
-        // $.delay( 5200, function ( a ) {
-        //     $('.messages').fadeOut( 'slow' );
-        // });
-    },
-    render: function () {
-        var self = this;
+//         return {
+//             'playlists': Playlist,
+//             'current_playlist': current_playlist,
+//             'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
+//             'feed': Project.feed,
+//             'total_num_projects': Project.feed.length,
+//             'searched': false,
+//         }
+//     },
+//     playlistFeedItemPks: function ( playlist ) {
+//         return playlist.feed.map( function( node ) {
+//             return node.pk
+//         });
+//     },
+//     feedIsInPlaylist: function ( feed_item ) {
+//         return this.state.current_playlist_pks.indexOf( feed_item.pk ) >= 0;
+//     },
+//     onMessage: function ( messages ) {
+//         var self = this;
+//         this.setState({
+//             'messages': messages,
+//         });
+//         // reset messages after a time period
+//         // $.delay( 5200, function ( a ) {
+//         //     $('.messages').fadeOut( 'slow' );
+//         // });
+//     },
+//     render: function () {
+//         var self = this;
 
-        var feedNodes = this.state.feed.map( function( node ) {
-            var show_add_btn = true;
-            var is_in_playlist = self.feedIsInPlaylist( node );
-            var key = 'feedlist-n-{pk}'.assign({'pk': node.pk});
-            return FeedNodeView({key: key, 
-                                 current_playlist: self.state.current_playlist, 
-                                 show_add_btn: show_add_btn, 
-                                 is_in_playlist: is_in_playlist, 
-                                 node: node});
-        });
+//         var feedNodes = this.state.feed.map( function( node ) {
+//             var show_add_btn = true;
+//             var is_in_playlist = self.feedIsInPlaylist( node );
+//             var key = 'feedlist-n-{pk}'.assign({'pk': node.pk});
+//             return <FeedNodeView key={key}
+//                                  current_playlist={self.state.current_playlist}
+//                                  show_add_btn={show_add_btn}
+//                                  is_in_playlist={is_in_playlist}
+//                                  node={node} />;
+//         });
 
-        return (React.DOM.span(null, 
-          React.DOM.h3(null, "Complete Feed"), 
-          React.DOM.nav({className: "navbar navbar-default", role: "navigation"}, 
-            React.DOM.div({className: "container-fluid"}, 
+//         return (<span>
+//           <h3>Complete Feed</h3>
+//           <nav className="navbar navbar-default" role="navigation">
+//             <div className="container-fluid">
 
-                React.DOM.button({type: "button", className: "btn btn-success btn-sm"}, 
-                  React.DOM.span({className: "glyphicon glyphicon glyphicon-plus"}), " Ad"
-                ), 
+//                 <button type="button" className="btn btn-success btn-sm">
+//                   <span className="glyphicon glyphicon glyphicon-plus"></span> Ad
+//                 </button>
 
-                React.DOM.form({className: "form-inline pull-right", role: "form"}, 
-                    React.DOM.div({className: "form-group"}, 
-                      React.DOM.input({type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
-                    )
-                )
+//                 <form className="form-inline pull-right" role="form">
+//                     <div className="form-group">
+//                       <input type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
+//                     </div>
+//                 </form>
 
-            )
-          ), 
-          React.DOM.div({className: "list-group"}, 
-                feedNodes
-          )
-        ));
+//             </div>
+//           </nav>
+//           <div className="list-group">
+//                 {feedNodes}
+//           </div>
+//         </span>);
 
-    },
-});
+//     },
+// });
 
 var PlaylistView = React.createClass({displayName: 'PlaylistView',
     getInitialState: function () {
@@ -339,7 +339,7 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
             var show_add_btn = false;
             var is_in_playlist = true;
             var key = 'playlist-node-{pk}'.assign({'pk': node.pk});
-            return FeedNodeView({key: key, 
+            return React.createElement(FeedNodeView, {key: key, 
                                  current_playlist: self.state.current_playlist, 
                                  show_add_btn: show_add_btn, 
                                  is_in_playlist: is_in_playlist, 
@@ -349,37 +349,37 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
         var playlistNodes = this.state.playlists.map( function ( playlist ) {
             var css_class = (playlist.name === self.state.current_playlist.name) ? 'active' : '' ;
             var key = 'playlist-{pk}'.assign({'pk': playlist.pk});
-            return (React.DOM.li({key: key, className: css_class}, React.DOM.a({href: "#"}, playlist.name)));
+            return (React.createElement("li", {key: key, className: css_class}, React.createElement("a", {href: "#"}, playlist.name)));
         });
 
-        return (React.DOM.span(null, 
-          React.DOM.h3(null, "Playlist"), 
-          React.DOM.nav({className: "navbar navbar-default", role: "navigation"}, 
-            React.DOM.div({className: "container-fluid"}, 
+        return (React.createElement("span", null, 
+          React.createElement("h3", null, "Playlist"), 
+          React.createElement("nav", {className: "navbar navbar-default", role: "navigation"}, 
+            React.createElement("div", {className: "container-fluid"}, 
 
-                React.DOM.ul({className: "nav navbar-nav"}, 
-                    React.DOM.li({className: "dropdown"}, 
-                        React.DOM.a({href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Playlists ", React.DOM.span({className: "caret"})), 
+                React.createElement("ul", {className: "nav navbar-nav"}, 
+                    React.createElement("li", {className: "dropdown"}, 
+                        React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Playlists ", React.createElement("span", {className: "caret"})), 
 
-                React.DOM.form({className: "form-inline pull-right", role: "form"}, 
-                    React.DOM.div({className: "form-group"}, 
-                      React.DOM.input({onChange: this.handleSearch, type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
+                React.createElement("form", {className: "form-inline pull-right", role: "form"}, 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("input", {onChange: this.handleSearch, type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
                     )
                 ), 
 
-                        React.DOM.ul({className: "dropdown-menu", role: "menu"}, 
-                            React.DOM.li({className: "btn btn-success"}, React.DOM.a({href: "#"}, "Add Playlist")), 
-                            React.DOM.li({className: "divider"}), 
+                        React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
+                            React.createElement("li", {className: "btn btn-success"}, React.createElement("a", {href: "#"}, "Add Playlist")), 
+                            React.createElement("li", {className: "divider"}), 
                             playlistNodes
                         ), 
-                        React.DOM.li(null, React.DOM.a({href: "#"}, this.state.current_playlist.name))
+                        React.createElement("li", null, React.createElement("a", {href: "#"}, this.state.current_playlist.name))
                     )
                 )
 
             )
           ), 
-          React.DOM.div({className: "draggable list-group"}, 
-            React.DOM.p(null, "(", this.state.total_num_items, ") results"), 
+          React.createElement("div", {className: "draggable list-group"}, 
+            React.createElement("p", null, "(", this.state.total_num_items, ") results"), 
             feedNodes
           )
         ));
@@ -388,23 +388,23 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
 });
 
 // render the Base set
-React.renderComponent(
-  FeedView(null),
-  document.getElementById('feed-list')
-);
+// React.renderComponent(
+//   <FeedView />,
+//   document.getElementById('feed-list')
+// );
 
 React.renderComponent(
-  PlaylistView(null),
+  React.createElement(PlaylistView, null),
   document.getElementById('playlist-feed-list')
 );
 
 React.renderComponent(
-  FeedPreviewView(null),
+  React.createElement(FeedPreviewView, null),
   document.getElementById('feed-preview')
 );
 
 // render the collaborators
 React.renderComponent(
-  CollaboratorListView(null),
+  React.createElement(CollaboratorListView, null),
   document.getElementById('project-detail-collaborators')
 );

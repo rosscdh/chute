@@ -231,75 +231,75 @@ var FeedNodeView = React.createClass({
 
 
 // base view
-var FeedView = React.createClass({
-    getInitialState: function () {
-        var current_playlist = Playlist[0] || {'feed': []};
+// var FeedView = React.createClass({
+//     getInitialState: function () {
+//         var current_playlist = Playlist[0] || {'feed': []};
 
-        return {
-            'playlists': Playlist,
-            'current_playlist': current_playlist,
-            'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
-            'feed': Project.feed,
-            'total_num_projects': Project.feed.length,
-            'searched': false,
-        }
-    },
-    playlistFeedItemPks: function ( playlist ) {
-        return playlist.feed.map( function( node ) {
-            return node.pk
-        });
-    },
-    feedIsInPlaylist: function ( feed_item ) {
-        return this.state.current_playlist_pks.indexOf( feed_item.pk ) >= 0;
-    },
-    onMessage: function ( messages ) {
-        var self = this;
-        this.setState({
-            'messages': messages,
-        });
-        // reset messages after a time period
-        // $.delay( 5200, function ( a ) {
-        //     $('.messages').fadeOut( 'slow' );
-        // });
-    },
-    render: function () {
-        var self = this;
+//         return {
+//             'playlists': Playlist,
+//             'current_playlist': current_playlist,
+//             'current_playlist_pks': this.playlistFeedItemPks( current_playlist ),
+//             'feed': Project.feed,
+//             'total_num_projects': Project.feed.length,
+//             'searched': false,
+//         }
+//     },
+//     playlistFeedItemPks: function ( playlist ) {
+//         return playlist.feed.map( function( node ) {
+//             return node.pk
+//         });
+//     },
+//     feedIsInPlaylist: function ( feed_item ) {
+//         return this.state.current_playlist_pks.indexOf( feed_item.pk ) >= 0;
+//     },
+//     onMessage: function ( messages ) {
+//         var self = this;
+//         this.setState({
+//             'messages': messages,
+//         });
+//         // reset messages after a time period
+//         // $.delay( 5200, function ( a ) {
+//         //     $('.messages').fadeOut( 'slow' );
+//         // });
+//     },
+//     render: function () {
+//         var self = this;
 
-        var feedNodes = this.state.feed.map( function( node ) {
-            var show_add_btn = true;
-            var is_in_playlist = self.feedIsInPlaylist( node );
-            var key = 'feedlist-n-{pk}'.assign({'pk': node.pk});
-            return <FeedNodeView key={key}
-                                 current_playlist={self.state.current_playlist}
-                                 show_add_btn={show_add_btn}
-                                 is_in_playlist={is_in_playlist}
-                                 node={node} />;
-        });
+//         var feedNodes = this.state.feed.map( function( node ) {
+//             var show_add_btn = true;
+//             var is_in_playlist = self.feedIsInPlaylist( node );
+//             var key = 'feedlist-n-{pk}'.assign({'pk': node.pk});
+//             return <FeedNodeView key={key}
+//                                  current_playlist={self.state.current_playlist}
+//                                  show_add_btn={show_add_btn}
+//                                  is_in_playlist={is_in_playlist}
+//                                  node={node} />;
+//         });
 
-        return (<span>
-          <h3>Complete Feed</h3>
-          <nav className="navbar navbar-default" role="navigation">
-            <div className="container-fluid">
+//         return (<span>
+//           <h3>Complete Feed</h3>
+//           <nav className="navbar navbar-default" role="navigation">
+//             <div className="container-fluid">
 
-                <button type="button" className="btn btn-success btn-sm">
-                  <span className="glyphicon glyphicon glyphicon-plus"></span> Ad
-                </button>
+//                 <button type="button" className="btn btn-success btn-sm">
+//                   <span className="glyphicon glyphicon glyphicon-plus"></span> Ad
+//                 </button>
 
-                <form className="form-inline pull-right" role="form">
-                    <div className="form-group">
-                      <input type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
-                    </div>
-                </form>
+//                 <form className="form-inline pull-right" role="form">
+//                     <div className="form-group">
+//                       <input type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
+//                     </div>
+//                 </form>
 
-            </div>
-          </nav>
-          <div className="list-group">
-                {feedNodes}
-          </div>
-        </span>);
+//             </div>
+//           </nav>
+//           <div className="list-group">
+//                 {feedNodes}
+//           </div>
+//         </span>);
 
-    },
-});
+//     },
+// });
 
 var PlaylistView = React.createClass({
     getInitialState: function () {
@@ -388,10 +388,10 @@ var PlaylistView = React.createClass({
 });
 
 // render the Base set
-React.renderComponent(
-  <FeedView />,
-  document.getElementById('feed-list')
-);
+// React.renderComponent(
+//   <FeedView />,
+//   document.getElementById('feed-list')
+// );
 
 React.renderComponent(
   <PlaylistView />,

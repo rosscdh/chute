@@ -249,7 +249,7 @@ PIPELINE_JS = {
     },
     'resources': {
         'source_filenames': (
-            'js/resources/resource.js',  # api
+            'js/resources/base_resources.js',  # api
             # resources api
             'js/resources/user_resource.js',
             'js/resources/project_resource.js',

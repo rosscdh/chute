@@ -23,8 +23,6 @@ urlpatterns = patterns('',
     url(r'^', include('chute.apps.public.urls', namespace='public')),
 )
 
-
-if settings.DEBUG is True:
-    # Add the MEDIA_URL to the dev environment
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Add the MEDIA_URL to the dev environment
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

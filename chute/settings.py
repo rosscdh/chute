@@ -205,7 +205,7 @@ PIPELINE_CSS = {
             'bootstrap/css/bootstrap.min.css',
             'css/sidebar.css',
         ),
-        'output_filename': 'js/dist/base.css',
+        'output_filename': 'css/dist/base.css',
         'extra_context': {
             'media': 'screen,projection',
         },

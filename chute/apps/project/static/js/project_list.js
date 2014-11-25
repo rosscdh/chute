@@ -25,7 +25,7 @@ var FlashMessageView = React.createClass({displayName: 'FlashMessageView',
     render: function () {
         blockClassName = (this.state.message !== null) ? 'alert alert-warning fade in' : 'hide' ;
         return (
-            React.DOM.div({className: blockClassName, role: "alert"}, 
+            React.createElement("div", {className: blockClassName, role: "alert"}, 
                 this.state.message
             )
         );
@@ -37,24 +37,24 @@ var ProjectItem = React.createClass({displayName: 'ProjectItem',
   render: function() {
 
     return (
-            React.DOM.article({className: "col-md-4 project"}, 
-                React.DOM.div({className: "card"}, 
+            React.createElement("article", {className: "col-md-4 project"}, 
+                React.createElement("div", {className: "card"}, 
 
                      this.props.editMatterInterface, 
 
-                    React.DOM.a({href:  this.props.detail_url, title:  this.props.name, className: "content"}, 
-                        React.DOM.div({className: "title"}, 
-                            React.DOM.h6(null,  this.props.project.client.name), 
-                            React.DOM.h5(null,  this.props.name), 
+                    React.createElement("a", {href:  this.props.detail_url, title:  this.props.name, className: "content"}, 
+                        React.createElement("div", {className: "title"}, 
+                            React.createElement("h6", null,  this.props.project.client.name), 
+                            React.createElement("h5", null,  this.props.name), 
                              this.props.currentUserRole
                         ), 
-                        React.DOM.div({className: "meta clearfix"}, 
+                        React.createElement("div", {className: "meta clearfix"}, 
                              this.props.lastupdated_or_complete, 
                              this.props.participantList
                         )
                     ), 
-                    React.DOM.div({className: "progress"}, 
-                        React.DOM.div({className: "progress-bar", style:  this.props.percentStyle})
+                    React.createElement("div", {className: "progress"}, 
+                        React.createElement("div", {className: "progress-bar", style:  this.props.percentStyle})
                     )
                 )
             )
@@ -70,25 +70,25 @@ var Participants = React.createClass({displayName: 'Participants',
             });
 
             return (
-                React.DOM.div({className: "people people-multi pull-right", 'data-toggle': "tooltip", title: userNames}, 
-                    React.DOM.div({className: "avatar img-circle one"}, 
-                        React.DOM.span({className: "initials"}, this.props.data.length)
+                React.createElement("div", {className: "people people-multi pull-right", 'data-toggle': "tooltip", title: userNames}, 
+                    React.createElement("div", {className: "avatar img-circle one"}, 
+                        React.createElement("span", {className: "initials"}, this.props.data.length)
                     ), 
-                    React.DOM.div({className: "avatar img-circle two"}, React.DOM.span({className: "initials"}, " ")), 
-                    React.DOM.div({className: "avatar img-circle three"}, React.DOM.span({className: "initials"}, " "))
+                    React.createElement("div", {className: "avatar img-circle two"}, React.createElement("span", {className: "initials"}, " ")), 
+                    React.createElement("div", {className: "avatar img-circle three"}, React.createElement("span", {className: "initials"}, " "))
                 )
             );
         } else {
             var userNodes = this.props.data.map(function(user) {
                 return (
-                    React.DOM.div({className: "avatar img-circle"}, 
-                        React.DOM.span({className: "initials", title: user.name}, user.initials)
+                    React.createElement("div", {className: "avatar img-circle"}, 
+                        React.createElement("span", {className: "initials", title: user.name}, user.initials)
                     )
                 )
             });
 
             return (
-                React.DOM.div({className: "people pull-right"}, 
+                React.createElement("div", {className: "people pull-right"}, 
                     userNodes
                 )
             );
@@ -106,14 +106,14 @@ var EditMatterInterface = React.createClass({displayName: 'EditMatterInterface',
         if (can_edit === true) {
 
             return (
-                React.DOM.a({href: edit_url, 'data-toggle': "modal", 'data-target': modal_target, className: "edit btn-sm"}, 
-                    React.DOM.span({className: "fui-gear", 'data-toggle': "tooltip", 'data-placement': "left", title: "Edit Matter Details"})
+                React.createElement("a", {href: edit_url, 'data-toggle': "modal", 'data-target': modal_target, className: "edit btn-sm"}, 
+                    React.createElement("span", {className: "fui-gear", 'data-toggle': "tooltip", 'data-placement': "left", title: "Edit Matter Details"})
                 )
             );
 
         } else {
 
-            return (React.DOM.span(null));
+            return (React.createElement("span", null));
         }
     }
 });
@@ -122,8 +122,8 @@ var EditMatterInterface = React.createClass({displayName: 'EditMatterInterface',
 var NoResultsInterface = React.createClass({displayName: 'NoResultsInterface',
     render: function() {
         return (
-            React.DOM.div({className: "col-md-12 text-center"}, 
-                React.DOM.h6({className: "text-muted"}, "No projects found")
+            React.createElement("div", {className: "col-md-12 text-center"}, 
+                React.createElement("h6", {className: "text-muted"}, "No projects found")
             )
         );
     },
@@ -133,7 +133,7 @@ var NoResultsInterface = React.createClass({displayName: 'NoResultsInterface',
 var CreateMatterButton = React.createClass({displayName: 'CreateMatterButton',
     render: function() {
         return (
-            React.DOM.a({'data-toggle': "modal", 'data-target': "#modal-project-create", className: "btn btn-success btn-embossed pull-right"}, React.DOM.i({className: "fui-plus"}), " New Project")
+            React.createElement("a", {'data-toggle': "modal", 'data-target': "#modal-project-create", className: "btn btn-success btn-embossed pull-right"}, React.createElement("i", {className: "fui-plus"}), " New Project")
         );
     },
 });
@@ -160,14 +160,14 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
     },
     render: function() {
         var projectNodes = null;
-        var flashMessage = FlashMessageView(null)
+        var flashMessage = React.createElement(FlashMessageView, null)
         var createButton = null;
         if (this.state.can_create) {
-            createButton = CreateMatterButton({create_url: Links.create_url})
+            createButton = React.createElement(CreateMatterButton, {create_url: Links.create_url})
         }
 
         if ( this.state.total_num_projects == 0 ) {
-            projectNodes = NoResultsInterface(null)
+            projectNodes = React.createElement(NoResultsInterface, null)
         } else {
             projectNodes = this.state.projects.map(function (project) {
                 var editUrl = Links.edit_url;
@@ -176,11 +176,11 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
                 var percentStyle = {'width': project.percent_complete};
                 var client_name = project.client.name;
 
-                var participantList = Participants({data: project.collaborators})
+                var participantList = React.createElement(Participants, {data: project.collaborators})
 
-                var editMatterInterface = EditMatterInterface({key: project.slug, can_edit: User.can_edit, edit_url: editUrl})
+                var editMatterInterface = React.createElement(EditMatterInterface, {key: project.slug, can_edit: User.can_edit, edit_url: editUrl})
 
-                return ProjectItem({
+                return React.createElement(ProjectItem, {
                         key: project.slug, 
                         name: project.name, 
                         project: project, 
@@ -196,20 +196,20 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
             });
         }
         return (
-            React.DOM.section({className: "projects cards"}, 
-                React.DOM.header({className: "page-header"}, 
-                    React.DOM.h2(null, "All Projects")
+            React.createElement("section", {className: "projects cards"}, 
+                React.createElement("header", {className: "page-header"}, 
+                    React.createElement("h2", null, "All Projects")
                 ), 
-                React.DOM.div({className: "row"}, 
+                React.createElement("div", {className: "row"}, 
                     createButton, 
-                    React.DOM.br(null), React.DOM.br(null), 
-                    React.DOM.div({className: "form-group"}, 
-                        React.DOM.div({className: "input-group col-xs-12 search-field"}, 
-                            React.DOM.input({type: "text", className: "form-control", placeholder: "Search projects by name or client name...", name: "q", autocomplete: "off", onChange: this.handleSearch})
+                    React.createElement("br", null), React.createElement("br", null), 
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("div", {className: "input-group col-xs-12 search-field"}, 
+                            React.createElement("input", {type: "text", className: "form-control", placeholder: "Search projects by name or client name...", name: "q", autocomplete: "off", onChange: this.handleSearch})
                         )
                     )
                 ), 
-                React.DOM.div({className: "row"}, 
+                React.createElement("div", {className: "row"}, 
                     flashMessage, 
                     projectNodes
                 )
@@ -219,6 +219,6 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
 });
 
 React.renderComponent(
-  ProjectList(null),
+  React.createElement(ProjectList, null),
   document.getElementById('project-list')
 );

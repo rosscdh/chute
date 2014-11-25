@@ -199,6 +199,8 @@ RQ_QUEUES = {
     }
 }
 
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
 PIPELINE_CSS = {
     'base': {
         'source_filenames': (

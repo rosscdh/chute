@@ -90,21 +90,21 @@ var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
         } // end validVideoFile
     },
     render: function () {
-        return (React.DOM.span(null, 
-            React.DOM.span({className: "btn btn-success btn-small fileinput-button"}, 
-                React.DOM.i({className: "glyphicon glyphicon-plus"}), 
-                React.DOM.span(null, "New Video"), 
-                React.DOM.input({id: "fileupload", onChange: this.handleNewFile, ref: "fileupload", type: "file", name: "video"})
+        return (React.createElement("span", null, 
+            React.createElement("span", {className: "btn btn-success btn-small fileinput-button"}, 
+                React.createElement("i", {className: "glyphicon glyphicon-plus"}), 
+                React.createElement("span", null, "New Video"), 
+                React.createElement("input", {id: "fileupload", onChange: this.handleNewFile, ref: "fileupload", type: "file", name: "video"})
             ), 
-            React.DOM.br(null), 
-            React.DOM.br(null), 
-            React.DOM.div({id: "progress", className: "progress hide"}, 
-                React.DOM.div({className: "progress-bar progress-bar-success"})
+            React.createElement("br", null), 
+            React.createElement("br", null), 
+            React.createElement("div", {id: "progress", className: "progress hide"}, 
+                React.createElement("div", {className: "progress-bar progress-bar-success"})
             ), 
-            React.DOM.div({id: "progress-conversion", className: "progress hide"}, 
-                React.DOM.div({className: "progress-bar progress-bar-success"})
+            React.createElement("div", {id: "progress-conversion", className: "progress hide"}, 
+                React.createElement("div", {className: "progress-bar progress-bar-success"})
             ), 
-            React.DOM.div({id: "files", className: "files"})
+            React.createElement("div", {id: "files", className: "files"})
         ));
     }
 });

@@ -22,12 +22,12 @@ var TimestampView = React.createClass({displayName: 'TimestampView',
         var handleSeek = (this.props.onSeekTo !== undefined) ? this.props.onSeekTo.bind( this, progress_seconds ) : null ;
 
         if ( handleSeek !== null ) {
-            return (React.DOM.span({className: classNames}, 
+            return (React.createElement("span", {className: classNames}, 
             handleSeek, 
-                React.DOM.a({href: timestamp_link, onClick: handleSeek}, stamp)
+                React.createElement("a", {href: timestamp_link, onClick: handleSeek}, stamp)
                 ));
         } else {
-            return (React.DOM.span({className: classNames}, 
+            return (React.createElement("span", {className: classNames}, 
                 stamp
                 ));
         }

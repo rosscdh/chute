@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for chute project.
 
@@ -62,6 +63,7 @@ DJANGO_CMS_APPS = (
 )
 
 HELPER_APPS = (
+    'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
 

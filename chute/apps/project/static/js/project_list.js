@@ -205,7 +205,7 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
                     React.createElement("br", null), React.createElement("br", null), 
                     React.createElement("div", {className: "form-group"}, 
                         React.createElement("div", {className: "input-group col-xs-12 search-field"}, 
-                            React.createElement("input", {type: "text", className: "form-control", placeholder: "Search projects by name or client name...", name: "q", autocomplete: "off", onChange: this.handleSearch})
+                            React.createElement("input", {type: "text", className: "form-control", placeholder: "Search projects by name or client name...", name: "q", autoComplete: "off", onChange: this.handleSearch})
                         )
                     )
                 ), 
@@ -218,7 +218,7 @@ var ProjectList = React.createClass({displayName: 'ProjectList',
     }
 });
 
-React.renderComponent(
+React.render(
   React.createElement(ProjectList, null),
   document.getElementById('project-list')
 );

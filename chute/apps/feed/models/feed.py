@@ -2,11 +2,13 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
+from uuidfield import UUIDField
 from jsonfield import JSONField
 
 from chute.utils import get_namedtuple_choices
 
 import hashlib
+
 
 CORE_POST_TYPES = get_namedtuple_choices('TEMPLATES', (
     (0, 'link', 'Link'),
@@ -26,6 +28,10 @@ CORE_TEMPLATES = get_namedtuple_choices('TEMPLATES', (
 class FeedItem(models.Model):
     POST_TYPES = CORE_POST_TYPES
     TEMPLATES = CORE_TEMPLATES
+
+    slug = UUIDField(auto=True,
+                     db_index=True,
+                     null=True)
 
     project = models.ForeignKey('project.Project')
     facebook_crc = models.CharField(max_length=255)

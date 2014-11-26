@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import (DetailView, UpdateView,)
-
+from django.views.generic import (DetailView, FormView, UpdateView,)
+from django.views.generic.edit import ModelFormMixin
 from rest_framework.renderers import JSONRenderer
 import django_rq
 
 from chute.apps.project.api.serializers import (ProjectMiniSerializer,)
+from chute.apps.project.models import (Project,)
 
 from .models import (FeedItem,)
 from .api.serializers import (FeedItemSerializer,)
 from .tasks import download_and_store_video
+from .forms import VideoFeedItemForm
 
 
 class FeedItemDetail(DetailView):
@@ -28,6 +30,22 @@ class FeedItemDetail(DetailView):
         return JSONRenderer().render(FeedItemSerializer((self.object,),
                                                         many=True,
                                                         context={'request': self.request}).data)
+
+
+class VideoFeedItemForm(FormView):
+    template_name = 'feed/feeditem_form.html'
+    form_class = VideoFeedItemForm
+    model = FeedItem
+
+    def dispatch(self, request, **kwargs):
+        self.project = Project.objects.get(slug=kwargs.get('project_slug'))
+        self.object = self.get_object()
+        return super(VideoFeedItemForm, self).dispatch(request=request, **kwargs)
+
+    def get_object(self, **kwargs):
+        if self.kwargs.get('slug') is not None:
+            return self.model.objects.get(slug=self.kwargs.get('slug'))
+        return None
 
 
 class VideoTranscodeWebhookView(UpdateView):

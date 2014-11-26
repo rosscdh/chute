@@ -9,7 +9,7 @@ var SearchForm = React.createClass({
             <form class="form-horizontal" role="form">
                 <div className="form-group">
                     <div className="input-group search-field">
-                        <input type="text" className="form-control input-lg" placeholder="Search comments by type, text or commenter..." name="q" autocomplete="off" onChange={this.props.onSearch}/>
+                        <input type="text" className="form-control input-lg" placeholder="Search comments by type, text or commenter..." name="q" autoComplete="off" onChange={this.props.onSearch}/>
                     </div>
                 </div>
             </form>
@@ -96,7 +96,7 @@ var ChronicleCommentsBase = React.createClass({
     }
 });
 // render chronicle
-React.renderComponent(
+React.render(
   <ChronicleCommentsBase />,
   document.getElementById('project-detail-chronicle')
 );

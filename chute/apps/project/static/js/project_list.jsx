@@ -205,7 +205,7 @@ var ProjectList = React.createClass({
                     <br/><br/>
                     <div className="form-group">
                         <div className="input-group col-xs-12 search-field">
-                            <input type="text" className="form-control" placeholder="Search projects by name or client name..." name="q" autocomplete="off" onChange={this.handleSearch} />
+                            <input type="text" className="form-control" placeholder="Search projects by name or client name..." name="q" autoComplete="off" onChange={this.handleSearch} />
                         </div>
                     </div>
                 </div>
@@ -218,7 +218,7 @@ var ProjectList = React.createClass({
     }
 });
 
-React.renderComponent(
+React.render(
   <ProjectList />,
   document.getElementById('project-list')
 );

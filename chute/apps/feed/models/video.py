@@ -47,12 +47,14 @@ class Video(models.Model):
                      db_index=True)
     feed_item = models.ForeignKey('feed.FeedItem')
     name = models.CharField(max_length=255)
+
+    video_url = models.URLField(db_index=True)  # stores the initial s3 uplaoded url
     video = models.FileField(upload_to=_upload_video,
                              storage=_managed_S3BotoStorage(),
                              max_length=255,
                              null=True,
                              blank=True)
-    video_url = models.URLField(db_index=True)
+
     video_type = models.IntegerField(choices=VIDEO_TYPES.get_choices(),
                                      default=VIDEO_TYPES.video_mp4,
                                      db_index=True)

@@ -388,23 +388,23 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
 });
 
 // render the Base set
-// React.renderComponent(
+// React.render(
 //   <FeedView />,
 //   document.getElementById('feed-list')
 // );
 
-React.renderComponent(
+React.render(
   React.createElement(PlaylistView, null),
   document.getElementById('playlist-feed-list')
 );
 
-React.renderComponent(
+React.render(
   React.createElement(FeedPreviewView, null),
   document.getElementById('feed-preview')
 );
 
 // render the collaborators
-React.renderComponent(
+React.render(
   React.createElement(CollaboratorListView, null),
   document.getElementById('project-detail-collaborators')
 );

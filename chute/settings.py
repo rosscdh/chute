@@ -201,13 +201,19 @@ RQ_QUEUES = {
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
+PIPELINE_YUI_JS_ARGUMENTS = 'mangle:False'
+PIPELINE_DISABLE_WRAPPER = True
+
+# PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+# PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+
 PIPELINE_CSS = {
     'base': {
         'source_filenames': (
             'bootstrap/css/bootstrap.min.css',
             'css/sidebar.css',
         ),
-        'output_filename': 'css/dist/base.css',
+        'output_filename': 'dist/css/base.css',
         'extra_context': {
             'media': 'screen,projection',
         },
@@ -220,14 +226,15 @@ PIPELINE_JS = {
             'bootstrap/js/html5shiv.min.js',
             'bootstrap/js/respond.min.js',
         ),
-        'output_filename': 'js/dist/base_ie_only.js'
+        'output_filename': 'dist/js/base_ie_only.js'
     },
     'base': {
         'source_filenames': (
             'js/pusher.min.js',
             'js/showdown-0.3.1.min.js',
+            'parsely/js/parsley.js',
         ),
-        'output_filename': 'js/dist/base.js'
+        'output_filename': 'dist/js/base.js'
     },
     'ckeditor': {
         'source_filenames': (
@@ -235,17 +242,16 @@ PIPELINE_JS = {
             'ckeditor/ckeditor.js',
             'ckeditor/adapters/jquery.js',
         ),
-        'output_filename': 'js/dist/ck.js'
+        'output_filename': 'dist/js/ck.js'
     },
     'react': {
         'source_filenames': (
-            #'js/reactjs/0.11.1/react-with-addons.js',
-            'js/reactjs/0.12.1/react-with-addons.js',
+            'js/reactjs/0.12.1/react.js',
             'js/common.jsx',
             'js/messages.jsx',
             #'js/videoplayer.jsx',
         ),
-        'output_filename': 'js/dist/react.js'
+        'output_filename': 'dist/js/react.js'
     },
     'resources': {
         'source_filenames': (
@@ -258,7 +264,7 @@ PIPELINE_JS = {
             # 'js/resources/video_resource.js',
             # 'js/resources/comment_resource.js',
         ),
-        'output_filename': 'js/dist/resources.js'
+        'output_filename': 'dist/js/data-resources.js'
     },
     'project_list': {
         'source_filenames': (
@@ -267,7 +273,7 @@ PIPELINE_JS = {
             'js/resources/project_resource.js',
             'js/project_list.jsx',
         ),
-        'output_filename': 'js/project_list.js',
+        'output_filename': 'dist/js/project_list.js',
     },
     'project': {
         'source_filenames': (
@@ -280,14 +286,14 @@ PIPELINE_JS = {
             # 'js/project_video.jsx',
             'js/project_detail.jsx',
         ),
-        'output_filename': 'js/dist/project.js',
+        'output_filename': 'dist/js/project.js',
     },
     'chute': {
         'source_filenames': (
             'js/chute.jquery.js',
             'js/foggy-1.1.1.js',
         ),
-        'output_filename': 'js/dist/chute.js',
+        'output_filename': 'dist/js/chute.js',
     },
     
 }

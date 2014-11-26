@@ -40,7 +40,7 @@ var VideoUploaderView = React.createClass({
             }]);
 
         } else { // validVideoFile
-
+            var upload_button = $('span.fileinput-button');
             var progress = $('div#progress');
             var progress_bar = progress.find('div.progress-bar');
             var progress_conversion = $('div#progress-conversion');
@@ -77,14 +77,8 @@ var VideoUploaderView = React.createClass({
                         video_type: file.type,
                     };
 
-                    ProjectVideoResource.create( video_object ).defer().done(function ( data ) {
-                        // progress.addClass('hide');
-                        // progress_bar.width('0%');
-
-                        // progress_conversion.removeClass('hide');
-                        // progress_conversion_bar.width('0%');
-                        window.location = data.video_view_url;
-                    });
+                    self.props.onUploadDone(data);
+                    self.cancel()
                 },
             });
         } // end validVideoFile

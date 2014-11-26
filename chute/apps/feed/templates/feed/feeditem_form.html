@@ -1,5 +1,70 @@
-{% extends "feed/base.html" %}{% load crispy_forms_tags %}
+{% extends "feed/base.html" %}{% load crispy_forms_tags compressed %}
 
 {% block content %}
   {% crispy form %}
+{% endblock %}
+
+{% block css %}
+<style>
+.badge > a {
+    color:#fff;
+}
+.control-type-selector {
+    width:120px;
+}
+.input-lg[name=comment] {
+    height:70px;
+}
+div.comment-list{
+  background-color:#fff;
+  overflow-y: scroll;
+  height:515px;
+}
+ul.versions{
+  display: inline-block;
+  padding:0px 5px;
+}
+.progress-bar{
+  width:0%;
+}
+/*Blue imp*/
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}
+</style>
+{% endblock %}
+
+{% block js %}
+<script>
+'use strict';
+var UploaderConfig = {
+   signerUrl: "{% url 'feed:s3signature' %}",
+   aws_key: '{{ AWS_ACCESS_KEY_ID }}',
+   bucket: '{{ AWS_STORAGE_BUCKET_NAME }}',
+   aws_url: 'https://s3-eu-west-1.amazonaws.com',
+   aws_path: 'uploaded_video/'
+};
+</script>
+{% compressed_js 'feeditem_video' %}
 {% endblock %}

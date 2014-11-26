@@ -2,7 +2,6 @@
 from django.core import files
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
-from chute.apps.public.templatetags.chute_tags import ABSOLUTE_BASE_URL
 
 # from vimeo import vimeo
 import requests
@@ -107,6 +106,8 @@ class VideoTranscodeService(object):
       """
       Should be made async
       """
+      from chute.apps.public.templatetags.chute_tags import ABSOLUTE_BASE_URL
+
       job_resp = None
       video_id = self.retrieve_video_id(download_id=self.video.download_id)
 

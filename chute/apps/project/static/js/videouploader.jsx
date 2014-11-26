@@ -62,8 +62,9 @@ var VideoUploaderView = React.createClass({
                 progress: function ( progress_count ) {
                     console.log('progress:' + progress_count);
                     var percent = Math.round(progress_count * 100)
-
-                    progress_bar.width(percent+'%');
+                    var percent_string = percent + '%';
+                    progress_bar.width(percent_string);
+                    self.props.onProgress( progress_count, percent_string );
                 },
                 complete: function ( data ) {
                     // post the new video event
@@ -77,14 +78,7 @@ var VideoUploaderView = React.createClass({
                         video_type: file.type,
                     };
 
-                    ProjectVideoResource.create( video_object ).defer().done(function ( data ) {
-                        // progress.addClass('hide');
-                        // progress_bar.width('0%');
-
-                        // progress_conversion.removeClass('hide');
-                        // progress_conversion_bar.width('0%');
-                        window.location = data.video_view_url;
-                    });
+                    self.props.onUploadDone(data);
                 },
             });
         } // end validVideoFile

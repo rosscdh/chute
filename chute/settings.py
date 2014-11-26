@@ -154,6 +154,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+
+    'chute.context_processors.GLOBALS'
 )
 
 
@@ -287,6 +289,15 @@ PIPELINE_JS = {
             'js/project_detail.jsx',
         ),
         'output_filename': 'dist/js/project.js',
+    },
+    'feeditem_video': {
+        'source_filenames': (
+            # helpers
+            'js/evaporate-0.0.2.js',
+            'js/videouploader.jsx',
+            'js/feeditem_video.jsx',
+        ),
+        'output_filename': 'dist/js/feeditem_video.js',
     },
     'chute': {
         'source_filenames': (

@@ -15,6 +15,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 PROJECT_ENVIRONMENT = 'dev'
+TEST_PREPROD = False
 
 IS_TESTING = False
 for test_app in ['testserver','test', 'jenkins']:

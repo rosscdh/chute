@@ -6,7 +6,7 @@ from crispy_forms.layout import ButtonHolder, Div, HTML, Submit
 #from crispy_forms.bootstrap import AppendedText, FieldWithButtons, PrependedText, StrictButton
 from parsley.decorators import parsleyfy
 
-from .models import FeedItem, Video
+from .models import FeedItem
 
 from urlparse import urlparse
 
@@ -15,10 +15,15 @@ from urlparse import urlparse
 class FeedItemForm(forms.ModelForm):
     class Meta:
         model = FeedItem
+        fields = ('name', 'message', 'description', 'wait_for',)
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         super(FeedItemForm, self).__init__(*args, **kwargs)
+
+    def save(self, **kwargs):
+        feed_item = super(FeedItemForm, self).save(commit=False)
+        return feed_item
 
 
 @parsleyfy
@@ -65,7 +70,7 @@ class VideoFeedItemForm(FeedItemForm):
     def clean_video_url(self):
         url = urlparse(self.cleaned_data['video_url'])
         self.cleaned_data['video_url'] = '%s://%s%s' % (url.scheme, url.netloc, url.path)
-        return self.cleaned_data
+        return self.cleaned_data['video_url']
 
     def save(self, **kwargs):
         feed_item = super(VideoFeedItemForm, self).save(commit=False)
@@ -76,6 +81,7 @@ class VideoFeedItemForm(FeedItemForm):
 
         video = feed_item.video_set.create(
           name=feed_item.name,
+          feed_item=feed_item,
           pre_transcode_storage_url=self.cleaned_data.get('video_url')
         )
 

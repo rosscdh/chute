@@ -118,8 +118,7 @@ class Video(models.Model):
 
     @download_id.setter
     def download_id(self, value):
-        info = self.download_info
-        info['id'] = value
+        self.download_info['id'] = value
 
     @property
     def job_info(self):
@@ -137,10 +136,11 @@ class Video(models.Model):
         return u'%s' % self.name
 
     def get_webhook_url(self):
-        return reverse_lazy('feed:webhook_heywatch', kwargs={'pk': self.pk})
+        return reverse_lazy('feed:webhook_heywatch', kwargs={'pk': self.feed_item.pk})
 
     def transcode(self):
-        django_rq.enqueue(send_for_transcoding, video=send_for_transcoding)
+        send_for_transcoding.delay(video=self)
+        #django_rq.enqueue(send_for_transcoding, video=self)
 
     # def get_absolute_url(self):
     #     return reverse_lazy('project:with_video_detail', kwargs={'slug': self.project.slug, 'version_slug': str(self.slug)})

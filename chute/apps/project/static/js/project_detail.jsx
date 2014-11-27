@@ -354,7 +354,7 @@ var PlaylistView = React.createClass({
             var key = 'playlist-{pk}'.assign({'pk': playlist.pk});
             return (<li key={key} className={css_class}><a href="#">{playlist.name}</a></li>);
         });
-
+//<a href="#" className="dropdown-toggle" data-toggle="dropdown">Playlists <span className="caret"></span></a>
         return (<span>
           <h3>Playlist</h3>
           <nav className="navbar navbar-default" role="navigation">
@@ -362,7 +362,6 @@ var PlaylistView = React.createClass({
 
                 <ul className="nav navbar-nav">
                     <li className="dropdown">
-                        <a href="#" className="dropdown-toggle" data-toggle="dropdown">Playlists <span className="caret"></span></a>
 
                         <form className="form-inline pull-right" role="form">
                             <div className="form-group">

@@ -354,7 +354,7 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
             var key = 'playlist-{pk}'.assign({'pk': playlist.pk});
             return (React.createElement("li", {key: key, className: css_class}, React.createElement("a", {href: "#"}, playlist.name)));
         });
-
+//<a href="#" className="dropdown-toggle" data-toggle="dropdown">Playlists <span className="caret"></span></a>
         return (React.createElement("span", null, 
           React.createElement("h3", null, "Playlist"), 
           React.createElement("nav", {className: "navbar navbar-default", role: "navigation"}, 
@@ -362,7 +362,6 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
 
                 React.createElement("ul", {className: "nav navbar-nav"}, 
                     React.createElement("li", {className: "dropdown"}, 
-                        React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Playlists ", React.createElement("span", {className: "caret"})), 
 
                         React.createElement("form", {className: "form-inline pull-right", role: "form"}, 
                             React.createElement("div", {className: "form-group"}, 

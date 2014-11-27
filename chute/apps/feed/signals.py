@@ -10,7 +10,7 @@ def send_video_for_transcoding(sender, instance, created, **kwargs):
     2. that url is saved in video.pre_transcode_storage_url
     3. that url is then sent to be transcoded
     """
-    if instance.is_transcode_pending is True:
+    if created is True and instance.is_transcode_pending is True:
         logger.info('Signal to transcode video: %s' % instance)
         instance.transcode()
 

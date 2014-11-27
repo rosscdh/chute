@@ -81,7 +81,7 @@ class VideoTranscodeService(object):
           download_resp = self.hw.create('download',
                                          url=self.video.pre_transcode_storage_url,
                                          title=self.video.name)
-
+          logger.info('heywatch download object: %s' % download_resp)
           self.video.download_info = download_resp
 
           if self.video.pk is not None:
@@ -116,12 +116,15 @@ class VideoTranscodeService(object):
                                     video_id=video_id,
                                     format_id=self.PREFERRED_FORMAT,
                                     ping_url_after_encode=ABSOLUTE_BASE_URL(str(self.video.get_webhook_url())))
+
           # save the job response object
           self.video.job_info = job_resp
+          # Update the status
+          self.video.transcode_state = self.video.TRANSCODE_STATE.in_progress
 
           if self.video.pk is not None:
               # only if we are updating an existing video
-              self.video.save(update_fields=['data'])
+              self.video.save(update_fields=['data', 'transcode_state'])
 
       return job_resp, self.video
 
@@ -138,15 +141,16 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
         # save the uld
         video_url = self.video.video_url
 
+        # Update the status
+        self.video.transcode_state = self.video.TRANSCODE_STATE.transcode_complete
+        logger.debug('Upating video.transcode_state = transcode_complete: %s' % self.video)
+
         if not video_url:
 
-            logger.info('Updating the video_url from fresh_video_details')
+            logger.info('Updating the video_url from fresh_video_details: %s' % self.video)
             video_url = self.video.video_url = video_info.get('url')
-            # save url
-            self.video.save(update_fields=['video_url'])
 
         if video_url is not None:
-
             logger.info('Downloading the video from: %s' % video_url)
             request = requests.get(video_url, stream=True)
 
@@ -157,7 +161,7 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
             lf = tempfile.NamedTemporaryFile(suffix='.mov')
 
             # Read the streamed image in sections
-            logger.debug('Writing downloaded file to local temp file')
+            logger.debug('Writing downloaded file to local temp file: %s' % self.video)
             for block in request.iter_content(1024 * 8):
                 # If no more file then stop
                 if not block:
@@ -166,11 +170,11 @@ class VideoTranscodeCompleteService(VideoTranscodeService):
                 # Write image block to temporary file
                 lf.write(block)
 
-            logger.debug('Saving file to video.video object (s3)')
+            logger.debug('Saving file to video.video object (s3): %s' % self.video)
             video_name = getattr(self.video, 'name', 'Untitled Video')
             #self.video.video.save(video_name, files.File(lf))
             self.video.video = files.File(lf)
 
-            if self.video.pk is not None:
-                # only if we are updating an existing video
-              self.video.save(update_fields=['video'])
+        if self.video.pk is not None:
+            # only if we are updating an existing video
+            self.video.save(update_fields=['video', 'video_url', 'transcode_state'])

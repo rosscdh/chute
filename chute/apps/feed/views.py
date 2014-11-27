@@ -19,7 +19,6 @@ from .api.serializers import (FeedItemSerializer,)
 from .tasks import download_and_store_video
 from .forms import VideoFeedItemForm
 
-import django_rq
 import base64
 import hmac
 import sha
@@ -95,6 +94,6 @@ class VideoTranscodeWebhookView(UpdateView):
         """
         feed_object = self.get_object()
 
-        django_rq.enqueue(download_and_store_video, video=feed_object.video_set.all().first())
+        download_and_store_video.delay(video=feed_object.video_set.all().first())
 
         return super(VideoTranscodeWebhookView, self).post(request, **kwargs)

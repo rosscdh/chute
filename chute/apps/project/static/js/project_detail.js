@@ -326,6 +326,9 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
             'total_num_items': search_results.length,
         });
     },
+    handleAddVideo: function ( event ) {
+        window.location = Links.add_video;
+    },
     onMessage: function ( messages ) {
         var self = this;
         this.setState({
@@ -361,11 +364,14 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
                     React.createElement("li", {className: "dropdown"}, 
                         React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Playlists ", React.createElement("span", {className: "caret"})), 
 
-                React.createElement("form", {className: "form-inline pull-right", role: "form"}, 
-                    React.createElement("div", {className: "form-group"}, 
-                      React.createElement("input", {onChange: this.handleSearch, type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
-                    )
-                ), 
+                        React.createElement("form", {className: "form-inline pull-right", role: "form"}, 
+                            React.createElement("div", {className: "form-group"}, 
+                              React.createElement("input", {onChange: this.handleSearch, type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
+                            ), 
+                            React.createElement("div", {className: "form-group"}, 
+                                React.createElement("button", {type: "button", onClick: this.handleAddVideo, className: "btn btn-success"}, React.createElement("i", {className: "glyphicon glyphicon-plus"}), "Video")
+                            )
+                        ), 
 
                         React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
                             React.createElement("li", {className: "btn btn-success"}, React.createElement("a", {href: "#"}, "Add Playlist")), 

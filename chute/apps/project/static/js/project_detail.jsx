@@ -326,6 +326,9 @@ var PlaylistView = React.createClass({
             'total_num_items': search_results.length,
         });
     },
+    handleAddVideo: function ( event ) {
+        window.location = Links.add_video;
+    },
     onMessage: function ( messages ) {
         var self = this;
         this.setState({
@@ -361,11 +364,14 @@ var PlaylistView = React.createClass({
                     <li className="dropdown">
                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Playlists <span className="caret"></span></a>
 
-                <form className="form-inline pull-right" role="form">
-                    <div className="form-group">
-                      <input onChange={this.handleSearch} type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
-                    </div>
-                </form>
+                        <form className="form-inline pull-right" role="form">
+                            <div className="form-group">
+                              <input onChange={this.handleSearch} type="text" className="form-control input-sm col-xs-2" id="q" placeholder="Search..." />
+                            </div>
+                            <div className="form-group">
+                                <button type="button" onClick={this.handleAddVideo} className="btn btn-success"><i className="glyphicon glyphicon-plus"></i>Video</button>
+                            </div>
+                        </form>
 
                         <ul className="dropdown-menu" role="menu">
                             <li className="btn btn-success"><a href="#">Add Playlist</a></li>

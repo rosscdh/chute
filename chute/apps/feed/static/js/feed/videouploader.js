@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-var VideoUploaderView = React.createClass({
+var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
     getInitialState: function() {
         return {
             'uploader': new Evaporate(this.props.uploader_config),
@@ -84,21 +84,21 @@ var VideoUploaderView = React.createClass({
         } // end validVideoFile
     },
     render: function () {
-        return (<span>
-            <span className="btn btn-success btn-small fileinput-button">
-                <i className="glyphicon glyphicon-plus"></i>
-                <span>New Video</span>
-                <input id="fileupload" onChange={this.handleNewFile} ref="fileupload" type="file" name="video"/>
-            </span>
-            <br/>
-            <br/>
-            <div id="progress" className="progress hide">
-                <div className="progress-bar progress-bar-success"></div>
-            </div>
-            <div id="progress-conversion" className="progress hide">
-                <div className="progress-bar progress-bar-success"></div>
-            </div>
-            <div id="files" className="files"></div>
-        </span>);
+        return (React.createElement("span", null, 
+            React.createElement("span", {className: "btn btn-success btn-small fileinput-button"}, 
+                React.createElement("i", {className: "glyphicon glyphicon-plus"}), 
+                React.createElement("span", null, "Upload Video"), 
+                React.createElement("input", {id: "fileupload", onChange: this.handleNewFile, ref: "fileupload", type: "file", name: "video"})
+            ), 
+            React.createElement("br", null), 
+            React.createElement("br", null), 
+            React.createElement("div", {id: "progress", className: "progress hide"}, 
+                React.createElement("div", {className: "progress-bar progress-bar-success"})
+            ), 
+            React.createElement("div", {id: "progress-conversion", className: "progress hide"}, 
+                React.createElement("div", {className: "progress-bar progress-bar-success"})
+            ), 
+            React.createElement("div", {id: "files", className: "files"})
+        ));
     }
 });

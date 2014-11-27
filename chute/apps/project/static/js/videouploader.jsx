@@ -87,7 +87,7 @@ var VideoUploaderView = React.createClass({
         return (<span>
             <span className="btn btn-success btn-small fileinput-button">
                 <i className="glyphicon glyphicon-plus"></i>
-                <span>New Video</span>
+                <span>Upload Video</span>
                 <input id="fileupload" onChange={this.handleNewFile} ref="fileupload" type="file" name="video"/>
             </span>
             <br/>

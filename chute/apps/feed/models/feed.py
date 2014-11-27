@@ -36,9 +36,9 @@ class FeedItem(models.Model):
     project = models.ForeignKey('project.Project')
     facebook_crc = models.CharField(max_length=255)
 
-    name = models.CharField(null=True, blank=True, max_length=255)
-    message = models.TextField(null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    name = models.CharField(help_text='Name by which this item will be known', null=True, blank=True, max_length=255)
+    message = models.TextField(null=True, blank=True)  # small info
+    description = models.TextField(null=True, blank=True)  # big info
     post_type = models.IntegerField(choices=POST_TYPES.get_choices(), null=True)
 
     wait_for = models.IntegerField(default=20)

@@ -1,7 +1,12 @@
 {% extends "feed/base.html" %}{% load crispy_forms_tags compressed %}
 
-{% block content %}
-  {% crispy form %}
+{% block body %}
+  <div class="page-header">
+    <h2>Create Video FeedItem<br/><small>Upload a a video to be added to the current playlist</small></h2>
+  </div>
+  {% block content %}
+      {% crispy form %}
+  {% endblock %}
 {% endblock %}
 
 {% block css %}

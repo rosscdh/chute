@@ -15,7 +15,7 @@
                     {% endfor %}
                     {% for field in form %}
                         {% if field.errors %}
-                            <li>{{ field.errors|striptags }}</li>
+                            <li>{{ field.label }}: {{ field.errors|striptags }}</li>
                         {% endif %}
                     {% endfor %}
                 </ul>

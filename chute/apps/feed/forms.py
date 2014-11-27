@@ -27,26 +27,34 @@ class VideoFeedItemForm(FeedItemForm):
     Save a feedItem with an attached
     Video object
     """
-    video_url = forms.CharField(required=True, widget=forms.HiddenInput)
+    message = forms.CharField(label='Short message',
+                              help_text='Enter a brief description of this video',
+                              required=False,
+                              widget=forms.Textarea)
+    # hidden field to accept the s3 uploaded to url "video.pre_transcode_storage_url"
+    video_url = forms.CharField(required=True,
+                                widget=forms.HiddenInput)
 
     class Meta(FeedItemForm.Meta):
-      fields = ('name',)
+      fields = ('name', 'message', 'video_url',)
 
     def __init__(self, project, *args, **kwargs):
         self.project = project
         super(VideoFeedItemForm, self).__init__(*args, **kwargs)
 
         self.helper.form_id = 'video-feeditem-form'
-        self.helper.form_class = 'form-inline'
+        self.helper.form_class = 'form-horizontal'
         self.helper.attrs = {
             'role': 'form',
-            'parsley-validate': '',
+            'data-parsley-validate': '',
         }
 
         self.helper.layout = Layout(
           HTML('{% include "partials/form-errors.html" with form=form %}'),
           HTML('<div id="placeholder-feeditem_video"></div>'),
+          HTML('<div class=""><b>Please Note:</b> While the video is uploading please complete the rest of the form.</div>'),
           'name',
+          'message',
           'video_url',
           ButtonHolder(
               Submit('submit', 'Save', css_class='btn btn-primary btn-lg btn-wide'),
@@ -62,11 +70,13 @@ class VideoFeedItemForm(FeedItemForm):
     def save(self, **kwargs):
         feed_item = super(VideoFeedItemForm, self).save(commit=False)
         feed_item.project = self.project
+        feed_item.post_type = feed_item.POST_TYPES.video
+        feed_item.template = feed_item.TEMPLATES.video_full
         feed_item.save()
 
         video = feed_item.video_set.create(
-          pre_transcode_storage_url=self.cleaned_data.get('video_url'),
-          name=feed_item.name
+          name=feed_item.name,
+          pre_transcode_storage_url=self.cleaned_data.get('video_url')
         )
 
         # Add to playlist

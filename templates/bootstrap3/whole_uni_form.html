@@ -1,0 +1,20 @@
+{% load crispy_forms_utils %}
+
+{% specialspaceless %}
+{% if form_tag %}<form {{ flat_attrs|safe }} method="{{ form_method }}" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% endif %}
+    {% if form_method|lower == 'post' and not disable_csrf %}
+        {% csrf_token %}
+    {% endif %}
+
+    {% if modal_form %}
+        {% include "bootstrap3/display_modal_form.html" %}
+
+        {% include "bootstrap3/modal_inputs.html" %}
+    {% else %}
+        {% include "bootstrap3/display_form.html" %}
+
+        {% include "bootstrap3/inputs.html" %}
+    {% endif %}
+
+{% if form_tag %}</form>{% endif %}
+{% endspecialspaceless %}

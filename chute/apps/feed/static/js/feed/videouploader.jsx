@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 'use strict';
 
-var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
+var VideoUploaderView = React.createClass({
     getInitialState: function() {
         return {
             'uploader': new Evaporate(this.props.uploader_config),
@@ -40,7 +40,7 @@ var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
             }]);
 
         } else { // validVideoFile
-
+            var upload_button = $('span.fileinput-button');
             var progress = $('div#progress');
             var progress_bar = progress.find('div.progress-bar');
             var progress_conversion = $('div#progress-conversion');
@@ -62,9 +62,8 @@ var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
                 progress: function ( progress_count ) {
                     console.log('progress:' + progress_count);
                     var percent = Math.round(progress_count * 100)
-                    var percent_string = percent + '%';
-                    progress_bar.width(percent_string);
-                    self.props.onProgress( progress_count, percent_string );
+
+                    progress_bar.width(percent+'%');
                 },
                 complete: function ( data ) {
                     // post the new video event
@@ -79,26 +78,27 @@ var VideoUploaderView = React.createClass({displayName: 'VideoUploaderView',
                     };
 
                     self.props.onUploadDone(data);
+                    self.cancel()
                 },
             });
         } // end validVideoFile
     },
     render: function () {
-        return (React.createElement("span", null, 
-            React.createElement("span", {className: "btn btn-success btn-small fileinput-button"}, 
-                React.createElement("i", {className: "glyphicon glyphicon-plus"}), 
-                React.createElement("span", null, "Upload Video"), 
-                React.createElement("input", {id: "fileupload", onChange: this.handleNewFile, ref: "fileupload", type: "file", name: "video"})
-            ), 
-            React.createElement("br", null), 
-            React.createElement("br", null), 
-            React.createElement("div", {id: "progress", className: "progress hide"}, 
-                React.createElement("div", {className: "progress-bar progress-bar-success"})
-            ), 
-            React.createElement("div", {id: "progress-conversion", className: "progress hide"}, 
-                React.createElement("div", {className: "progress-bar progress-bar-success"})
-            ), 
-            React.createElement("div", {id: "files", className: "files"})
-        ));
+        return (<span>
+            <span className="btn btn-success btn-small fileinput-button">
+                <i className="glyphicon glyphicon-plus"></i>
+                <span>Upload Video</span>
+                <input id="fileupload" onChange={this.handleNewFile} ref="fileupload" type="file" name="video"/>
+            </span>
+            <br/>
+            <br/>
+            <div id="progress" className="progress hide">
+                <div className="progress-bar progress-bar-success"></div>
+            </div>
+            <div id="progress-conversion" className="progress hide">
+                <div className="progress-bar progress-bar-success"></div>
+            </div>
+            <div id="files" className="files"></div>
+        </span>);
     }
 });

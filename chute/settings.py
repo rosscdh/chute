@@ -234,7 +234,7 @@ PIPELINE_JS = {
         'source_filenames': (
             'js/pusher.min.js',
             'js/showdown-0.3.1.min.js',
-            'parsely/js/parsley.js',
+            'js/parsley-2.0.5.min.js',
         ),
         'output_filename': 'dist/js/base.js'
     },
@@ -280,8 +280,6 @@ PIPELINE_JS = {
     'project': {
         'source_filenames': (
             # helpers
-            'js/evaporate-0.0.2.js',
-            'js/videouploader.jsx',
             # react components
             'js/project_collaborators.jsx',
             # 'js/project_comments.jsx',
@@ -293,9 +291,9 @@ PIPELINE_JS = {
     'feeditem_video': {
         'source_filenames': (
             # helpers
-            'js/evaporate-0.0.2.js',
-            'js/videouploader.jsx',
-            'js/feeditem_video.jsx',
+            'js/feed/evaporate-0.0.2.js',
+            'js/feed/videouploader.jsx',
+            'js/feed/feeditem_video.jsx',
         ),
         'output_filename': 'dist/js/feeditem_video.js',
     },

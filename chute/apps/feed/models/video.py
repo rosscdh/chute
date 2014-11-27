@@ -57,7 +57,7 @@ class Video(models.Model):
     slug = UUIDField(auto=True,
                      db_index=True)
     feed_item = models.ForeignKey('feed.FeedItem')
-    name = models.CharField(max_length=255)
+    name = models.CharField(help_text='Name by which this video will be known', max_length=255)
 
     video_url = models.URLField(db_index=True)  # stores the initial s3 uplaoded url
     video = models.FileField(upload_to=_upload_video,

@@ -36,10 +36,11 @@
         </div>
 
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Projects</a></li>
             <!-- <li><a href="#">Settings</a></li>
             <li><a href="#">Account</a></li> -->
             {% if user.is_authenticated %}
+                <li class="active"><a href="{% url 'project:list' %}">Projects</a></li>
+                <li><a href="{% url 'me:settings' %}">Account</a></li>
                 <li><a href="{% url 'public:logout' %}">Logout</a></li>
             {% else %}
                 <li><a href="{% url 'public:signin' %}">Sign in</a></li>

@@ -30,6 +30,7 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
     description = serializers.CharField(required=False)
     #picture = serializers.Field(source='data.picture')
     picture = serializers.SerializerMethodField('get_picture')
+    video = serializers.SerializerMethodField('get_video')
     updated_at = CustomDateTimeField(source='data.updated_time')
     absolute_url = serializers.Field(source='get_absolute_url')
     template_name = serializers.Field(source='template_name')
@@ -51,6 +52,13 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
                 return picture.replace('/v/t1.0-9/s130x130','')
         else:
             return picture
+
+    def get_video(self, obj):
+        if obj.post_type == obj.POST_TYPES.video:
+            video = obj.video_set.all().first()
+            if video and video.transcode_state == video.TRANSCODE_STATE.transcode_complete:
+                return video.video.url
+        return None 
 
 
 class VideoSerializer(serializers.HyperlinkedModelSerializer):

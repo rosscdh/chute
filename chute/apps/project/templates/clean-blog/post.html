@@ -127,7 +127,27 @@
     </div>
     {% endtplhandlebars %}
 
-    <hr>
+    {% tplhandlebars "tpl-layout-video_full" %}
+        <!-- HTML5 Video Code "Video For Everybody" http://camendesign.com/code/video_for_everybody -->
+        <video autoplay="autoplay" loop="loop" autobuffer="autobuffer" muted="muted" poster="{{ object.picture }}" width="640" height="360">
+
+            <source src="{{ object.video }}" type="video/webm" />
+            
+            <object type="application/x-shockwave-flash" data="/static/swf/flowplayer-3.2.1.swf" width="640" height="360">
+                <param name="movie" value="/static/swf/flowplayer-3.2.1.swf" />
+                <param name="allowFullScreen" value="true" />
+                <param name="wmode" value="transparent" />
+                <param name="flashVars" value="config={'playlist':['{{ object.picture }}',{'url':'{{ object.video }}','autoPlay':false}]}" />
+                <img alt="{{ object.name }}" src="{{ object.picture }}" width="640" height="360" title="{{ object.description }}" />
+            </object>
+        </video>
+        <script type="text/javascript" charset="utf-8">
+        $(function(){
+            // Helper function to Fill and Center the HTML5 Video
+            jQuery('video, object').maximage('maxcover');
+        });
+        </script>
+    {% endtplhandlebars %}
 
     <!-- Footer -->
     <footer>
@@ -151,6 +171,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.min.js"></script>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/crossroads/0.12.0/crossroads.min.js"></script> -->
 
+    <script src="{% static "js/maximage-2.0.js" %}"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "clean_blog/js/bootstrap.min.js" %}"></script>
 
@@ -171,6 +193,7 @@
                 'basic': $("script#tpl-layout-basic").html(),
                 'image': $("script#tpl-layout-image").html(),
                 'image_left': $("script#tpl-layout-image_left").html(),
+                'video_full': $("script#tpl-layout-video_full").html(),
             },
         });
         window.chute = $( "body" ).data( 'chute-chute_controller' );

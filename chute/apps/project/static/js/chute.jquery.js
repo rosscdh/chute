@@ -83,14 +83,73 @@ $(function() {
             self.render( source );
             self._timer();
         },
+        picture_is_local: function ( feed_item ) {
+            var self = this;
+            var is_present = false;
+            if (!feed_item.picture || feed_item.picture === undefined) {
+                return {'is_present': false, 'filename': null};
+            }
+
+            var pic = feed_item.picture.split('/');
+            var pic_filename = pic[pic.length - 1]
+
+            $.ajax({
+                type: "HEAD",
+                async: false,
+                url: '/media/' + pic_filename,
+                success: function(message,text,response){
+                    is_present = true;
+                },
+                error: function(message,text,response){
+                  is_present = false;
+                }
+            });
+            return {'is_present': is_present, 'filename': pic_filename};
+        },
+        video_is_local: function ( feed_item ) {
+            var self = this;
+            var is_present = false;
+            if (!feed_item.video || feed_item.video === undefined) {
+                return {'is_present': false, 'filename': null};
+            }
+
+            var vid = feed_item.video.split('/');
+            var vid_filename = vid[vid.length - 1]
+
+            $.ajax({
+                type: "HEAD",
+                async: false,
+                url: '/media/' + vid_filename,
+                success: function(message,text,response){
+                    is_present = true;
+                },
+                error: function(message,text,response){
+                  is_present = false;
+                }
+            });
+
+            return {'is_present': is_present, 'filename': vid_filename};
+        },
         render: function ( source ) {
             var self = this;
             var target = self.options.target;
+
             var compiled = self.options.renderer.compile( source );
+
+            var pic_is_present = self.picture_is_local(this.current_feeditem)
+            if ( pic_is_present.is_present === true ) {
+                this.current_feeditem.picture = '/media/' + pic_is_present.filename;
+            }
+            var vid_is_present = self.video_is_local(this.current_feeditem)
+            if ( vid_is_present.is_present === true ) {
+                this.current_feeditem.video = '/media/' + vid_is_present.filename;
+            }
+
             var context = {
                 'project': this.project,
                 'object': this.current_feeditem,
-        };
+            };
+
             target.html( compiled( context ) );
         },
         goto: function ( pk ) {

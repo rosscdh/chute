@@ -220,6 +220,8 @@ var FeedNodeView = React.createClass({
                     <h4 className="list-group-item-heading">{node.name}</h4>
                     <p className="small list-group-item-text">{node.template_name} ({node.post_type})</p>
                     <p className="small list-group-item-text">{updated_at}</p>
+                    <p className="small list-group-item-text">{node.video_transcode_status}</p>
+                    
                 </div>
                 <div className="col-xs-1">
                     {add_btn}

@@ -132,6 +132,10 @@ class Video(models.Model):
     def is_transcode_pending(self):
         return self.transcode_state == self.TRANSCODE_STATE.pending
 
+    @property
+    def display_transcode_state(self):
+        return self.TRANSCODE_STATE.get_desc_by_value(self.transcode_state)
+
     def __unicode__(self):
         return u'%s' % self.name
 

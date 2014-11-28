@@ -219,7 +219,9 @@ var FeedNodeView = React.createClass({displayName: 'FeedNodeView',
                 React.createElement("div", {className: "col-xs-8"}, 
                     React.createElement("h4", {className: "list-group-item-heading"}, node.name), 
                     React.createElement("p", {className: "small list-group-item-text"}, node.template_name, " (", node.post_type, ")"), 
-                    React.createElement("p", {className: "small list-group-item-text"}, updated_at)
+                    React.createElement("p", {className: "small list-group-item-text"}, updated_at), 
+                    React.createElement("p", {className: "small list-group-item-text"}, node.video_transcode_status)
+                    
                 ), 
                 React.createElement("div", {className: "col-xs-1"}, 
                     add_btn, 

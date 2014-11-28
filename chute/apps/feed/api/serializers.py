@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-import urlparse
-
-from chute.apps.me.api.serializers import CollaboratorSerializer
-
 from ..models import (FeedItem, Video,)
 
 import urllib2
+import urlparse
 import datetime
 import dateutil.parser
 
 
 def _get_date_now():
     return datetime.datetime.utcnow().isoformat('T')
+
+
+def _clean_video_url(url):
+    if url not in [None, '']:
+        url = urlparse.urlparse(url)
+        new_url = '%s://%s%s' % (url.scheme, url.netloc, url.path)
+        return new_url
+    return None
 
 
 class CustomDateTimeField(serializers.DateTimeField):
@@ -31,6 +36,7 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
     #picture = serializers.Field(source='data.picture')
     picture = serializers.SerializerMethodField('get_picture')
     video = serializers.SerializerMethodField('get_video')
+    video_transcode_status = serializers.SerializerMethodField('get_video_transcode_status')
     updated_at = CustomDateTimeField(source='data.updated_time')
     absolute_url = serializers.Field(source='get_absolute_url')
     template_name = serializers.Field(source='template_name')
@@ -55,9 +61,16 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_video(self, obj):
         if obj.post_type == obj.POST_TYPES.video:
+
             video = obj.video_set.all().first()
             if video and video.transcode_state == video.TRANSCODE_STATE.transcode_complete:
-                return video.video.url
+                return _clean_video_url(video.video.url)
+        return None 
+
+    def get_video_transcode_status(self, obj):
+        if obj.post_type == obj.POST_TYPES.video:
+            video = obj.video_set.all().first()
+            return video.display_transcode_state
         return None 
 
 

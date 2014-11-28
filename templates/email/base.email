@@ -1,0 +1,90 @@
+{% block subject %}{% block subject_line %}{% endblock %}{% endblock %}
+
+{% block html %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Scantrust</title>
+        <style type="text/css"></style>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <style type="text/css">
+            /*<![CDATA[*/
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            @media only screen and (max-device-width: 600px) {
+                * {
+                    -webkit-text-size-adjust: none;
+                }
+                body, .viewport {
+                    width: 100% !important;
+                }
+                a {
+                    -webkit-tap-highlight-color: rgba(1, 145, 200, 0.1);
+                }
+                .small-height {
+                    height: 10px !important;
+                }
+                .small-width {
+                    width: 20px !important;
+                }
+                .rounded {
+                    border-left: 0 !important;
+                    border-right: 0 !important;
+                }
+                .viewport .logo img {
+                    height: 25px !important;
+                    width: 25px !important;
+                }
+                .viewport h1 {
+                    font-size: 18px !important;
+                }
+                .viewport h2 {
+                    font-size: 13px !important;
+                    margin-bottom: 20px !important;
+                }
+                .viewport a.action-btn {
+                    font-size: 14px !important;
+                }
+                .to-hide { display: none !important; }
+            }
+            /*]]>*/
+        </style>
+    </head>
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background-color: #edf0ef;">
+        <center>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#edf0ef">
+                <tr>
+                    <td valign="top">
+                        <table class="viewport" border="0" cellpadding="0" cellspacing="0" width="600">
+                            {% include 'email/partials/header-html.email' %}
+
+                            <!-- Content Section -->
+                            <tr>
+                                <td align="left" valign="top" width="100%">
+                                    <table class="rounded" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px solid #eae9e9; border-bottom: 1px solid #b2b1b1; border-left: 1px solid #d4d2d3; border-right: 1px solid #d4d2d3; padding: 20px;">
+                                        {% block html_content %}{% endblock %}
+                                    </table>
+                                </td>
+                            </tr>
+                            <!-- End Content Section -->
+
+                            {% include 'email/partials/footer-html.email' %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>
+{% endblock %}
+
+{% comment %}
+    {% block plain %}
+    {% include 'email/partials/header.email' %}
+    {% block plain_content %}{% endblock %}
+    {% include 'email/partials/footer.email' %}
+    {% endblock %}
+{% endcomment %}

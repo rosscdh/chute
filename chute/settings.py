@@ -32,6 +32,7 @@ DEFAULT_FROM = (
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '_e@t%7j9xw4u-=1u-&#3=w(fj=e6z1!!_7bcg!ui=-omw&9k5='
+URL_ENCODE_SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -314,6 +315,9 @@ PIPELINE_COMPILERS = [
     'pipeline.compilers.less.LessCompiler',
     'react.utils.pipeline.JSXCompiler',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_4TQt1KQ0HqJzsm4k6I98ppVQ")
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_4TQtMXsWeYaQHIsSoII3rrMc")

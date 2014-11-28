@@ -61,7 +61,7 @@ class Video(models.Model):
 
     video_url = models.URLField(db_index=True)  # stores the initial s3 uplaoded url
     video = models.FileField(upload_to=_upload_video,
-                             storage=_managed_S3BotoStorage(),
+                             storage=_managed_S3BotoStorage,
                              max_length=255,
                              null=True,
                              blank=True)

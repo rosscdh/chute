@@ -102,6 +102,8 @@ ROOT_URLCONF = 'chute.urls'
 WSGI_APPLICATION = 'chute.wsgi.application'
 
 
+LOGIN_REDIRECT_URL = '/project/'
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 

@@ -8,8 +8,6 @@ from ..signals import (ensure_project_slug,
 
 from jsonfield import JSONField
 
-import itertools
-
 
 class Project(models.Model):
     slug = models.SlugField(blank=True)  # blank to allow slug to be auto-generated
@@ -24,6 +22,14 @@ class Project(models.Model):
     client = models.ForeignKey('client.Client', null=True, blank=True)
 
     data = JSONField(default={})
+
+    @property
+    def is_facebook_feed(self):
+        return self.data.get('is_facebook_feed', False)
+
+    @is_facebook_feed.setter
+    def is_facebook_feed(self, value):
+        self.data['is_facebook_feed'] = value
 
     def __unicode__(self):
         return u'%s' % self.name

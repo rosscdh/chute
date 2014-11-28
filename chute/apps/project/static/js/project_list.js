@@ -23,7 +23,7 @@ var FlashMessageView = React.createClass({displayName: 'FlashMessageView',
         });
     },
     render: function () {
-        blockClassName = (this.state.message !== null) ? 'alert alert-warning fade in' : 'hide' ;
+        var blockClassName = (this.state.message !== null) ? 'alert alert-warning fade in' : 'hide' ;
         return (
             React.createElement("div", {className: blockClassName, role: "alert"}, 
                 this.state.message

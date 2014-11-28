@@ -52,7 +52,7 @@ var RemoveFeedItemBtn = React.createClass({
 var FeedPreviewView = React.createClass({
     getInitialState: function () {
         return {
-            'feed_item': Project.feed[0],
+            'feed_item': Project.feed[0] || {},
         }
     },
     handleFeedItemUpdate: function () {

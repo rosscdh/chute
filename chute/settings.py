@@ -259,26 +259,21 @@ PIPELINE_JS = {
     'resources': {
         'source_filenames': (
             'js/resources/base_resources.js',  # api
-            # resources api
-            'js/resources/user_resource.js',
             'js/resources/project_resource.js',
+            'js/resources/user_resource.js',
             'js/resources/feed_resource.js',
             'js/resources/collaborator_resource.js',
-            # 'js/resources/video_resource.js',
-            # 'js/resources/comment_resource.js',
         ),
         'output_filename': 'dist/js/data-resources.js'
     },
     'project_list': {
         'source_filenames': (
             # helpers
-            # resources
-            'js/resources/project_resource.js',
             'js/project_list.jsx',
         ),
         'output_filename': 'dist/js/project_list.js',
     },
-    'project': {
+    'project_detail': {
         'source_filenames': (
             # helpers
             # react components
@@ -287,7 +282,7 @@ PIPELINE_JS = {
             # 'js/project_video.jsx',
             'js/project_detail.jsx',
         ),
-        'output_filename': 'dist/js/project.js',
+        'output_filename': 'dist/js/project_detail.js',
     },
     'feeditem_video': {
         'source_filenames': (

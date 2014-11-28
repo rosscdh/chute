@@ -56,13 +56,9 @@ background-position: 320px 0px;
 height: 100px;
 }
 </style>
-{% compressed_css 'uploader' %}
 {% endblock css %}
 
 {% block js %}
-
-{% compressed_js 'resources' %}
-{% compressed_js 'uploader' %}
 
 <script>
 'use strict';
@@ -115,7 +111,7 @@ $(document).ready(function( ) {
 });
 </script>
 
-{% compressed_js 'project' %}
+{% compressed_js 'project_detail' %}
 
 
 {% endblock js %}

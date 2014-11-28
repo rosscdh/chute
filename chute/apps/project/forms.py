@@ -4,7 +4,7 @@ from django import forms
 from .models import (Project,)
 
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Button, Field, Layout, HTML, Fieldset, Div, ButtonHolder, Submit
+from crispy_forms.layout import Field, HTML, Fieldset, Div, ButtonHolder, Submit
 from parsley.decorators import parsleyfy
 
 
@@ -29,6 +29,7 @@ class ProjectForm(forms.ModelForm):
     #         'data-source': '[]'
     #     })
     # )
+    is_facebook_feed = forms.BooleanField(widget=forms.CheckboxInput)
 
     class Meta:
         model = Project
@@ -50,6 +51,10 @@ class ProjectForm(forms.ModelForm):
                     Field('name', css_class=''),
                     css_class='form-name clearfix'
                 ),
+                Div(
+                    Field('is_facebook_feed', css_class=''),
+                    css_class='form-name clearfix'
+                ),
                 #Field('client'),
             ),
             ButtonHolder(
@@ -57,3 +62,9 @@ class ProjectForm(forms.ModelForm):
             )
         )
         super(ProjectForm, self).__init__(*args, **kwargs)
+
+    # def save(self, **kwargs):
+    #     #is_facebook_feed = self.cleaned_data.pop('is_facebook_feed')
+    #     project = super(ProjectForm, self).save(**kwargs)
+    #     project.data['is_facebook_feed'] = is_facebook_feed
+    #     project.save(update_fields=['data'])

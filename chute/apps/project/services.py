@@ -43,6 +43,10 @@ class FacebookProjectDetailService(object):
         self.graph = None
 
     def process(self, **kwargs):
+        if self.project.is_facebook_feed is not True:
+            logger.info('Project is not a facebook_feed: %s' % self.project)
+            return None
+
         self.graph = facebook.GraphAPI(self.token)
         data = self.graph.get_object(self.project.name)
         self.project.data = data
@@ -107,6 +111,10 @@ class FacebookFeedGeneratorService(object):
         return  (150 / base) if base > 0 else 30
 
     def process(self, page_limit=3, **kwargs):
+        if self.project.is_facebook_feed is not True:
+            logger.info('Project is not a facebook_feed: %s' % self.project)
+            return None
+
         self.graph = facebook.GraphAPI(self.token)
 
         for project in self.projects:

@@ -72,6 +72,7 @@ def production():
     env.start_service = 'supervisorctl start chute'
     env.stop_service = 'supervisorctl stop chute'
     env.light_restart = "kill -HUP `cat /tmp/chute.pid`"
+    env.restart_queue = 'supervisorctl restart chute_rq_worker'
 
 #
 # Update the roles
@@ -419,6 +420,7 @@ def unzip_archive():
 @task
 def start_service():
     env_run(env.start_service)
+    env_run(env.restart_queue)  # restart django_rq
 
 @task
 def stop_service():

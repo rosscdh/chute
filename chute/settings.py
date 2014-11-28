@@ -103,6 +103,7 @@ WSGI_APPLICATION = 'chute.wsgi.application'
 
 
 LOGIN_REDIRECT_URL = '/project/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

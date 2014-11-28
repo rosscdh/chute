@@ -1,23 +1,18 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-import urlparse
-
 from chute.apps.me.api.serializers import CollaboratorSerializer
 from chute.apps.feed.api.serializers import FeedItemSerializer
 
 from ..models import Project
-
-import urllib2
-import datetime
-import dateutil.parser
-
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     collaborators = serializers.SerializerMethodField('get_collaborators')
     feed = serializers.SerializerMethodField('get_feed')
     client = serializers.SerializerMethodField('get_client')
+
+    is_facebook_feed = serializers.Field()
 
     detail_url = serializers.SerializerMethodField('get_detail_url')
 

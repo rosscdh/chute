@@ -29,8 +29,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def post_save(self, obj, created):
         collaborator, is_new = ProjectCollaborator.objects.get_or_create(user=self.request.user, project=obj)
 
-        get_facebook_details.send(sender=self, instance=obj, created=True)
-        get_facebook_feed.send(sender=self, instance=obj, user=self.request.user, created=True)
-        populate_playlist_with_feed.send(sender=self, playlist=obj.playlist_set.all().first(), project=obj)
+        is_facebook_feed = True if self.request.POST.get('is_facebook_feed') == 'on' else False
+        obj.is_facebook_feed = is_facebook_feed
+        obj.save(update_fields=['data'])
+
+        if is_facebook_feed is True:
+            get_facebook_details.send(sender=self, instance=obj, created=True)
+            get_facebook_feed.send(sender=self, instance=obj, user=self.request.user, created=True)
+            populate_playlist_with_feed.send(sender=self, playlist=obj.playlist_set.all().first(), project=obj)
 
         return super(ProjectViewSet, self).post_save(obj, created=created)

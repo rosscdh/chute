@@ -31,6 +31,13 @@ class ProjectListView(ListView,
     def get_queryset(self, **kwargs):
         return self.model._default_manager.filter(collaborators__in=[self.request.user])
 
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(ProjectListView, self).get_form_kwargs(**kwargs)
+        kwargs.update({
+            'user': self.request.user
+        })
+        return kwargs
+
     def get_context_data(self, **kwargs):
         kwargs = super(ProjectListView, self).get_context_data(**kwargs)
         kwargs.update({

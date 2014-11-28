@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-
+from django.db.models.fields.related import SingleRelatedObjectDescriptor
 from .models import (Project,)
 
 from crispy_forms.helper import FormHelper, Layout
@@ -35,7 +35,14 @@ class ProjectForm(forms.ModelForm):
         model = Project
         exclude = ('slug', 'collaborators', 'data',)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        try:
+            self.user.auth_token
+            self.has_auth_tokens = True
+        except:
+            self.has_auth_tokens = False
+
         self.helper = FormHelper()
         self.helper.attrs = {
             'id': 'create-project-form',
@@ -54,6 +61,8 @@ class ProjectForm(forms.ModelForm):
                 Div(
                     Field('is_facebook_feed', css_class=''),
                     css_class='form-name clearfix'
+                ) if self.has_auth_tokens else HTML(
+                'You should really have connected using Facebook Auth'
                 ),
                 #Field('client'),
             ),
@@ -62,9 +71,3 @@ class ProjectForm(forms.ModelForm):
             )
         )
         super(ProjectForm, self).__init__(*args, **kwargs)
-
-    # def save(self, **kwargs):
-    #     #is_facebook_feed = self.cleaned_data.pop('is_facebook_feed')
-    #     project = super(ProjectForm, self).save(**kwargs)
-    #     project.data['is_facebook_feed'] = is_facebook_feed
-    #     project.save(update_fields=['data'])

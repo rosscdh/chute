@@ -580,5 +580,5 @@ def deploy(is_predeploy='False',full='False',db='False',search='False'):
     relink()
     # upload the gui
     assets()
-    #clean_start()
+    clean_start()
     #conclude()

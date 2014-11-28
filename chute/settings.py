@@ -26,6 +26,10 @@ for test_app in ['testserver','test', 'jenkins']:
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 SITE_ID = 1
 
+DEFAULT_FROM = (
+ ("Magnificent Support", 'support@magnificent.de'),
+)
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '_e@t%7j9xw4u-=1u-&#3=w(fj=e6z1!!_7bcg!ui=-omw&9k5='
 

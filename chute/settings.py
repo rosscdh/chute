@@ -59,10 +59,10 @@ PROJECT_APPS = (
     'chute.apps.me',  # base user extended objects
     'chute.apps.client',  # base user client objects
     'chute.apps.project',  # container for playlists
-    'chute.apps.feed',  # container for playlists
-    'chute.apps.playlist',  # composed of various feed sequences
+    'chute.apps.playlist',  # composed of feed items
+    'chute.apps.box',  # the individual box endpoints (clients)
+    'chute.apps.feed',  # items on a playlists
     'chute.apps.public',  # public views
-    #'chute.apps.box',  # the individual box endpoints (clients)
 )
 
 DJANGO_CMS_APPS = (

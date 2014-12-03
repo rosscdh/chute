@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     url(r'^project/', include('chute.apps.project.urls', namespace='project')),
     url(r'^feed/', include('chute.apps.feed.urls', namespace='feed')),
+    url(r'^box/', include('chute.apps.box.urls', namespace='box')),
 
     url(r'^django-rq/', include('django_rq.urls')),
 

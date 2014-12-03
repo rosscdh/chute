@@ -42,3 +42,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectMiniSerializer(ProjectSerializer):
     class Meta(ProjectSerializer.Meta):
         exclude = ('data', 'feed',)
+
+
+class ProjectForPlaylistSerializer(ProjectSerializer):
+    class Meta(ProjectSerializer.Meta):
+        exclude = ('collaborators', 'client', 'data', 'feed',)

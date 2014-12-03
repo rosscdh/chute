@@ -12,6 +12,7 @@ from chute.apps.playlist.api.views import (PlaylistViewSet,
 #                                              ProjectUploadVideoEndpoint,
 #                                              VideoCommentsEndpoint,
 #                                              VideoCommentDetailEndpoint,)
+from chute.apps.box.api.views import (BoxViewSet,)
 from chute.apps.me.api.views import (UserProfileViewSet,
                                      CollaboratorEndpoint,)
 
@@ -25,6 +26,7 @@ router.register(r'projects', ProjectViewSet)
 router.register(r'feed', FeedItemViewSet)
 router.register(r'video', VideoViewSet)
 router.register(r'playlist', PlaylistViewSet)
+router.register(r'box', BoxViewSet)
 
 
 urlpatterns = patterns('',

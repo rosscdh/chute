@@ -12,7 +12,9 @@ from chute.apps.playlist.api.views import (PlaylistViewSet,
 #                                              ProjectUploadVideoEndpoint,
 #                                              VideoCommentsEndpoint,
 #                                              VideoCommentDetailEndpoint,)
-from chute.apps.box.api.views import (BoxRegistrationEndpoint, BoxViewSet,)
+from chute.apps.box.api.views import (BoxRegistrationEndpoint,
+                                      BoxPlaylistEndpoint,
+                                      BoxViewSet,)
 from chute.apps.me.api.views import (UserProfileViewSet,
                                      CollaboratorEndpoint,)
 
@@ -34,5 +36,6 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<project_slug>[\d\w-]+)/playlist/(?P<playlist_pk>[\d\w-]+)/(?P<pk>[\d\w-]+)/$', ProjectPlaylistDestroyEndpoint.as_view(), name='project_playlist_feeditem'),
     url(r'^projects/(?P<slug>[\d\w-]+)/collaborators/((?P<email>.*)/)?$', CollaboratorEndpoint.as_view(), name='project_collaborators'),
 
+    url(r'^box/(?P<mac_address>[\d\w-]+)/playlist/$', BoxPlaylistEndpoint.as_view(), name='box_registration'),
     url(r'^box/register/$', BoxRegistrationEndpoint.as_view(), name='box_registration'),
 ) + router.urls

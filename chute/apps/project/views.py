@@ -8,6 +8,7 @@ from django.views.generic.edit import FormMixin
 
 from rest_framework.renderers import JSONRenderer
 
+from chute.apps.box.models import (Box,)
 from chute.apps.playlist.api.serializers import (PlaylistSerializer,)
 
 from .api.serializers import (ProjectSerializer, ProjectMiniSerializer, FeedItemSerializer,)
@@ -103,3 +104,17 @@ class ProjectPlaylistFeedView(ProjectFeedView):
                                                         context={'request': self.request}).data)
 
 
+
+class ProjectBoxesView(DetailView):
+    template_name = 'project/project_boxes.html'
+    model = Project
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(ProjectBoxesView, self).get_context_data(**kwargs)
+        boxes = Box.objects.filter(project=self.object)
+        kwargs.update({
+            'object_list': boxes,
+            'box_list': boxes,
+            'channel_name': self.object.slug
+        })
+        return kwargs

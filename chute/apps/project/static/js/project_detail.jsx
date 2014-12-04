@@ -331,6 +331,9 @@ var PlaylistView = React.createClass({
     handleAddVideo: function ( event ) {
         window.location = Links.add_video;
     },
+    handleViewBoxes: function ( event ) {
+        window.location = Links.project_boxes
+    },
     onMessage: function ( messages ) {
         var self = this;
         this.setState({
@@ -371,6 +374,7 @@ var PlaylistView = React.createClass({
                             </div>
                             <div className="form-group">
                                 <button type="button" onClick={this.handleAddVideo} className="btn btn-success"><i className="glyphicon glyphicon-plus"></i>Video</button>
+                                <button type="button" onClick={this.handleViewBoxes} className="btn btn-info"><i className="glyphicon glyphicon-barcode"></i>Boxes</button>
                             </div>
                         </form>
 

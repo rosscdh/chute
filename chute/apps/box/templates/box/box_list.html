@@ -1,1 +1,38 @@
 {% extends 'box/base.html' %}
+
+{% block content %}
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+{% for box in object_list %}
+<li>
+<b>{{ box }}</b>
+<br/>
+<label for="data">Event</label><input type="text" name="event" value="reload"/>
+<label for="data">Data</label><input type="text" name="data" value=""/>
+<button>Send</button>
+</li>
+{% endfor %}
+<ul>
+{% endblock %}
+
+{% block js %}
+<script>
+'use strict';
+  Pusher.host    = 'localhost'
+  Pusher.ws_port = 8080
+  Pusher.wss_port = 8080
+  var pusher = new Pusher('{{ PUSHER_KEY }}', { authEndpoint: '/api/v1/box/auth/pusher/'});
+  var presenceChannel = pusher.subscribe('presence-{{ channel_name }}');
+  window.presenceChannel = presenceChannel;
+  window.presenceChannel.bind('pusher:subscription_succeeded', function(a) {
+    console.log(a)
+    console.log(window.presenceChannel.members);
+    // var me = presenceChannel.members.me;
+    // var userId = me.id;
+    // var userInfo = me.info;
+  });
+
+</script>
+{% endblock %}

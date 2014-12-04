@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django.conf.urls import patterns, url
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import routers
 
@@ -13,6 +14,7 @@ from chute.apps.playlist.api.views import (PlaylistViewSet,
 #                                              VideoCommentsEndpoint,
 #                                              VideoCommentDetailEndpoint,)
 from chute.apps.box.api.views import (BoxRegistrationEndpoint,
+                                      BoxPusherPresenceAuthEndpoint,
                                       BoxPlaylistEndpoint,
                                       BoxViewSet,)
 from chute.apps.me.api.views import (UserProfileViewSet,
@@ -36,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<project_slug>[\d\w-]+)/playlist/(?P<playlist_pk>[\d\w-]+)/(?P<pk>[\d\w-]+)/$', ProjectPlaylistDestroyEndpoint.as_view(), name='project_playlist_feeditem'),
     url(r'^projects/(?P<slug>[\d\w-]+)/collaborators/((?P<email>.*)/)?$', CollaboratorEndpoint.as_view(), name='project_collaborators'),
 
-    url(r'^box/(?P<mac_address>[\d\w-]+)/playlist/$', BoxPlaylistEndpoint.as_view(), name='box_registration'),
-    url(r'^box/register/$', BoxRegistrationEndpoint.as_view(), name='box_registration'),
+    url(r'^box/(?P<mac_address>[\d\w-]+)/playlist/$', csrf_exempt(BoxPlaylistEndpoint.as_view()), name='box_playlist'),
+    url(r'^box/auth/pusher/$', csrf_exempt(BoxPusherPresenceAuthEndpoint.as_view()), name='pusher_auth'),
+    url(r'^box/register/$', csrf_exempt(BoxRegistrationEndpoint.as_view()), name='box_registration'),
 ) + router.urls

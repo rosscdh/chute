@@ -49,6 +49,9 @@ django-storages
 boto
 s3
 
+# Realtime
+pusher
+
 dj-database-url
 pytz
 

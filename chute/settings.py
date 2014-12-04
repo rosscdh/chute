@@ -39,7 +39,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -315,6 +315,10 @@ PIPELINE_COMPILERS = [
     'pipeline.compilers.less.LessCompiler',
     'react.utils.pipeline.JSXCompiler',
 ]
+
+PUSHER_APP_ID = 79947
+PUSHER_KEY = 'cf7fc048e21bd39e6f82'
+PUSHER_SECRET = '01d612aade08edc9dfde'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'

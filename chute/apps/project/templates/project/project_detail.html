@@ -76,6 +76,7 @@ var Video = {};
 var Links = {
   'publish': "{% if view.current_video %}{% url 'publish:settings' slug=view.current_video.slug %}{% endif %}",
   'add_video': "{% url 'feed:create_video_feeditem' project_slug=project.slug %}",
+  'project_boxes': "{% url 'project:boxes' slug=project.slug %}",
 };
 
 var UploaderConfig = {

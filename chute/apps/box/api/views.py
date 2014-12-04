@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from rest_framework import status
+from rest_framework import views
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.response import Response
 
 from chute.apps.playlist.api.serializers import PlaylistSerializer
 from chute.apps.playlist.models import Playlist
+from chute.pusher_services import PusherAuthService
 
 from ..models import (Box,)
 from .serializers import (BoxSerializer,)
@@ -58,3 +60,11 @@ class BoxRegistrationEndpoint(generics.CreateAPIView):
             'box': serializer.data,
             'is_new': is_new,
           })
+
+
+class BoxPusherPresenceAuthEndpoint(views.APIView):
+    def post(self, request, **kwargs):
+        s = PusherAuthService(channel_name=request.DATA.get('channel_name'),
+                              socket_id=request.DATA.get('socket_id'))
+        json_data = s.process()
+        return Response(json_data)

@@ -13,3 +13,14 @@ class Box(models.Model):
     project = models.ForeignKey('project.Project', null=True, blank=True)
     playlist = models.ForeignKey('playlist.Playlist', null=True, blank=True)
     data = JSONField(default={})
+
+    @property
+    def name(self):
+        return self.data.get('name', None)
+
+    @name.setter
+    def name(self, value):
+        self.data['name'] = value
+
+    def __unicode__(self):
+        return '%s - %s' % (self.name, self.mac_address)

@@ -12,6 +12,9 @@ from chute.pusher_services import PusherAuthService
 from ..models import (Box,)
 from .serializers import (BoxSerializer,)
 
+import logging
+logger = logging.getLogger('django.request')
+
 
 class BoxViewSet(viewsets.ModelViewSet):
     """
@@ -53,13 +56,35 @@ class BoxRegistrationEndpoint(generics.CreateAPIView):
     serializer_class = BoxSerializer
 
     def create(self, request, **kwargs):
+        status_code = status.HTTP_200_OK
+        extra_data = {}
         mac_address = request.DATA.get('mac_address')
+        project_slug = request.DATA.get('project', None)
+        #playlist_uuid = request.DATA.get('playlist', None)
+
         box, is_new = self.model.objects.get_or_create(mac_address=mac_address)
+
+        if project_slug is not None:
+            logger.info('registering box: %s with project: %s' % (box, project_slug))
+
+            try:
+                project = box.project.__class__.objects.get(slug=project_slug)
+                box.project = project
+                box.save(update_fields=['project'])
+
+            except box.project.__class__.DoesNotExist:
+                extra_data['error'] = {'message': 'A project with that slug: %s could not be found' % project_slug}
+                status_code = status.HTTP_406_NOT_ACCEPTABLE
+
         serializer = self.serializer_class(box, context={'request': request})
-        return Response({
+
+        response = {
             'box': serializer.data,
             'is_new': is_new,
-          })
+        }
+        response.update(extra_data)
+
+        return Response(response, status_code)
 
 
 class BoxPusherPresenceAuthEndpoint(views.APIView):

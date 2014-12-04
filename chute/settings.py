@@ -40,7 +40,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CORS_ORIGIN_WHITELIST = ()
 
 # Application definition
 
@@ -83,6 +83,7 @@ HELPER_APPS = (
     'parsley',
     'crispy_forms',
     'templatetag_handlebars',
+    'corsheaders',
     # Queue
     'django_rq',
     # Asset pipeline
@@ -94,6 +95,7 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -308,7 +310,6 @@ PIPELINE_JS = {
         ),
         'output_filename': 'dist/js/chute.js',
     },
-    
 }
 
 PIPELINE_COMPILERS = [
@@ -353,7 +354,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.TokenAuthentication',
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         # 'rest_framework.authentication.BasicAuthentication', # Here Temporarily for dev
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
+        'chute.api.authentication.NoAuth',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',  # only use this in dev

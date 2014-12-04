@@ -72,11 +72,12 @@ class PusherAuthService(object):
     channel_name = None
     socket_id = None
 
-    def __init__(self, channel_name, socket_id):
+    def __init__(self, channel_name, socket_id, **kwargs):
         # is we pass in a tuple or list (iterable)
         # otherwise make it a list
         self.channel_name = channel_name
         self.socket_id = socket_id
+        self.data = kwargs
 
         logger.debug('PusherAuthService with channel_name: %s, socket_id: %s' % (channel_name, socket_id))
 
@@ -87,10 +88,15 @@ class PusherAuthService(object):
         if not settings.IS_TESTING:
             logger.debug('Pusher auth on #{channel}'.format(channel=self.channel_name))
 
+            self.data.update({
+                'user_id': self.socket_id,
+                'user_info': {'name':'Test Name'},
+            })
+
             auth = {}
 
             try:
-                auth = self.pusher[self.channel_name].authenticate(self.socket_id)
+                auth = self.pusher[self.channel_name].authenticate(self.socket_id, self.data)
             except:
                 # unfortunately pusher lib does not implement decent validation
                 pass

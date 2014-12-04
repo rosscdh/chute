@@ -94,6 +94,15 @@ class VideoTranscodeWebhookView(UpdateView):
         """
         feed_object = self.get_object()
 
-        download_and_store_video.delay(video=feed_object.video_set.all().first())
+        # Send all the video data that we get, which looks like this
+        # encoded_video_id    ["46537298"]
+        # encoded_video_url   [""]
+        # filename    ["webm_4.webm"]
+        # format_id   ["webm"]
+        # heywatch_ping_type  ["encode"]
+        # job_id  ["25044580"]
+        # link    ["http://heywatch.com/encoded_video/46537298.bin"]
+        # video_id    ["46537291"]
+        download_and_store_video.delay(video=feed_object.video_set.all().first(), **request.POST)
 
         return super(VideoTranscodeWebhookView, self).post(request, **kwargs)

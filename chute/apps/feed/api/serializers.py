@@ -63,14 +63,15 @@ class FeedItemSerializer(serializers.HyperlinkedModelSerializer):
         if obj.post_type == obj.POST_TYPES.video:
 
             video = obj.video_set.all().first()
-            if video and video.transcode_state == video.TRANSCODE_STATE.transcode_complete:
+            if video is not None and video.transcode_state == video.TRANSCODE_STATE.transcode_complete:
                 return _clean_video_url(video.video.url)
         return None 
 
     def get_video_transcode_status(self, obj):
         if obj.post_type == obj.POST_TYPES.video:
             video = obj.video_set.all().first()
-            return video.display_transcode_state
+            if video is not None:
+                return video.display_transcode_state
         return None 
 
 

@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from chute.apps.playlist.api.serializers import PlaylistSerializer
 from chute.apps.playlist.models import Playlist
+from chute.apps.project.models import Project
 from chute.pusher_services import PusherAuthService
 
 from ..models import (Box,)
@@ -69,7 +70,7 @@ class BoxRegistrationEndpoint(generics.CreateAPIView):
             logger.info('registering box: %s with project: %s' % (box, project_slug))
 
             try:
-                project = box.project.__class__.objects.get(slug=project_slug)
+                project, is_new_project = Project.objects.get_or_create(slug=project_slug)
                 box.project = project
                 box.save(update_fields=['project'])
 

@@ -102,6 +102,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 )
 
 ROOT_URLCONF = 'chute.urls'
@@ -188,6 +189,13 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", 'dev-chute')
 AWS_HEADERS = {
     'Cache-Control': 'max-age=86400',
     'x-amz-acl': 'public-read',
+}
+
+ROLLBAR = {
+    'access_token': '0c4d58e5d8044f52acc812c478cafd55',
+    'environment': 'development' if PROJECT_ENVIRONMENT in ['dev'] else 'production',
+    'branch': 'master',
+    'root': BASE_DIR,
 }
 
 RQ_QUEUES = {

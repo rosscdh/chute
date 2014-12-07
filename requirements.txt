@@ -78,3 +78,7 @@ pep8-naming
 # fabric
 # termcolor
 # GitPython
+
+
+# error tracking
+rollbar

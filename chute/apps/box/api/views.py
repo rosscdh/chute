@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework import views
 from rest_framework import viewsets
@@ -72,7 +73,7 @@ class BoxRegistrationEndpoint(generics.CreateAPIView):
                 box.project = project
                 box.save(update_fields=['project'])
 
-            except box.project.__class__.DoesNotExist:
+            except ObjectDoesNotExist:
                 extra_data['error'] = {'message': 'A project with that slug: %s could not be found' % project_slug}
                 status_code = status.HTTP_406_NOT_ACCEPTABLE
 

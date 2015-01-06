@@ -14,7 +14,7 @@ from django.template import Template
 
 from social.apps.django_app.default.models import UserSocialAuth
 
-from ...models import Project, FeedItem
+from ...models import Project
 
 
 class Command(BaseCommand):
@@ -32,7 +32,8 @@ class Command(BaseCommand):
 
             for feed in p.feeditem_set.all():
                 ctx = {
-                    'project': p.data
+                    'project': p.data,
+                    'object': feed,
                 }
                 ctx.update(feed.data)
 

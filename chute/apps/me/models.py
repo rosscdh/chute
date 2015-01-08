@@ -98,3 +98,19 @@ def get_initials(self):
     return initials
 
 User.add_to_class('get_initials', get_initials)
+
+
+"""
+Add facebook_token
+"""
+def get_facebook_token(self):
+    token = None
+    try:
+        fb = self.social_auth.filter(provider='facebook').first()
+        token = fb.token
+    except:
+        token = None
+
+    return token
+
+User.add_to_class('facebook_token', get_facebook_token)

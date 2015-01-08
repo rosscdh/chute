@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.db.models.fields.related import SingleRelatedObjectDescriptor
 from .models import (Project,)
 
 from crispy_forms.helper import FormHelper, Layout
@@ -37,9 +36,10 @@ class ProjectForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
+        token = None
         try:
-            self.user.auth_token
-            self.has_auth_tokens = True
+            token = self.user.facebook_token
+            self.has_auth_tokens = token is not None
         except:
             self.has_auth_tokens = False
 

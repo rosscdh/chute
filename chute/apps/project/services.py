@@ -33,8 +33,7 @@ class FacebookProjectDetailService(object):
     """
     @property
     def token(self):
-        social_auth = self.user.social_auth.all().first()
-        token = social_auth.tokens
+        token = self.user.facebook_token()
         return token
 
     def __init__(self, project, **kwargs):
@@ -49,7 +48,7 @@ class FacebookProjectDetailService(object):
 
         self.graph = facebook.GraphAPI(self.token)
         data = self.graph.get_object(self.project.name)
-        self.project.data = data
+        self.project.data['facebook'] = data
         self.project.save(update_fields=['data'])
         return data
 
@@ -66,8 +65,7 @@ class FacebookFeedGeneratorService(object):
 
     @property
     def token(self):
-        social_auth = self.user.social_auth.all().first()
-        token = social_auth.tokens
+        token = self.user.facebook_token()
         return token
 
     def __init__(self, user, **kwargs):
@@ -125,12 +123,12 @@ class FacebookFeedGeneratorService(object):
                 feed = {}
 
             for item in _get_pages(feed, limit=page_limit):
-    
+
                 if item.get('type') not in ACCEPTED_POST_TYPES:
                     logger.info('FeedItem.post_type was not an accepted type: %s should be in: %s' % (item.get('type'), ACCEPTED_POST_TYPES))
 
                 else:
-    
+
                     # get crc from specific values
                     crc = self.feed_item_class.crc(item.get('name'),
                                                    item.get('type'))
@@ -143,6 +141,6 @@ class FacebookFeedGeneratorService(object):
                     feed_item.post_type = self.post_type_from_item(item=item)
                     feed_item.template = self.template_from_post_type(item=item)
                     feed_item.wait_for = self.calculate_wait_for(item=item)
-                    feed_item.data = item                    
+                    feed_item.data = item
                     feed_item.save()
                     logger.info('FeedItem accepted: %s (%s)' % (feed_item.pk, feed_item.name,))

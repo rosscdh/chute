@@ -362,7 +362,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.TokenAuthentication',
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         # 'rest_framework.authentication.BasicAuthentication', # Here Temporarily for dev
-        #'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'chute.api.authentication.NoAuth',
     ),
     'DEFAULT_PERMISSION_CLASSES': [

@@ -107,7 +107,7 @@ def get_facebook_token(self):
     token = None
     try:
         fb = self.social_auth.filter(provider='facebook').first()
-        token = fb.token
+        token = fb.tokens
     except:
         token = None
 

@@ -39,8 +39,6 @@
             <!-- <li><a href="#">Settings</a></li>
             <li><a href="#">Account</a></li> -->
             {% if user.is_authenticated %}
-            {{user.email}}
-            {{user.username}}
                 <li class="active"><a href="{% url 'project:list' %}">Projects</a></li>
                 <li><a href="{% url 'me:settings' %}">Account</a></li>
                 <li><a href="{% url 'public:logout' %}">Logout</a></li>

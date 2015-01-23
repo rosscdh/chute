@@ -23,6 +23,9 @@ class Project(models.Model):
 
     data = JSONField(default={})
 
+    class Meta:
+        ordering = ['name']
+
     @property
     def is_facebook_feed(self):
         return self.data.get('is_facebook_feed', False)

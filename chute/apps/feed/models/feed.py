@@ -49,6 +49,9 @@ class FeedItem(models.Model):
 
     data = JSONField(default={})
 
+    class Meta:
+        ordering = ['updated_time']
+
     @staticmethod
     def crc(*args):
         hasher = hashlib.md5()

@@ -17,4 +17,4 @@ class Command(BaseCommand):
 
         for u in User.objects.all():
             service = FacebookFeedGeneratorService(user=u)
-            service.process(page_limit=5)
+            service.process(page_limit=15)

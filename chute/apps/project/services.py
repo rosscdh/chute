@@ -144,4 +144,8 @@ class FacebookFeedGeneratorService(object):
                         feed_item.wait_for = self.calculate_wait_for(item=item)
                         feed_item.data = item
                         feed_item.save()
-                        logger.info('FeedItem accepted: %s (%s)' % (feed_item.pk, feed_item.name,))
+                        if is_new is True:
+                            logger.info('FeedItem created: %s (%s)' % (feed_item.pk, feed_item.name,))
+                        else:
+                            logger.info('FeedItem updated: %s (%s)' % (feed_item.pk, feed_item.name,))
+

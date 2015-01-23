@@ -19,6 +19,7 @@ from ...models import Project
 
 class Command(BaseCommand):
     """
+    Comamnd to save compiled html pages to default storage for use by the remote boxes
     """
     args = None
     help = ""

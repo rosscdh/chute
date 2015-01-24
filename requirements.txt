@@ -82,3 +82,8 @@ pep8-naming
 
 # error tracking
 rollbar
+
+# parse dicts - https://github.com/mewwts/addict
+addict
+# rss feeds
+feedparser

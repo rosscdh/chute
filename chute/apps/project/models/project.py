@@ -11,7 +11,8 @@ from jsonfield import JSONField
 
 class Project(models.Model):
     slug = models.SlugField(blank=True)  # blank to allow slug to be auto-generated
-    name = models.CharField(max_length=255)
+    name = models.CharField(null=True, blank=True, max_length=255)
+    url = models.URLField(help_text='URL to the resource', max_length=255)
     date_created = models.DateTimeField(auto_now=False,
                                         auto_now_add=True,
                                         db_index=True)
@@ -33,6 +34,14 @@ class Project(models.Model):
     @is_facebook_feed.setter
     def is_facebook_feed(self, value):
         self.data['is_facebook_feed'] = value
+
+    @property
+    def is_rss_atom(self):
+        return self.data.get('is_rss_atom', False)
+
+    @is_rss_atom.setter
+    def is_rss_atom(self, value):
+        self.data['is_rss_atom'] = value
 
     def __unicode__(self):
         return u'%s' % self.name

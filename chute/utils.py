@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.utils.deconstruct import deconstructible
 from django.core.files.storage import FileSystemStorage
 
 from storages.backends.s3boto import S3BotoStorage
@@ -154,5 +155,10 @@ class OverwriteStorage(FileSystemStorage):
         return name
 
 
+@deconstructible
+class CustomDeconstructableS3BotoStorage(S3BotoStorage):
+    pass
+
+
 def _managed_S3BotoStorage():
-    return OverwriteStorage() if settings.PROJECT_ENVIRONMENT in ['test'] else S3BotoStorage()
+    return OverwriteStorage() if settings.PROJECT_ENVIRONMENT in ['test'] else CustomDeconstructableS3BotoStorage()

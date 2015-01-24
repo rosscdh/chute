@@ -51,6 +51,13 @@ class ProjectCreateView(CreateView):
     model = Project
     form_class = ProjectForm
 
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(ProjectCreateView, self).get_form_kwargs(**kwargs)
+        kwargs.update({
+            'user': self.request.user
+        })
+        return kwargs
+
 
 class ProjectDetailView(DetailView):
     model = Project

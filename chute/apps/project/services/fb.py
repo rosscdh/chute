@@ -31,15 +31,15 @@ def _get_pages(data, limit=None):
 class FacebookProjectDetailService(object):
     """
     """
-    @property
-    def token(self):
-        token = self.user.facebook_token()
-        return token
-
     def __init__(self, project, **kwargs):
         self.project = project
         self.user = self.project.collaborators.all().last()
         self.graph = None
+
+    @property
+    def token(self):
+        token = self.user.facebook_token()
+        return token
 
     def process(self, **kwargs):
         if self.project.is_facebook_feed is not True:
@@ -56,6 +56,12 @@ class FacebookProjectDetailService(object):
 class FacebookFeedGeneratorService(object):
     """
     """
+    def __init__(self, user, **kwargs):
+        self.feed_item_class = FeedItem
+        self.user = user
+        self.project = kwargs.get('project', None)
+        self.graph = None
+
     @property
     def projects(self):
         """
@@ -70,12 +76,6 @@ class FacebookFeedGeneratorService(object):
     @property
     def token(self):
         return self.user.facebook_token()
-
-    def __init__(self, user, **kwargs):
-        self.feed_item_class = FeedItem
-        self.user = user
-        self.project = kwargs.get('project', None)
-        self.graph = None
 
     def template_from_post_type(self, item):
         """
@@ -135,7 +135,7 @@ class FacebookFeedGeneratorService(object):
                                                        item.get('type'))
                         # create
                         feed_item, is_new = self.feed_item_class.objects.get_or_create(project=project,
-                                                                                       facebook_crc=crc)
+                                                                                       provider_crc=crc)
                         feed_item.name = item.get('name', None)
                         feed_item.description = item.get('description', None)
                         feed_item.message = item.get('message', None)

@@ -41,14 +41,14 @@ var Links = {
 };
 
 
-$('form#create-project-form').on('submit', function ( e ) {
-  e.preventDefault();
-  var form = $(this);
+// $('form#create-project-form').on('submit', function ( e ) {
+//   e.preventDefault();
+//   var form = $(this);
 
-  ProjectResource.create( form.serialize() ).defer().done(function ( data ) {
-    document.location = data.detail_url;
-  });
-});
+//   ProjectResource.create( form.serialize() ).defer().done(function ( data ) {
+//     document.location = data.detail_url;
+//   });
+// });
 
 </script>
 {% compressed_js 'project_list' %}

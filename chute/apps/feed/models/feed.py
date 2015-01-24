@@ -34,7 +34,7 @@ class FeedItem(models.Model):
                      null=True)
 
     project = models.ForeignKey('project.Project')
-    facebook_crc = models.CharField(max_length=255)
+    provider_crc = models.CharField(max_length=255)
 
     name = models.CharField(help_text='Name by which this item will be known', null=True, blank=True, max_length=255)
     message = models.TextField(null=True, blank=True)  # small info

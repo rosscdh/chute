@@ -45,7 +45,7 @@ class FeedItem(models.Model):
     template = models.IntegerField(choices=TEMPLATES.get_choices(),
                                 default=TEMPLATES.basic)
 
-    updated_time = models.DateTimeField(null=True, auto_now=True, auto_now_add=True)
+    updated_time = models.DateTimeField(null=True, auto_now=True)
 
     data = JSONField(default={})
 

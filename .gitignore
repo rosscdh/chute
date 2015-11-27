@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
+config/*
 HOTELENERGIEBALLMOTERSCHADE.mp4
 debug_toolbar_user_panel
 

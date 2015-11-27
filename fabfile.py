@@ -8,10 +8,11 @@ from git import *
 import os
 import sys
 import time
-import shutil
 import getpass
 import requests
 from termcolor import colored
+
+sys.path.insert(0, '/Users/rosscdh/p/chute/chute-server/config')
 
 debug = True
 
@@ -40,9 +41,9 @@ env.local_user = getpass.getuser()
 
 env.environment = 'local'
 env.environment_class = 'development'
-env.key_filename = '~/.ssh/kumukan.pem'
+env.key_filename = None
 
-env.virtualenv_path = '~/.virtualenvs/beer/'
+env.virtualenv_path = '~/.virtualenvs/chute-server/'
 env.current_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
 
 env.newrelic_api_token = None
@@ -67,15 +68,15 @@ def staging():
 
     env.environment = 'staging'
     env.environment_class = 'staging'
-    env.newrelic_app_name = 'Karma-App Staging'
+    env.newrelic_app_name = 'Chute-Server Staging'
 
-    env.remote_project_path = '/home/ubuntu/apps/beer/'
+    env.remote_project_path = '/home/ubuntu/apps/chute-server/'
     env.deploy_archive_path = '/home/ubuntu/apps/'
-    env.virtualenv_path = '/home/ubuntu/.virtualenvs/beer/'
+    env.virtualenv_path = '/home/ubuntu/.virtualenvs/chute-server/'
     env.remote_dashboard_path = None
 
-    env.start_service = 'supervisorctl start beer'
-    env.stop_service = 'supervisorctl stop beer'
+    env.start_service = 'supervisorctl start chute-server'
+    env.stop_service = 'supervisorctl stop chute-server'
     env.start_worker = None
     env.stop_worker = None
 
@@ -96,11 +97,11 @@ def mkvirtualenv():
 def put_confs():
     #sudo('rm /etc/nginx/sites-enabled/default')
     # nginx
-    put(local_path='./config/environments/{environment}/beer-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/chute-server-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
     # supervisord
-    put(local_path='./config/environments/{environment}/beer.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/chute-server.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
     # uwsgi
-    put(local_path='./config/environments/{environment}/beer.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/chute-server.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
 
 
 @task
@@ -383,7 +384,7 @@ def update_env_conf():
     if not env.is_predeploy:
         # copy the live local_settings
         with cd(project_path):
-            put(local_path='./config/environments/%s/%s/local_settings.py' % (env.environment_class, env.project), remote_path='%s%s/%s/local_settings.py' % (env.remote_project_path, 'current', env.project))  # this is the one to be read
+            put(local_path='./config/environments/%s/%s/local_settings.py' % (env.environment_class, env.project), remote_path='%s%s/%s/local_settings.py' % (env.remote_project_path, 'current', 'chute'))  # this is the one to be read
             # set_code_version()
 
 @task
@@ -394,7 +395,7 @@ def set_code_version():
     version_path = '%sversions' % env.remote_project_path
     full_version_path = '%s/%s' % (version_path, env.SHA1_FILENAME)
 
-    cmd = 'echo "CODE_VERSION=\'%s\'" > beer/settings/code_version.py' % env.SHA1_FILENAME
+    cmd = 'echo "CODE_VERSION=\'%s\'" > chute-server/settings/code_version.py' % env.SHA1_FILENAME
 
     with cd(full_version_path):
         if env.environment in ['local']:
@@ -571,13 +572,13 @@ def paths():
     # run('echo "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bash_profile')
     # run('echo "source $HOME/.bash_profile" >> $HOME/.bashrc')
     run('mkdir -p ~/.virtualenvs')
-    run('mkdir -p ~/apps/beer/versions/tmp')
-    run('ln -s ~/apps/beer/versions/tmp ~/apps/beer/current')
+    run('mkdir -p ~/apps/chute-server/versions/tmp')
+    run('ln -s ~/apps/chute-server/versions/tmp ~/apps/chute-server/current')
     # pass
 
 @task
 def upload_db():
-    put('db.sqlite3', '/home/ubuntu/apps/beer/')
+    put('db.sqlite3', '/home/ubuntu/apps/chute-server/')
 #-------
 
 @task

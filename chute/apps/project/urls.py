@@ -12,9 +12,9 @@ from .views import (ProjectListView,
 
 
 urlpatterns = patterns('',
-    url(r'^(?P<slug>[\w\d-]+)/feed/$', login_required(ProjectFeedView.as_view()), name='project_feed'),
-    url(r'^(?P<slug>[\w\d-]+)/playlist/(?P<playlist_pk>[\d]+)/feed/$', login_required(ProjectPlaylistFeedView.as_view()), name='project_playlist_feed'),
-    url(r'^(?P<slug>[\w\d-]+)/feed/(?P<pk>[\d]+)/$', login_required(FeedItemDetail.as_view()), name='feeditem_detail'),
+    url(r'^(?P<slug>[\w\d-]+)/feed/$', ProjectFeedView.as_view(), name='project_feed'),
+    url(r'^(?P<slug>[\w\d-]+)/playlist/(?P<playlist_pk>[\d]+)/feed/$', ProjectPlaylistFeedView.as_view(), name='project_playlist_feed'),
+    url(r'^(?P<slug>[\w\d-]+)/feed/(?P<pk>[\d]+)/$', FeedItemDetail.as_view(), name='feeditem_detail'),
 
     url(r'^(?P<slug>[\w\d-]+)/boxes/$', login_required(ProjectBoxesView.as_view()), name='boxes'),
 

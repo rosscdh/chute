@@ -26,7 +26,7 @@ Pillow
 sorl-thumbnail==11.12
 
 # Video transcoding
-heywatch
+coconutpy
 httplib2 # required for heywatch
 
 # Queue processign

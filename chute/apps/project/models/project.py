@@ -12,7 +12,7 @@ from jsonfield import JSONField
 class Project(models.Model):
     slug = models.SlugField(blank=True)  # blank to allow slug to be auto-generated
     name = models.CharField(null=True, blank=True, max_length=255)
-    url = models.URLField(help_text='URL to the resource', max_length=255)
+    url = models.URLField(help_text='URL to the resource', max_length=255, null=True, blank=True)
     date_created = models.DateTimeField(auto_now=False,
                                         auto_now_add=True,
                                         db_index=True)

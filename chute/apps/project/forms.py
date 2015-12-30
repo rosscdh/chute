@@ -20,7 +20,14 @@ from urlparse import urlparse
 class ProjectForm(forms.ModelForm):
     is_facebook_feed = False
     is_rss_atom = False
-    name = forms.CharField(initial='To Be Set', widget=forms.HiddenInput)
+
+    name = forms.CharField(label='Name of Project',
+                           help_text='Enter a name for this project')
+
+    url = forms.URLField(label='Facebook Page Address',
+                         help_text='Enter the complete url to a facebook page',
+                         widget=forms.TextInput(attrs={'placeholder': 'https://www.facebook.com/41061info'}),
+                         required=False)
 
     class Meta:
         model = Project
@@ -28,7 +35,7 @@ class ProjectForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        token = None
+        self.token = self.user.facebook_token()
 
         self.helper = FormHelper()
         self.helper.attrs = {
@@ -41,9 +48,9 @@ class ProjectForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML('{% include "partials/form-errors.html" with form=form %}'),
             Fieldset(
-                '',
+                'Create a Project',
                 Div(
-                    Field('url', css_class=''),
+                    Field('name'),
                     css_class='form-name clearfix'
                 ),
             ),
@@ -51,18 +58,18 @@ class ProjectForm(forms.ModelForm):
                 Submit('submit', 'Save')
             )
         )
+        if self.token:
+            self.helper.layout.extend([
+                Fieldset(
+                    'Facebook Page',
+                    Div(
+                        Field('url'),
+                        css_class='form-name clearfix'
+                    ),
+                )
+            ])
+
         super(ProjectForm, self).__init__(*args, **kwargs)
-
-    def clean_name(self):
-        ## set the name
-        # (Pdb) parsed_url.path
-        #  u'/41061info'
-        parsed_url = urlparse(self.cleaned_data.get('url'))
-
-        if 'facebook.com' not in parsed_url.netloc:
-            return parsed_url.netloc
-
-        return parsed_url.path.split('/')[1]
 
     def clean_url(self):
         data = self.cleaned_data.copy()
@@ -75,13 +82,8 @@ class ProjectForm(forms.ModelForm):
             ## set the name
             data['name'] = parsed_url.netloc
         else:
-            try:
-                token = self.user.facebook_token
-                has_auth_tokens = token is not None
-            except:
-                has_auth_tokens = False
 
-            if has_auth_tokens is False:
+            if self.token is not None:
                 raise ValidationError('Sorry, unable to parse facebook feeds without you connecting your facebook account with this account')
 
             self.is_facebook_feed = True

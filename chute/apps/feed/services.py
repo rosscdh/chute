@@ -6,7 +6,8 @@ from django.conf import settings
 import requests
 from requests.auth import HTTPBasicAuth
 
-import heywatch
+import coconut
+
 import tempfile
 import time
 
@@ -24,8 +25,8 @@ class VideoTranscodeService(object):
 
     def __init__(self, video, **kwargs):
         self.video = video
-        self.hw = heywatch.API(HEYWATCH.get('USERNAME'),
-                               HEYWATCH.get('PASSWORD'))
+        self.video_api = coconut.API(HEYWATCH.get('USERNAME'),
+                                     HEYWATCH.get('PASSWORD'))
 
     def retrieve_video_id(self, download_id):
         """
@@ -38,7 +39,7 @@ class VideoTranscodeService(object):
         video_id = None
 
         while video_id in [0, None]:
-            download_resp = self.hw.info('download', download_id)
+            download_resp = self.video_api.info('download', download_id)
 
             video_id = download_resp.get('video_id', 0)  # returns 0 by default
 
@@ -60,7 +61,7 @@ class VideoTranscodeService(object):
 
     def fresh_video_details(self):
         logger.info('getting fresh_video_details')
-        return self.hw.info('video', self.video.video_id)
+        return self.video_api.info('video', self.video.video_id)
 
     def create(self):
         if not self.video.pre_transcode_storage_url:
@@ -68,7 +69,7 @@ class VideoTranscodeService(object):
 
         else:
             logger.info('Creating heywatch download object')
-            download_resp = self.hw.create('download',
+            download_resp = self.video_api.create('download',
                                            url=self.video.pre_transcode_storage_url,
                                            title=self.video.name)
             logger.info('heywatch download object: %s' % download_resp)
@@ -102,7 +103,7 @@ class VideoTranscodeService(object):
         video_id = self.retrieve_video_id(download_id=self.video.download_id)
 
         if video_id is not None:
-            job_resp = self.hw.create('job',
+            job_resp = self.video_api.create('job',
                                       video_id=video_id,
                                       format_id=self.PREFERRED_FORMAT,
                                       ping_url_after_encode=ABSOLUTE_BASE_URL(str(self.video.get_webhook_url())))

@@ -374,7 +374,6 @@ var PlaylistView = React.createClass({
                             </div>
                             <div className="form-group">
                                 <button type="button" onClick={this.handleAddVideo} className="btn btn-success"><i className="glyphicon glyphicon-plus"></i>Video</button>
-                                <button type="button" onClick={this.handleViewBoxes} className="btn btn-info"><i className="glyphicon glyphicon-barcode"></i>Boxes</button>
                             </div>
                         </form>
 

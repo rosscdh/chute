@@ -373,8 +373,7 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
                               React.createElement("input", {onChange: this.handleSearch, type: "text", className: "form-control input-sm col-xs-2", id: "q", placeholder: "Search..."})
                             ), 
                             React.createElement("div", {className: "form-group"}, 
-                                React.createElement("button", {type: "button", onClick: this.handleAddVideo, className: "btn btn-success"}, React.createElement("i", {className: "glyphicon glyphicon-plus"}), "Video"), 
-                                React.createElement("button", {type: "button", onClick: this.handleViewBoxes, className: "btn btn-info"}, React.createElement("i", {className: "glyphicon glyphicon-barcode"}), "Boxes")
+                                React.createElement("button", {type: "button", onClick: this.handleAddVideo, className: "btn btn-success"}, React.createElement("i", {className: "glyphicon glyphicon-plus"}), "Video")
                             )
                         ), 
 
